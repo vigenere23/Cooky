@@ -17,11 +17,11 @@ services:
       - "8090:5000"
     links:
       - db
-  
+
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: '517ca3dd-35a8-4c4a-8449-ec9151a4cd14'
+      MYSQL_ROOT_PASSWORD: "517ca3dd-35a8-4c4a-8449-ec9151a4cd14"
     volumes:
       - ./bd_init/bd_init.sql:/docker-entrypoint-initdb.d/dump.sql/:ro
     ports:
