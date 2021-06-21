@@ -6,6 +6,7 @@ from ..recipeIngredient.dao import RecipeIngredientDao
 
 recipeIngredientDao = RecipeIngredientDao()
 
+
 class RecipeDao(BaseDao):
 
     def __init__(self):
@@ -16,27 +17,27 @@ class RecipeDao(BaseDao):
         results = db.select(query, {'name': '%{}%'.format(name)})
         return self._mapper.from_tuples(results)
 
-
     def getAllRecipesByUser(self, id_User):
         query = 'SELECT * FROM Recipe WHERE id_User = %(id_User)s'
         results = db.select(query, {'id_User': id_User})
         return self._mapper.from_tuples(results)
 
     def modifyRecipeName(self, name, id):
-        query = 'UPDATE Recipe SET name = \'{}\' WHERE id = {}'.format(name, id)
+        query = 'UPDATE Recipe SET name = \'{}\' WHERE id = {}'.format(
+            name, id)
         db.replace(query, {'id': id, 'name': name})
         return {"id": id, "name": name}
 
     def modifyRecipeDirective(self, directives, id):
-        query = 'UPDATE Recipe SET directives = \'{}\' WHERE id = {}'.format(directives, id)
+        query = 'UPDATE Recipe SET directives = \'{}\' WHERE id = {}'.format(
+            directives, id)
         db.replace(query, {'directives': directives})
         return {"id": id, "directives": directives}
 
-    
     def delete(self, id):
         query = 'DELETE FROM Recipe WHERE id = %(id)s'
-        db.delete(query, { 'id': id })
-    
+        db.delete(query, {'id': id})
+
     def save(self, recipeModel, ingredients):
         if not isinstance(recipeModel, RecipeModel):
             raise ValueError("recipeModel should be of type RecipeModel")
@@ -46,7 +47,7 @@ class RecipeDao(BaseDao):
         if recipeId:
             for ingredient in ingredients:
                 recipeIngredientModel = None
-                if (isinstance(ingredient, RecipeIngredientModel)):
+                if isinstance(ingredient, RecipeIngredientModel):
                     recipeIngredientModel = ingredient
                     recipeIngredientModel.id_Recipe = recipeId
                 else:

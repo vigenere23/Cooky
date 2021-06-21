@@ -1,6 +1,6 @@
-from app import db
 from .model import QuantityTypeModel
 from app.helpers.BaseDao import BaseDao
+
 
 class QuantityTypeDao(BaseDao):
 
@@ -9,5 +9,5 @@ class QuantityTypeDao(BaseDao):
 
     def save(self, quantityTypeModel):
         if not isinstance(quantityTypeModel, QuantityTypeModel):
-            raise ValueError("quantityTypeModel should be of type QuantityTypeModel")
-        pass
+            raise ValueError(
+                "quantityTypeModel should be of type QuantityTypeModel")
