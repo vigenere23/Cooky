@@ -693,7 +693,7 @@ DELIMITER ;
 -- Dump completed on 2019-04-16 17:55:31
 
 CREATE USER 'api'@'%'
-IDENTIFIED BY 'e7364202-2f94-4355-b354-c95907adfef6';
+IDENTIFIED BY 'api';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON `Recipe` TO 'api'@'%';
@@ -745,7 +745,7 @@ ON `QuantityType` TO 'api'@'%';
 
 
 CREATE USER 'provider'@'%'
-IDENTIFIED BY '63a86f46-e3db-44e0-8d78-d0d82fb384da';
+IDENTIFIED BY 'provider';
 
 GRANT UPDATE
 ON `Command` TO 'provider'@'%';
