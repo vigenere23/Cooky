@@ -1,7 +1,17 @@
-flask == 1.0.2
-mysql-connector-python == 8.0.25
-python-dotenv == 0.10.1
-flask-cors == 3.0.7
-Flask-JWT == 0.3.2
-gunicorn == 19.9.0
-bcrypt == 3.1.6
+bcrypt==3.1.6
+cffi==1.14.5
+click==8.0.1
+Flask==1.0.2
+Flask-Cors==3.0.7
+Flask-JWT==0.3.2
+gunicorn==19.9.0
+itsdangerous==2.0.1
+Jinja2==3.0.1
+MarkupSafe==2.0.1
+mysql-connector-python==8.0.25
+protobuf==3.17.3
+pycparser==2.20
+PyJWT==1.4.2
+python-dotenv==0.10.1
+six==1.16.0
+Werkzeug==2.0.1
