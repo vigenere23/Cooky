@@ -89,7 +89,7 @@ export default {
     updateIngredients (ingredients) {
       this.ingredients = ingredients
     },
-    fetchData () {
+    async fetchData () {
       this.name = this.description = this.directives = ''
       this.ingredients = null
       this.id = Number(this.$route.params.id)

@@ -10,4 +10,8 @@ ADD . /app
 
 EXPOSE 5000
 
-CMD ["gunicorn", "app:app", "--bind=0.0.0.0:5000", "--workers=1", "--log-level=debug", "--timeout=60"]
+WORKDIR app
+
+# CMD ["python", "flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn", "app:flask_app", "--bind=0.0.0.0:5000", "--workers=1", "--log-level=debug", "--timeout=60"]
+# CMD ["bash"]
