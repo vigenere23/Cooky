@@ -22,10 +22,10 @@ This will destroy, build, and reup the Docker compose network and services.
 - API : 8081
 - DB : 8082
 
-## Team members
+## Contributors
 
-- Gabriel St-Pierre (me)
-- Olivier Gingras
+- Gabriel St-Pierre ([@vigenre23](https://github.com/vigenere23))
+- Olivier Gingras ([@olgin2](https://github.com/olgin2))
 
 ## Screenshots
 
