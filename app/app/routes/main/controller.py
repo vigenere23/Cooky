@@ -1,9 +1,6 @@
 from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from app.helpers import response, signup
-from ..users.model import UserModel
-from ..account.model import AccountModel
-from ..address.model import AddressModel
 
 
 routes = Blueprint('main', __name__)

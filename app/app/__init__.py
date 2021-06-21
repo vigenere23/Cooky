@@ -3,11 +3,11 @@ from flask_cors import CORS
 from .config import Config
 from .helpers.DB import DB
 
-app = Flask(__name__)
-app.config.from_object(Config)
-
-CORS(app)
+flask_app = Flask(__name__)
+flask_app.config.from_object(Config)
 
 db = DB(Config.DATABASE)
 
 from . import auth, routes
+
+CORS(flask_app)

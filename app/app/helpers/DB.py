@@ -1,10 +1,9 @@
 import time
 from mysql.connector import connect
-from mysql.connector.cursor import MySQLCursor
 
 class DB:
   def __init__(self, config):
-    remaining_tries = 5
+    remaining_tries = 10
     while remaining_tries > 0:
       try:
         self.__connection = connect(**config)
@@ -14,8 +13,7 @@ class DB:
         remaining_tries -= 1
         print('Database connection failed.')
         print(e)
-        print('Trying again in 10 seconds...')
-        time.sleep(10)
+        time.sleep(5)
 
     if (remaining_tries == 0):
       raise Exception('Could not connect to database after 5 tries. Aborting.')

@@ -5,7 +5,7 @@ services:
     environment:
       - NODE_ENV=development
     ports:
-      - "8000:8080"
+      - "8080:8080"
     links:
       - app
 
@@ -14,7 +14,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=TRUE
     ports:
-      - "8090:5000"
+      - "8081:5000"
     links:
       - db
 
@@ -25,6 +25,6 @@ services:
     volumes:
       - ./bd_init/bd_init.sql:/docker-entrypoint-initdb.d/dump.sql/:ro
     ports:
-      - "32000:3306"
+      - "8082:3306"
     security_opt:
       - seccomp:unconfined

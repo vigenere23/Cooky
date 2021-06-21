@@ -1,6 +1,6 @@
 import bcrypt
 from flask_jwt import JWT
-from app import app
+from app import flask_app
 from .helpers import response
 from .routes.users.dao import UserDao
 from .routes.account.dao import AccountDao
@@ -32,7 +32,7 @@ def identity(payload):
   except:
     return None
 
-jwt = JWT(app, authenticate, identity)
+jwt = JWT(flask_app, authenticate, identity)
 
 @jwt.auth_response_handler
 @response.handleExceptions
