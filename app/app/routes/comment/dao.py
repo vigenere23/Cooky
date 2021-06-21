@@ -2,11 +2,12 @@ from app import db
 from .model import CommentModel
 from app.helpers.BaseDao import BaseDao
 
+
 class CommentDao(BaseDao):
 
     def __init__(self):
         super().__init__('Comment', CommentModel)
-    
+
     def save(self, commentModel):
         if not isinstance(commentModel, CommentModel):
             raise ValueError("commentModel should be of type CommentModel")
@@ -20,5 +21,5 @@ class CommentDao(BaseDao):
 
     def getRecipeComments(self, id_Recipe):
         query = 'SELECT * FROM Comment WHERE Comment.id_Recipe = %(id_Recipe)s'
-        results = db.select(query, { 'id_Recipe': id_Recipe })
+        results = db.select(query, {'id_Recipe': id_Recipe})
         return self._mapper.from_tuples(results)
