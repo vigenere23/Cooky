@@ -16,3 +16,5 @@ build/
 mysql/
 .vscode/
 node_modules
+
+.task/

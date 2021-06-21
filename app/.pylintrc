@@ -1,0 +1,27 @@
+[MESSAGES_CONTROL]
+
+disable=missing-module-docstring,
+        missing-class-docstring,
+        missing-function-docstring,
+        broad-except,
+        wrong-import-order,
+        wrong-import-position,
+        multiple-statements,
+        too-few-public-methods,
+        no-self-use,
+        invalid-name,
+        redefined-outer-name,
+        redefined-builtin,
+        raise-missing-from,
+        abstract-method,
+        too-many-arguments,
+        arguments-differ,
+        no-else-return,
+        inconsistent-return-statements,
+        line-too-long,
+        cyclic-import
+
+[FORMAT]
+
+indent-string='    '
+max-line-length=140

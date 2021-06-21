@@ -3,28 +3,32 @@ services:
   ui:
     build: ./ui
     environment:
-      - NODE_ENV=development
+      NODE_ENV: "development"
     ports:
-      - "8000:8080"
+      - "8080:8080"
     links:
       - app
 
   app:
     build: ./app
     environment:
-      - PYTHONUNBUFFERED=TRUE
+      PYTHONUNBUFFERED: "TRUE"
+      DB_HOST: "db"
+      DB_PORT: "3306"
+      MYSQL_PASSWORD: "e7364202-2f94-4355-b354-c95907adfef6"
     ports:
-      - "8090:5000"
+      - "8081:5000"
     links:
       - db
-  
+
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: '517ca3dd-35a8-4c4a-8449-ec9151a4cd14'
+      MYSQL_ROOT_PASSWORD: "517ca3dd-35a8-4c4a-8449-ec9151a4cd14"
+      MYSQL_API_PASSWORD: "e7364202-2f94-4355-b354-c95907adfef6"
     volumes:
       - ./bd_init/bd_init.sql:/docker-entrypoint-initdb.d/dump.sql/:ro
     ports:
-      - "32000:3306"
+      - "8082:3306"
     security_opt:
       - seccomp:unconfined

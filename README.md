@@ -2,7 +2,7 @@
 
 Welcome to Cooky, the amazing recipe sharing app that let's you buy ingredients on the go!
 
-![Cooky](https://user-images.githubusercontent.com/32545895/57196087-780c7200-6f27-11e9-9708-11167c647d1b.png)
+![cooky](https://user-images.githubusercontent.com/32545895/78456681-1858a280-7673-11ea-9ddd-ba089f6616f3.png)
 
 ## Database
 
@@ -94,7 +94,7 @@ For now, only the server and the database are (successfully) connected inside th
 
 ## Screenshots
 
-![Cooky screenshot 1](https://user-images.githubusercontent.com/32545895/57195610-b6ebf900-6f22-11e9-85e9-92f19ccdcbc7.png)
-![Cooky screenshot 2](https://user-images.githubusercontent.com/32545895/57195611-b6ebf900-6f22-11e9-93aa-ad1a1b1bd1db.png)
-![Cooky screenshot 3](https://user-images.githubusercontent.com/32545895/57195891-64f8a280-6f25-11e9-9807-4746c89a543c.png)
-![Cooky screenshot 4](https://user-images.githubusercontent.com/32545895/57195607-b6ebf900-6f22-11e9-9d4f-37a27f7aa2b6.png)
+![Cooky screenshot 1](https://user-images.githubusercontent.com/32545895/72568296-d2ffb280-3885-11ea-8338-9c9d1f03b47c.png)
+![Cooky screenshot 2](https://user-images.githubusercontent.com/32545895/72568223-a055ba00-3885-11ea-84c2-daaf5780dd19.png)
+![Cooky screenshot 3](https://user-images.githubusercontent.com/32545895/72568425-1f4af280-3886-11ea-9a93-9b5053651ffd.png)
+![Cooky screenshot 4](https://user-images.githubusercontent.com/32545895/72568500-499cb000-3886-11ea-8934-d37a8fdbb822.png)

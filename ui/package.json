@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --silent",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "serve-docker": "vue-cli-service serve --mode docker",
-    "serve-dockercompose": "vue-cli-service serve --mode dockercompose"
+    "serve-dockercompose": "vue-cli-service serve --mode dockercompose --silent"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
@@ -20,15 +20,15 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
+    "@vue/cli-plugin-babel": "^4.4.0",
+    "@vue/cli-plugin-eslint": "^4.4.0",
+    "@vue/cli-service": "^4.4.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^8.1.0",
-    "node-sass": "^4.9.0",
+    "sass": "^1.35.1",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
