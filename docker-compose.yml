@@ -22,12 +22,13 @@ services:
       - db
 
   db:
-    image: mysql:8.0
+    build: ./db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_API_PASSWORD: ${MYSQL_API_PASSWORD}
+      MYSQL_PROVIDER_PASSWORD: ${MYSQL_PROVIDER_PASSWORD}
     volumes:
-      - ./bd_init/bd_init.sql:/docker-entrypoint-initdb.d/dump.sql/:ro
+      - ./db/init-dump:/docker-entrypoint-initdb.d
     ports:
       - 8082:3306
     security_opt:

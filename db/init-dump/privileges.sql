@@ -1,8 +1,5 @@
 use projet;
 
-CREATE USER 'api'@'%'
-IDENTIFIED BY '$(MYSQL_API_PASSWORD)';
-
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON `Recipe` TO 'api'@'%';
 
@@ -51,9 +48,6 @@ ON `QuantityUnit` TO 'api'@'%';
 GRANT SELECT
 ON `QuantityType` TO 'api'@'%';
 
-
-CREATE USER 'provider'@'%'
-IDENTIFIED BY '$(MYSQL_PROVIDER_PASSWORD)';
 
 GRANT UPDATE
 ON `Command` TO 'provider'@'%';

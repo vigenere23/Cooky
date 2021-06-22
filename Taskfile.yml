@@ -23,7 +23,7 @@ tasks:
     cmds:
       - docker compose build db
     sources:
-      - 'bd_init/**/*.*'
+      - 'db/**/*.*'
 
   up:
     cmds:
@@ -31,6 +31,13 @@ tasks:
     deps:
       - down
       - build
+
+  up:db:
+    cmds:
+      - docker compose up --remove-orphans db
+    deps:
+      - down
+      - build:db
 
   down:
     cmds:
