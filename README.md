@@ -22,6 +22,15 @@ This will destroy, build, and reup the Docker compose network and services.
 - API : 8081
 - DB : 8082
 
+**Test credentials**:
+
+- username: test
+- passwordL test
+
+## Documentation
+
+Available [here](./doc/README.md)
+
 ## Contributors
 
 - Gabriel St-Pierre ([@vigenre23](https://github.com/vigenere23))
