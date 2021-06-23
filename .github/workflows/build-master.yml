@@ -1,9 +1,9 @@
-name: Build
+name: Build (master)
 
 on:
   push:
-    branches-ignore:
-      - "master"
+    branches:
+      - master
 
 jobs:
   build-app:
