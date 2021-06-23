@@ -1,5 +1,7 @@
 # Cooky
 
+[![Build (master)](https://github.com/vigenere23/Cooky/actions/workflows/build-master.yml/badge.svg)](https://github.com/vigenere23/Cooky/actions/workflows/build-master.yml)
+
 Welcome to Cooky, the amazing recipe sharing app that let's you buy ingredients on the go!
 
 ![cooky](https://user-images.githubusercontent.com/32545895/78456681-1858a280-7673-11ea-9ddd-ba089f6616f3.png)
