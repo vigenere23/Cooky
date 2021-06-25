@@ -4,3 +4,7 @@ tasks:
   test:
     cmds:
       - python -m unittest discover -s test -p '*_test.py'
+
+  lint:
+    cmds:
+      - pylint app && pylint test
