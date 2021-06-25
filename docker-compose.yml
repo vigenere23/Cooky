@@ -20,6 +20,7 @@ services:
       - 8081:5000
     links:
       - db
+    restart: always
 
   db:
     build: ./db
