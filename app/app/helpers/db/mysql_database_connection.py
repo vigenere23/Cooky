@@ -6,7 +6,7 @@ from mysql.connector import connect
 from app.helpers.db.sql_result import SQLResult
 from . import DBConnection
 
-class SQLDBConnection(DBConnection):
+class MySQLDBConnection(DBConnection):
     def __init__(self, config, remaining_tries: int = 10, timeout: int = 5):
         while remaining_tries > 0:
             try:
