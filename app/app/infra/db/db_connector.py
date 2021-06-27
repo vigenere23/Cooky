@@ -1,4 +1,3 @@
-from typing import Callable, TypeVar
 from app.infra.db.db_connection import DBConnection
 
 
@@ -44,16 +43,6 @@ class DBConnector:
         result = self.__connection.execute(query, data)
 
         return result.fetch_many(limit)
-
-    T = TypeVar('T')
-    def transaction(self, action: Callable[[], T]) -> T:
-        try:
-            result = action()
-            self.__connection.commit()
-            return result
-        except Exception as e:
-            self.__connection.rollback()
-            raise e
 
     def getColumns(self, table_name):
         query = 'DESC {}'.format(table_name)

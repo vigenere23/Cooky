@@ -1,4 +1,4 @@
-from app import db
+from app import transaction
 from ..routes.users.dao import UserDao
 from ..routes.users.model import UserModel
 from ..routes.address.dao import AddressDao
@@ -16,7 +16,7 @@ def register(user, address, account) -> UserModel:
     addressModel = AddressModel(**address)
     accountModel = AccountModel(**account)
 
-    userModel = db.transaction(lambda: register_transaction(userModel, addressModel, accountModel))
+    userModel = transaction.execute(lambda: register_transaction(userModel, addressModel, accountModel))
 
     return userModel
 

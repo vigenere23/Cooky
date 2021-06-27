@@ -1,4 +1,4 @@
-from app import db
+from app import db, transaction
 from .model import RecipeModel
 from app.helpers.BaseDao import BaseDao
 from ..recipeIngredient.model import RecipeIngredientModel
@@ -43,7 +43,7 @@ class RecipeDao(BaseDao):
             raise ValueError("recipeModel should be of type RecipeModel")
 
         try:
-            recipe_id = db.transaction(lambda: self.__save_transaction(recipe_model, ingredients))
+            recipe_id = transaction.execute(lambda: self.__save_transaction(recipe_model, ingredients))
             return self.getById(recipe_id)
         except Exception:
             raise Exception("Could not save recipe")
