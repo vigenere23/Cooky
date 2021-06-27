@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.helpers.db.sql_result import SQLResult
+from app.infra.db.sql_result import SQLResult
 from typing import Tuple
 
 class DBConnection(ABC):

@@ -1,8 +1,8 @@
 from typing import Callable, TypeVar
-from app.helpers.db import DBConnection
+from app.infra.db.db_connection import DBConnection
 
 
-class BaseRepository:
+class DBConnector:
     def __init__(self, connection: DBConnection):
         self.__connection = connection
 
@@ -54,3 +54,7 @@ class BaseRepository:
         except Exception as e:
             self.__connection.rollback()
             raise e
+
+    def getColumns(self, table_name):
+        query = 'DESC {}'.format(table_name)
+        return self.findAll(query)

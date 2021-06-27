@@ -1,5 +1,5 @@
 from app import db
-from app.helpers.SQLMapper import SQLMapper
+from app.infra.db.sql_mapper import SQLMapper
 from app.helpers.exceptions import NotFoundException
 
 
@@ -22,12 +22,3 @@ class BaseDao:
         else:
             raise NotFoundException(
                 "No {} found with id '{:d}'".format(self._tableName, id))
-
-    def save(self, data):
-        raise NotImplementedError()
-
-    def replace(self, id, data):
-        raise NotImplementedError()
-
-    def delete(self, id):
-        raise NotImplementedError()
