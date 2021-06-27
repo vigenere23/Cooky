@@ -10,7 +10,7 @@ class RecipeIngredientDao(BaseDao):
 
     def getIngredientsByRecipe(self, id_Recipe):
         querry = 'SELECT * FROM RecipeIngredient WHERE id_Recipe = %(id_Recipe)s'
-        results = db.select(querry, {'id_Recipe': id_Recipe})
+        results = db.findAll(querry, {'id_Recipe': id_Recipe})
         return self._mapper.from_tuples(results)
 
     def modifyQuantity(self, id_Recipe, id_Ingredient, totalQuantity):
@@ -25,7 +25,7 @@ class RecipeIngredientDao(BaseDao):
             raise ValueError(
                 "recipeIngredientModel should be of type RecipeIngredientModel")
         query = 'INSERT INTO RecipeIngredient (id, id_Recipe, id_Ingredient, id_QuantityUnit, totalQuantity) VALUES (%s, %s, %s, %s, %s)'
-        newRecipeId = db.insert(
+        newRecipeId = db.create(
             query, self._mapper.to_tuple(recipeIngredientModel))
 
         if newRecipeId:

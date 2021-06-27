@@ -10,7 +10,7 @@ class AddressDao(BaseDao):
 
     def getAddress(self, id):
         query = 'SELECT * FROM Address WHERE id = %(id)s'
-        result = db.select(query, {'id': id}, 1)
+        result = db.find(query, {'id': id})
         return self._mapper.from_tuple(result)
 
     def modifyCountry(self, country, id):
@@ -48,7 +48,7 @@ class AddressDao(BaseDao):
             raise ValueError("addressModel should be of type AddressModel")
 
         query = 'INSERT INTO Address (`id`,`number`,`apartment`,`street`,`city`,`country`) VALUES (%s, %s, %s, %s, %s, %s)'
-        newAddressId = db.insert(
+        newAddressId = db.create(
             query, self._mapper.to_tuple(addressModel), autocommit)
 
         if newAddressId:

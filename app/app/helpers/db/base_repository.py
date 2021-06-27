@@ -1,13 +1,15 @@
+from typing import Callable, TypeVar
 from app.helpers.db import DBConnection
 
 
-class DB:
+class BaseRepository:
     def __init__(self, connection: DBConnection):
         self.__connection = connection
 
     def delete(self, query, data):
         try:
-            self.__connection.execute(query, data).commit()
+            self.__connection.execute(query, data)
+            self.__connection.commit()
 
         except Exception as e:
             self.__connection.rollback()
@@ -15,34 +17,40 @@ class DB:
 
     def replace(self, query, data):
         try:
-            self.__connection.execute(query, data).commit()
+            self.__connection.execute(query, data)
+            self.__connection.commit()
 
         except Exception as e:
             self.__connection.rollback()
             raise e
 
-    def insert(self, query, data, autocommit=True):
+    def create(self, query, data, autocommit=True):
         try:
-            self.__connection.execute(query, data)
+            result = self.__connection.execute(query, data)
             if autocommit:
                 self.__connection.commit()
-            return self.__connection.lastrowid
+            return result.last_id()
 
         except Exception as e:
             self.__connection.rollback()
             raise e
 
-    def select(self, query, data=None, limit=None):
+    def find(self, query, data=None):
         result = self.__connection.execute(query, data)
 
-        return result.fetch_one() if limit == 1 else result.fetch_many(limit)
+        return result.fetch_one()
 
-    def commit(self):
+    def findAll(self, query, data=None, limit=None):
+        result = self.__connection.execute(query, data)
+
+        return result.fetch_many(limit)
+
+    T = TypeVar('T')
+    def transaction(self, action: Callable[[], T]) -> T:
         try:
+            result = action()
             self.__connection.commit()
+            return result
         except Exception as e:
             self.__connection.rollback()
             raise e
-
-    def rollback(self):
-        self.__connection.rollback()

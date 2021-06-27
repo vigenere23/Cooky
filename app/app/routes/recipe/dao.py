@@ -14,12 +14,12 @@ class RecipeDao(BaseDao):
 
     def getRecipesByName(self, name):
         query = 'SELECT * FROM Recipe WHERE LOWER(name) LIKE LOWER(%(name)s)'
-        results = db.select(query, {'name': '%{}%'.format(name)})
+        results = db.findAll(query, {'name': '%{}%'.format(name)})
         return self._mapper.from_tuples(results)
 
     def getAllRecipesByUser(self, id_User):
         query = 'SELECT * FROM Recipe WHERE id_User = %(id_User)s'
-        results = db.select(query, {'id_User': id_User})
+        results = db.findAll(query, {'id_User': id_User})
         return self._mapper.from_tuples(results)
 
     def modifyRecipeName(self, name, id):
@@ -43,7 +43,7 @@ class RecipeDao(BaseDao):
             raise ValueError("recipeModel should be of type RecipeModel")
 
         query = 'INSERT INTO Recipe (id, id_User, name, description, directives, rating) VALUES (%s, %s, %s, %s, %s, %s)'
-        recipeId = db.insert(query, self._mapper.to_tuple(recipeModel))
+        recipeId = db.create(query, self._mapper.to_tuple(recipeModel))
         if recipeId:
             for ingredient in ingredients:
                 recipeIngredientModel = None

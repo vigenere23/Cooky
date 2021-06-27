@@ -11,7 +11,7 @@ class UserDao(BaseDao):
 
     def getByUsername(self, username):
         query = 'SELECT * FROM User WHERE username = %(username)s'
-        result = db.select(query, {'username': username}, 1)
+        result = db.find(query, {'username': username})
         if result:
             return self._mapper.from_tuple(result)
         else:
@@ -22,7 +22,7 @@ class UserDao(BaseDao):
         if not isinstance(userModel, UserModel):
             raise ValueError("userModel should be of type UserModel")
         query = 'INSERT INTO User (id, username) VALUES (%s, %s)'
-        userId = db.insert(query, self._mapper.to_tuple(userModel), autocommit)
+        userId = db.create(query, self._mapper.to_tuple(userModel), autocommit)
 
         if userId:
             return self.getById(userId)

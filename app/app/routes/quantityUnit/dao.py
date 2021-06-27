@@ -15,6 +15,5 @@ class QuantityUnitDao(BaseDao):
 
     def getAllQuantityUnitsByIngredientId(self, ingredient_id):
         query = 'SELECT * FROM QuantityUnit U WHERE U.id_QuantityType = (SELECT U2.id_QuantityType FROM QuantityUnit U2, Ingredient I WHERE I.id = %(ingredient_id)s AND I.id_QuantityUnit = U2.id)'
-        data = {'ingredient_id': ingredient_id}
-        results = db.select(query, data)
+        results = db.findAll(query, {'ingredient_id': ingredient_id})
         return self._mapper.from_tuples(results)

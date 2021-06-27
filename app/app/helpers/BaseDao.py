@@ -11,12 +11,12 @@ class BaseDao:
 
     def getAll(self):
         query = 'SELECT * FROM {}'.format(self._tableName)
-        results = db.select(query)
+        results = db.findAll(query)
         return self._mapper.from_tuples(results)
 
     def getById(self, id):
         query = 'SELECT * FROM {} WHERE id = {}'.format(self._tableName, id)
-        result = db.select(query, limit=1)
+        result = db.find(query)
         if result:
             return self._mapper.from_tuple(result)
         else:

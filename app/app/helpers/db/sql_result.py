@@ -17,6 +17,9 @@ class SQLResult:
 
         return results
 
+    def last_id(self) -> int:
+        return self.__cursor.lastrowid
+
     def __flush_results(self):
         try:
             self.__cursor.fetchall()

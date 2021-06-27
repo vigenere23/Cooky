@@ -10,7 +10,7 @@ class LikeRecipeDao(BaseDao):
 
     def getLikeRecipeByUser(self, id_User):
         query = 'SELECT * FROM LikeRecipe WHERE id_User = %(id_User)s'
-        results = db.select(query, {'id_User': id_User})
+        results = db.findAll(query, {'id_User': id_User})
         return self._mapper.from_tuples(results)
 
     def save(self, likeRecipeModel):
@@ -18,7 +18,7 @@ class LikeRecipeDao(BaseDao):
             raise ValueError(
                 "likeRecipeModel should be of type LikeRecipeModel")
         query = 'INSERT INTO LikeRecipe (id, id_Recipe, id_User) VALUES (%s, %s, %s)'
-        newLikeRecipe = db.insert(
+        newLikeRecipe = db.create(
             query, self._mapper.to_tuple(likeRecipeModel))
 
         if newLikeRecipe:

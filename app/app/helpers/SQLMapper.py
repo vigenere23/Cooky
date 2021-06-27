@@ -1,4 +1,4 @@
-from app.helpers import queries
+from app.helpers.queries import getColumns
 
 
 class SQLMapper:
@@ -7,7 +7,7 @@ class SQLMapper:
         self.column_names = []
         self.modelClass = modelClass
 
-        column_infos = queries.getColumns(self.table_name)
+        column_infos = getColumns(self.table_name)
         for column_info in column_infos:
             self.column_names.append(column_info[0])
 

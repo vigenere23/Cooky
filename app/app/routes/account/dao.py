@@ -11,7 +11,7 @@ class AccountDao(BaseDao):
 
     def getAccountByUserId(self, id_User):
         query = 'SELECT * FROM Account WHERE id_User = %(id_User)s'
-        result = db.select(query, {'id_User': id_User}, limit=1)
+        result = db.find(query, {'id_User': id_User})
         return self._mapper.from_tuple(result)
 
     def modifyEmail(self, email, id_User):
@@ -34,7 +34,7 @@ class AccountDao(BaseDao):
             accountModel.password.encode(), bcrypt.gensalt())
 
         query = 'INSERT INTO Account (id, id_User, id_Address, firstName, lastName, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-        newAccount = db.insert(
+        newAccount = db.create(
             query, self._mapper.to_tuple(accountModel), autocommit)
 
         if newAccount:

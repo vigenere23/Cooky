@@ -13,7 +13,7 @@ class RatingDao(BaseDao):
             raise ValueError("ratingModel should be of type RatingModel")
 
         query = 'INSERT INTO Rating (id, id_Recipe, id_User, value) VALUES (%s, %s, %s, %s)'
-        newItemId = db.insert(query, self._mapper.to_tuple(ratingModel))
+        newItemId = db.create(query, self._mapper.to_tuple(ratingModel))
         return self.getById(newItemId)
 
     def replace(self, ratingModel):
@@ -27,11 +27,10 @@ class RatingDao(BaseDao):
 
     def getRatingsByUser(self, id_User):
         query = 'SELECT * FROM Rating WHERE Rating.id_User = %(id_User)s'
-        results = db.select(query, {'id_User': id_User})
+        results = db.findAll(query, {'id_User': id_User})
         return self._mapper.from_tuples(results)
 
     def getUserRecipeRating(self, id_User, id_Recipe):
         query = 'SELECT * FROM Rating WHERE Rating.id_User = %(id_User)s AND Rating.id_Recipe = %(id_Recipe)s'
-        results = db.select(
-            query, {'id_User': id_User, 'id_Recipe': id_Recipe})
+        results = db.findAll(query, {'id_User': id_User, 'id_Recipe': id_Recipe})
         return self._mapper.from_tuples(results)

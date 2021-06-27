@@ -5,13 +5,13 @@ load_dotenv()
 from flask import Flask
 from flask_cors import CORS
 from .config import Config
-from .helpers.db import DB
+from .helpers.db import BaseRepository
 
 flask_app = Flask(__name__)
 flask_app.config.from_object(Config)
 
 db_connection = MySQLDBConnection(Config.DATABASE)
-db = DB(db_connection)
+db = BaseRepository(db_connection)
 
 from . import auth, routes
 
