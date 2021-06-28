@@ -2,13 +2,13 @@ from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from ...api import response
 from .dao import UserDao
-from ..recipe.dao import RecipeDao
-from ..likeRecipe.dao import LikeRecipeDao
+from app.infra.db.daos.recipe.recipe_dao import RecipeDao
+from app.infra.db.daos.recipe.like_recipe_dao import LikeRecipeDao
 from ..carts.dao import CartDao
 from ..commands.dao import CommandDao
 from ..account.dao import AccountDao
 from ..address.dao import AddressDao
-from ..rating.dao import RatingDao
+from app.infra.db.daos.recipe.recipe_rating_dao import RecipeRatingDao
 
 routes = Blueprint('users', __name__)
 userDao = UserDao()
@@ -18,7 +18,7 @@ cartDao = CartDao()
 commandDao = CommandDao()
 accountDao = AccountDao()
 addressDao = AddressDao()
-ratingDao = RatingDao()
+RecipeRatingDao = RecipeRatingDao()
 
 
 @routes.route('/', methods=['GET'])
@@ -176,7 +176,7 @@ def getLikeRecipes(id):
 def getRatings(id):
     response.ensureIdentity(id, current_identity)
 
-    data = ratingDao.getRatingsByUser(id)
+    data = RecipeRatingDao.getRatingsByUser(id)
     return response.success(data)
 
 

@@ -1,8 +1,7 @@
 from app import db, transaction
-from .model import RecipeModel
-from app.infra.db.base_dao import BaseDao
-from ..recipeIngredient.model import RecipeIngredientModel
-from ..recipeIngredient.dao import RecipeIngredientDao
+from app.infra.db.models.recipe import RecipeModel, RecipeIngredientModel
+from app.infra.db.daos.recipe import RecipeIngredientDao
+from app.infra.db.daos import BaseDao
 
 recipeIngredientDao = RecipeIngredientDao()
 

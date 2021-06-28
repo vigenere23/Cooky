@@ -1,7 +1,7 @@
 import bcrypt
 from app import db
 from .model import AccountModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.daos.base_dao import BaseDao
 
 
 class AccountDao(BaseDao):

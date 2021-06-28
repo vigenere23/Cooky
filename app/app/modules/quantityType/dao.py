@@ -1,5 +1,5 @@
 from .model import QuantityTypeModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.daos.base_dao import BaseDao
 
 
 class QuantityTypeDao(BaseDao):

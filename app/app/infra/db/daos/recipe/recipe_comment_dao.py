@@ -1,9 +1,9 @@
 from app import db
-from .model import CommentModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.models.recipe import CommentModel
+from app.infra.db.daos import BaseDao
 
 
-class CommentDao(BaseDao):
+class RecipeCommentDao(BaseDao):
 
     def __init__(self):
         super().__init__('Comment', CommentModel)

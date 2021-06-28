@@ -1,9 +1,9 @@
 from app import db
-from .model import RatingModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.models.recipe import RatingModel
+from app.infra.db.daos import BaseDao
 
 
-class RatingDao(BaseDao):
+class RecipeRatingDao(BaseDao):
 
     def __init__(self):
         super().__init__('Rating', RatingModel)

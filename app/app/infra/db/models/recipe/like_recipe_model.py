@@ -1,4 +1,4 @@
-from app.domain.base_model import BaseModel
+from app.infra.db.models import BaseModel
 
 
 class LikeRecipeModel(BaseModel):

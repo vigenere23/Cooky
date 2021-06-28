@@ -1,6 +1,6 @@
 from app import db
-from .model import LikeRecipeModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.models.recipe import LikeRecipeModel
+from app.infra.db.daos import BaseDao
 
 
 class LikeRecipeDao(BaseDao):

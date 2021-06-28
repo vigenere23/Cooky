@@ -1,24 +1,17 @@
 from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
-from ...api import response
-from .dao import RecipeDao
-from .model import RecipeModel
-from ..recipeIngredient.dao import RecipeIngredientDao
-from ..likeRecipe.model import LikeRecipeModel
-from ..likeRecipe.dao import LikeRecipeDao
-from ..comment.model import CommentModel
-from ..comment.dao import CommentDao
-from ..rating.model import RatingModel
-from ..rating.dao import RatingDao
-from ..ingredient.dao import IngredientDao
-from ..quantityUnit.dao import QuantityUnitDao
-from ..users.dao import UserDao
+from app.api import response
+from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
+from app.infra.db.models.recipe import RecipeModel, LikeRecipeModel, RatingModel, CommentModel
+from app.modules.ingredient.dao import IngredientDao
+from app.modules.quantityUnit.dao import QuantityUnitDao
+from app.modules.users.dao import UserDao
 
 routes = Blueprint('recipes', __name__)
 recipeDao = RecipeDao()
 likeRecipeDao = LikeRecipeDao()
-commentDao = CommentDao()
-ratingDao = RatingDao()
+commentDao = RecipeCommentDao()
+RecipeRatingDao = RecipeRatingDao()
 recipeIngredientDao = RecipeIngredientDao()
 ingredientDao = IngredientDao()
 quantityUnitDao = QuantityUnitDao()
@@ -189,9 +182,9 @@ def addRateRecipe(recipe_id):
 
     ratingModel = RatingModel(**data)
     if request.method == 'POST':
-        result = ratingDao.save(ratingModel)
+        result = RecipeRatingDao.save(ratingModel)
     else:
-        result = ratingDao.replace(ratingModel)
+        result = RecipeRatingDao.replace(ratingModel)
     return response.success(result)
 
 
@@ -211,3 +204,7 @@ def addCommentRecipe(recipe_id):
     commentModel = CommentModel(**data)
     result = commentDao.save(commentModel)
     return response.success(result)
+
+
+from app import flask_app
+flask_app.register_blueprint(routes, url_prefix='/recipes')

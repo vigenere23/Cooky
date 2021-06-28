@@ -16,6 +16,6 @@ db = DBConnector(db_connection)
 transaction = SQLTransaction(db_connection)
 
 from . import modules
-from .api import auth
+from .api import auth, recipe_controller
 
 CORS(flask_app)

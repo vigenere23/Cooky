@@ -1,6 +1,6 @@
 from app import db
 from .model import CartModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.daos.base_dao import BaseDao
 
 
 class CartDao(BaseDao):

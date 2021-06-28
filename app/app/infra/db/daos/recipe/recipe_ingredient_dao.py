@@ -1,6 +1,6 @@
 from app import db
-from .model import RecipeIngredientModel
-from app.infra.db.base_dao import BaseDao
+from app.infra.db.models.recipe import RecipeIngredientModel
+from app.infra.db.daos import BaseDao
 
 
 class RecipeIngredientDao(BaseDao):
