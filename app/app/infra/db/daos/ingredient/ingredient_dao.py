@@ -1,5 +1,5 @@
 from app import db
-from .model import IngredientModel
+from app.infra.db.models.ingredient import IngredientModel
 from app.infra.db.daos.base_dao import BaseDao
 
 

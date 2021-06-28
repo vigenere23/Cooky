@@ -7,8 +7,7 @@ from ..cartItem.dao import CartItemDao
 from ..cartItem.model import CartItemModel
 from ..commands.dao import CommandDao
 from ..commands.model import CommandModel
-from ..ingredient.dao import IngredientDao
-from ..quantityUnit.dao import QuantityUnitDao
+from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
 routes = Blueprint('carts', __name__)
 cartDao = CartDao()
