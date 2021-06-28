@@ -3,8 +3,7 @@ from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import RecipeModel, LikeRecipeModel, RatingModel, CommentModel
-from app.modules.ingredient.dao import IngredientDao
-from app.modules.quantityUnit.dao import QuantityUnitDao
+from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.modules.users.dao import UserDao
 
 routes = Blueprint('recipes', __name__)

@@ -1,8 +1,7 @@
 from flask import Blueprint, request
 from flask_jwt import jwt_required
-from ...api import response
-from .dao import IngredientDao
-from ..quantityUnit.dao import QuantityUnitDao
+from . import response
+from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
 routes = Blueprint('ingredients', __name__)
 ingredientDao = IngredientDao()
@@ -41,3 +40,7 @@ def index():
 def getMesures(id):
     quantityUnits = quantityUnitDao.getAllQuantityUnitsByIngredientId(id)
     return response.success(quantityUnits)
+
+
+from app import flask_app
+flask_app.register_blueprint(routes, url_prefix='/ingredients')
