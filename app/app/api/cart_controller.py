@@ -1,12 +1,11 @@
 from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
-from ...api import response
 from datetime import datetime
-from .dao import CartDao
-from ..cartItem.dao import CartItemDao
-from ..cartItem.model import CartItemModel
-from ..commands.dao import CommandDao
-from ..commands.model import CommandModel
+from . import response
+from app.modules.commands.dao import CommandDao
+from app.modules.commands.model import CommandModel
+from app.infra.db.models.cart import CartItemModel
+from app.infra.db.daos.cart import CartDao, CartItemDao
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
 routes = Blueprint('carts', __name__)
@@ -105,3 +104,7 @@ def createCommand(id):
     commandModel = CommandModel(**data)
     data = commandsDao.save(commandModel)
     return response.success(data)
+
+
+from app import flask_app
+flask_app.register_blueprint(routes, url_prefix='/carts')
