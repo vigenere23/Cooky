@@ -2,9 +2,8 @@ from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.infra.db.daos.recipe import RecipeDao, RecipeRatingDao, LikeRecipeDao
-from app.infra.db.daos.cart import CartDao
+from app.infra.db.daos.cart import CartDao, CommandDao
 from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
-from app.modules.commands.dao import CommandDao
 
 routes = Blueprint('users', __name__)
 userDao = UserDao()

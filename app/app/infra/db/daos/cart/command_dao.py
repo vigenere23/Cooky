@@ -1,5 +1,5 @@
 from app import db
-from .model import CommandModel
+from app.infra.db.models.cart import CommandModel
 from app.infra.db.daos import BaseDao
 
 

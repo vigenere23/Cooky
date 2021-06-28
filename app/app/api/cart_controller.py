@@ -2,10 +2,8 @@ from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from datetime import datetime
 from . import response
-from app.modules.commands.dao import CommandDao
-from app.modules.commands.model import CommandModel
-from app.infra.db.models.cart import CartItemModel
-from app.infra.db.daos.cart import CartDao, CartItemDao
+from app.infra.db.models.cart import CartItemModel, CommandModel
+from app.infra.db.daos.cart import CartDao, CartItemDao, CommandDao
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
 routes = Blueprint('carts', __name__)

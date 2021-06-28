@@ -1,15 +1,13 @@
 import random
 from datetime import datetime
-from app.modules.commands.model import CommandModel
-from app.modules.commands.dao import CommandDao
 from app.infra.db.daos.recipe import LikeRecipeDao, RecipeCommentDao, RecipeDao, RecipeRatingDao
 from app.infra.db.models.recipe import RecipeIngredientModel, RecipeModel, LikeRecipeModel, CommentModel, RatingModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.models.ingredient import IngredientModel
 from app.infra.db.daos.user import UserDao, AddressDao, AccountDao
 from app.infra.db.models.user import UserModel, AddressModel, AccountModel
-from app.infra.db.daos.cart import CartDao, CartItemDao
-from app.infra.db.models.cart import CartModel, CartItemModel
+from app.infra.db.daos.cart import CartDao, CartItemDao, CommandDao
+from app.infra.db.models.cart import CartModel, CartItemModel, CommandModel
 
 userDao = UserDao()
 ingredientDao = IngredientDao()

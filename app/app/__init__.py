@@ -15,6 +15,6 @@ db_connection = MySQLDBConnection(Config.DATABASE)
 db = DBConnector(db_connection)
 transaction = SQLTransaction(db_connection)
 
-from . import modules, api
+from . import api
 
 CORS(flask_app)
