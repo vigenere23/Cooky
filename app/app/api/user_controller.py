@@ -3,10 +3,8 @@ from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.infra.db.daos.recipe import RecipeDao, RecipeRatingDao, LikeRecipeDao
 from app.infra.db.daos.cart import CartDao
-from .dao import UserDao
-from ..commands.dao import CommandDao
-from ..account.dao import AccountDao
-from ..address.dao import AddressDao
+from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
+from app.modules.commands.dao import CommandDao
 
 routes = Blueprint('users', __name__)
 userDao = UserDao()
@@ -214,3 +212,7 @@ def getAddress(id):
     userData = accountDao.getAccountByUserId(id)
     address = userData.id_Address
     return response.success(addressDao.getAddress(address))
+
+
+from app import flask_app
+flask_app.register_blueprint(routes, url_prefix='/users')

@@ -4,7 +4,7 @@ from app.api import response
 from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import RecipeModel, LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
-from app.modules.users.dao import UserDao
+from app.infra.db.daos.user import UserDao
 
 routes = Blueprint('recipes', __name__)
 recipeDao = RecipeDao()

@@ -1,5 +1,5 @@
 from app import db
-from .model import AddressModel
+from app.infra.db.models.user import AddressModel
 from app.infra.db.daos.base_dao import BaseDao
 
 

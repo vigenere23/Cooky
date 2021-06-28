@@ -1,10 +1,7 @@
 from app import transaction
-from ..modules.users.dao import UserDao
-from ..modules.users.model import UserModel
-from ..modules.address.dao import AddressDao
-from ..modules.address.model import AddressModel
-from ..modules.account.dao import AccountDao
-from ..modules.account.model import AccountModel
+from app.infra.db.daos.user import UserDao, AddressDao, AccountDao
+from app.infra.db.models.user import UserModel, AddressModel, AccountModel
+
 
 userDao = UserDao()
 addressDao = AddressDao()

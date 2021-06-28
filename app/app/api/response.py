@@ -1,7 +1,7 @@
 import flask
 import traceback
 from functools import wraps
-from ..domain.exceptions import NotFoundException, ForbiddenException
+from app.domain.exceptions import NotFoundException, ForbiddenException
 
 
 def __create(data, status):

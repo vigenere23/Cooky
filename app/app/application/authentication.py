@@ -1,6 +1,5 @@
 import bcrypt
-from ..modules.users.dao import UserDao
-from ..modules.account.dao import AccountDao
+from app.infra.db.daos.user import UserDao, AccountDao
 
 def authenticate(username, password):
     userDao = UserDao()

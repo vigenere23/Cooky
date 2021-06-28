@@ -1,1 +1,8 @@
-from . import auth, main_controller, ingredient_controller, recipe_controller, cart_controller
+from . import (
+    auth,
+    main_controller,
+    ingredient_controller,
+    recipe_controller,
+    cart_controller,
+    user_controller
+)
