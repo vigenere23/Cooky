@@ -144,10 +144,11 @@ export class API {
     return AxiosHelper.axiosDelete(url)
   }
 
-  static async addRecipe (userId, name, directives, ingredients) {
+  static async addRecipe (userId, name, description, directives, ingredients) {
     const body = {
       'id_User': userId,
       name,
+      description,
       directives,
       ingredients
     }

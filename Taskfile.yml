@@ -41,4 +41,4 @@ tasks:
 
   down:
     cmds:
-      - docker compose down
+      - docker compose down -t 15

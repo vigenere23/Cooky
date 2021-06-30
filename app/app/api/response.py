@@ -33,12 +33,12 @@ def success(data, status=200):
     return __create(data, status)
 
 
-def error(error, status=500):
-    if not isinstance(error, str):
-        error = str(error)
+def error(exception, status=500):
+    if not isinstance(exception, str):
+        exception = str(exception)
 
     return __create({
-        'error': error
+        'error': exception
     }, status)
 
 

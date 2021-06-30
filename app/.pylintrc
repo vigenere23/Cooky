@@ -10,16 +10,14 @@ disable=missing-module-docstring,
         too-few-public-methods,
         no-self-use,
         invalid-name,
-        redefined-outer-name,
         redefined-builtin,
         raise-missing-from,
-        abstract-method,
         too-many-arguments,
-        arguments-differ,
         no-else-return,
         inconsistent-return-statements,
         line-too-long,
-        cyclic-import
+        cyclic-import,
+        duplicate-code
 
 [FORMAT]
 

@@ -1,11 +1,13 @@
+from dataclasses import dataclass
 from app.infra.db.models import BaseModel
 
 
+# see usage for `frozen` attribute
+@dataclass
 class RecipeModel(BaseModel):
-    def __init__(self, id=None, id_User=None, name=None, directives=None, description=None, rating=0):
-        self.id = id
-        self.id_User = id_User
-        self.name = name
-        self.directives = directives
-        self.description = description
-        self.rating = rating
+    id_User: int
+    name: str
+    directives: str
+    description: str
+    id: int = None
+    rating: float = 0

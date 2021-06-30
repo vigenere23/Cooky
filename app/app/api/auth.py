@@ -1,9 +1,9 @@
 from flask_jwt import JWT
-from app.application.authentication import authenticate, identity
+from app.application.authentication import authenticate, get_identity
 from app import flask_app
 from . import response
 
-jwt = JWT(flask_app, authenticate, identity)
+jwt = JWT(flask_app, authenticate, get_identity)
 
 @jwt.auth_response_handler
 @response.handleExceptions

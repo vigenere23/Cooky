@@ -1,9 +1,10 @@
+from dataclasses import dataclass
 from app.infra.db.models import BaseModel
 
 
+@dataclass
 class CommentModel(BaseModel):
-    def __init__(self, id=None, id_Recipe=None, id_User=None, text=None):
-        self.id = id
-        self.id_Recipe = id_Recipe
-        self.id_User = id_User
-        self.text = text
+    id_Recipe: int
+    id_User: int
+    text: str
+    id: int = None
