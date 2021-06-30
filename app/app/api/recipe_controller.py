@@ -28,7 +28,7 @@ def index():
         return response.success(recipeDao.getAll())
 
 
-@routes.route('/', methods=['POST'])
+# @routes.route('/', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
 def addRecipe():

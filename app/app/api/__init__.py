@@ -6,3 +6,7 @@ from . import (
     cart_controller,
     user_controller
 )
+
+from .v2 import (
+    recipe_controller_v2
+)
