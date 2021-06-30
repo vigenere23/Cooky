@@ -1,20 +1,16 @@
-# Refactor - API
+# Refactor
 
 This part of the Cooky app is undergoing a massive refactor to better represent a Domain Driven design instead of a CRUD approach. 
 
-## Status
+## Status (based on MVP for recipe creation and finding)
 
-- [x] Database
+- [x] [Database](./db_refactor.md)
 - [ ] UseCases
-  - [ ] Exploration
-  - [ ] Recipes
-  - [ ] Users
-  - [ ] Ingredients
+  - [x] Exploration
+  - [x] Recipes
 - [ ] API
+  - [x] Requests
   - [ ] Responses
 - [ ] Domain
   - [ ] Entities
-  - [ ] Repositories
-  - [ ] Recipes
-  - [ ] Users
-  - [ ] Ingredients
+  - [x] Repositories
