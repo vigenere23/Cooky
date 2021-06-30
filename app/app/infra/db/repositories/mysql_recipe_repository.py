@@ -28,6 +28,9 @@ class MySQLRecipeRepository(RecipeRepository):
 
         return recipe
 
+    def findAll(self, name: str = None):
+        return self.__db_connection.execute(lambda executor: self.__recipe_dao.findAll(executor, name=name))
+
     def save(self, recipe: RecipeCreationDto) -> int:
         return self.__db_connection.execute(lambda executor: self.__save_transaction(executor, recipe))
 

@@ -5,7 +5,7 @@ class MySQLExecutor:
     def __init__(self, cursor: CursorBase):
         self.__cursor = cursor
 
-    def find(self, query, data) -> Any:
+    def find(self, query: str, data: Any = None) -> Any:
         self.__cursor.execute(query, data)
         result = self.__cursor.fetchone()
 
@@ -13,7 +13,7 @@ class MySQLExecutor:
 
         return result
 
-    def findAll(self, query, data, limit=None):
+    def findAll(self, query: str, data: Any = None, limit: int = None):
         self.__cursor.execute(query, data)
 
         if limit is None:
@@ -24,7 +24,7 @@ class MySQLExecutor:
 
             return result
 
-    def create(self, query, data) -> int:
+    def create(self, query: str, data: Any = None) -> int:
         self.__cursor.execute(query, data)
         return self.__cursor.lastrowid
 

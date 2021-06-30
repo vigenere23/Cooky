@@ -14,6 +14,18 @@ class RecipeDao:
 
         return self.__mapper.from_tuple(result) if result else None
 
+    def findAll(self, executor: MySQLExecutor, name: str = None):
+        query = "SELECT * FROM Recipe"
+        data = {}
+
+        if name is not None:
+            query += " WHERE LOWER(name) LIKE LOWER(%(name)s)"
+            data['name'] = f'%{name}%'
+
+        results = executor.findAll(query, data)
+
+        return self.__mapper.from_tuples(results)
+
     def save(self, executor: MySQLExecutor, recipe_model: RecipeModel) -> int:
         query = 'INSERT INTO Recipe (id, id_User, name, description, directives, rating) VALUES (%s, %s, %s, %s, %s, %s)'
         data = self.__mapper.to_tuple(recipe_model)

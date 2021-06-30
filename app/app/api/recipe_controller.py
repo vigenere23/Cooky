@@ -23,11 +23,11 @@ user_dao = UserDao()
 @jwt_required()
 @response.handleExceptions
 def index():
-    searched_name = request.args.get('name')
-    if searched_name:
-        return response.success(recipe_dao.getRecipesByName(searched_name))
-    else:
-        return response.success(recipe_dao.getAll())
+    recipes = recipe_finding_usecase.findAll(
+        name=request.args.get('name')
+    )
+
+    return response.success(recipes)
 
 
 @routes.route('/', methods=['POST'])
