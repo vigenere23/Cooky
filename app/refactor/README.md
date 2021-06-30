@@ -11,6 +11,7 @@ This part of the Cooky app is undergoing a massive refactor to better represent 
 - [ ] API
   - [x] Requests
   - [ ] Responses
+  - [ ] [New routes and payloads](./api_refactor.md)
 - [ ] Domain
   - [ ] Entities
   - [x] Repositories
