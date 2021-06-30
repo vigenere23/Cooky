@@ -1,6 +1,8 @@
 from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from app.api import response
+from app.api.recipe.recipe_creation_request import RecipeCreationRequest
+from app.api.requests import receive
 from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
@@ -33,17 +35,15 @@ def index():
 @routes.route('/', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
-def addRecipe():
-    body = request.get_json(force=True)
-    data = {
-        'id_User': body['id_User'],
-        'name': body['name'],
-        'directives': body['directives']
-    }
-
-    response.ensureIdentity(data['id_User'], current_identity)
-
-    recipe_creation_dto = RecipeCreationDto(recipe=data, ingredients=body['ingredients'])
+@receive(RecipeCreationRequest)
+def addRecipe(request_data: RecipeCreationRequest):
+    request_data.id_User = current_identity.id
+    recipe_creation_dto = RecipeCreationDto(recipe={
+        'id_User': request_data.id_User,
+        'name': request_data.name,
+        'description': request_data.description,
+        'directives': request_data.directives
+    }, ingredients=request_data.ingredients)
     result = recipe_creation_usecase.create_recipe(recipe_creation_dto)
 
     return response.success(result)

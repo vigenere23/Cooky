@@ -38,7 +38,7 @@ class MySQLRecipeRepository(RecipeRepository):
         recipe_id = self.__recipe_dao.save(executor, RecipeModel(**recipe.recipe))
 
         for ingredient_dto in recipe.ingredients:
-            recipe_ingredient_model = RecipeIngredientModel(id_Recipe=recipe_id, **ingredient_dto)
+            recipe_ingredient_model = RecipeIngredientModel(id_Recipe=recipe_id, **ingredient_dto.to_dict())
             self.__recipe_ingredient_dao.save(executor, recipe_ingredient_model)
 
         # FUTURE : recipe is a domain object with comments, ratings, etc.
