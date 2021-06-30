@@ -1,10 +1,12 @@
+from dataclasses import dataclass
+from typing import Optional
 from app.infra.db.models import BaseModel
 
 
+@dataclass
 class RecipeIngredientModel(BaseModel):
-    def __init__(self, id=None, id_Recipe=None, id_Ingredient=None, id_QuantityUnit=None, totalQuantity=1):
-        self.id = id
-        self.id_Recipe = id_Recipe
-        self.id_Ingredient = id_Ingredient
-        self.id_QuantityUnit = id_QuantityUnit
-        self.totalQuantity = totalQuantity
+    id: Optional[int]
+    id_Recipe: int
+    id_Ingredient: int
+    id_QuantityUnit: int
+    totalQuantity: int

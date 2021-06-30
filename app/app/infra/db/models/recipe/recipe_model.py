@@ -1,11 +1,13 @@
+from dataclasses import dataclass
+from typing import Optional
 from app.infra.db.models import BaseModel
 
 
+@dataclass
 class RecipeModel(BaseModel):
-    def __init__(self, id=None, id_User=None, name=None, directives=None, description=None, rating=0):
-        self.id = id
-        self.id_User = id_User
-        self.name = name
-        self.directives = directives
-        self.description = description
-        self.rating = rating
+    id: Optional[int]
+    id_User: int
+    name: str
+    directives: str
+    description: str
+    rating: float

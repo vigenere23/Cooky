@@ -68,7 +68,7 @@ def getRecipeById(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def deleteRecipe(recipe_id):
-    recipe = recipe_dao.getById(recipe_id)
+    recipe = recipe_finding_usecase.findById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     recipe_dao.delete(recipe_id)
@@ -79,7 +79,7 @@ def deleteRecipe(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def modifyRecipeName(recipe_id):
-    recipe = recipe_dao.getById(recipe_id)
+    recipe = recipe_finding_usecase.findById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
@@ -91,7 +91,7 @@ def modifyRecipeName(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def modifyRecipeDirective(recipe_id):
-    recipe = recipe_dao.getById(recipe_id)
+    recipe = recipe_finding_usecase.findById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
@@ -103,7 +103,7 @@ def modifyRecipeDirective(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def modifyIngredientQuantity(recipe_id):
-    recipe = recipe_dao.getById(recipe_id)
+    recipe = recipe_finding_usecase.findById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
