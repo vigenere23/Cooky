@@ -21,7 +21,7 @@ def authenticate(username, password):
         return None
 
 
-def identity(payload):
+def get_identity(payload):
     userDao = UserDao()
     user_id = payload['identity']
     try:
