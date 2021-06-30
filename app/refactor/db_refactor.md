@@ -2,7 +2,7 @@
 
 The database refactor aims for a more interfaced model, with repository abstractions, abstract transactions handling and logic encapsulation.
 
-**Flow**
+## Flow
 
 ```
 UseCase -> Repository |>
@@ -19,7 +19,7 @@ UseCase -> Repository |>
 () : optional
 ```
 
-**Possible implementation**
+## Possible implementation
 
 ```py
 class RecipeCreationUseCase:
