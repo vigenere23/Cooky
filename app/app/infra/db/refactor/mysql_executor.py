@@ -3,9 +3,9 @@ from mysql.connector.cursor import CursorBase
 
 class MySQLExecutor:
     def __init__(self, cursor: CursorBase):
-        self.__cursor: cursor
+        self.__cursor = cursor
 
-    def find(self, query, data=None) -> Any:
+    def find(self, query, data) -> Any:
         self.__cursor.execute(query, data)
         result = self.__cursor.fetchone()
 
@@ -13,8 +13,16 @@ class MySQLExecutor:
 
         return result
 
-    # def findAll(self, query, data=None):
-    #     self.__cursor.execute(...)
+    def findAll(self, query, data, limit=None):
+        self.__cursor.execute(query, data)
+
+        if limit is None:
+            return self.__cursor.fetchall()
+        else:
+            result = self.__cursor.fetchmany(size=limit)
+            self.__flush_results()
+
+            return result
 
     def create(self, query, data) -> int:
         self.__cursor.execute(query, data)

@@ -1,3 +1,4 @@
+from app.domain.exceptions import NotFoundException
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.refactor.recipe_ingredient_dao import RecipeIngredientDao
 from app.infra.db.models.recipe.recipe_ingredient_model import RecipeIngredientModel
@@ -20,17 +21,24 @@ class MySQLRecipeRepository(RecipeRepository):
         self.__recipe_ingredient_dao = recipe_ingredient_dao
 
     def find(self, recipe_id: int) -> RecipeModel:
-        self.__db_connection.execute(lambda executor: self.__recipe_dao.find(executor, recipe_id))
+        recipe = self.__db_connection.execute(lambda executor: self.__recipe_dao.find(executor, recipe_id))
 
-    def save(self, recipe: RecipeCreationDto):
-        self.__db_connection.execute(lambda executor: self.__save_transaction(executor, recipe))
+        if recipe is None:
+            raise NotFoundException(f"No Recipe found with id '{recipe_id}'")
 
-    def __save_transaction(self, executor: MySQLExecutor, recipe: RecipeCreationDto):
-        recipe_id = self.__recipe_dao.save(executor, RecipeModel(**recipe.recipe_dto))
+        return recipe
 
-        for ingredient_dto in recipe.ingredient_dtos:
+    def save(self, recipe: RecipeCreationDto) -> int:
+        return self.__db_connection.execute(lambda executor: self.__save_transaction(executor, recipe))
+
+    def __save_transaction(self, executor: MySQLExecutor, recipe: RecipeCreationDto) -> int:
+        recipe_id = self.__recipe_dao.save(executor, RecipeModel(**recipe.recipe))
+
+        for ingredient_dto in recipe.ingredients:
             recipe_ingredient_model = RecipeIngredientModel(id_Recipe=recipe_id, **ingredient_dto)
             self.__recipe_ingredient_dao.save(executor, recipe_ingredient_model)
 
         # FUTURE : recipe is a domain object with comments, ratings, etc.
         # that will all need to be resaved
+
+        return recipe_id

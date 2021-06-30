@@ -1,29 +1,13 @@
-import time
 from typing import Tuple
 from mysql.connector import MySQLConnection
 from mysql.connector.cursor import CursorBase
-from mysql.connector import connect
 from app.infra.db.sql_result import SQLResult
 from .db_connection import DBConnection
 
 class MySQLDBConnection(DBConnection):
-    def __init__(self, config, remaining_tries: int = 10, timeout: int = 5):
-        while remaining_tries > 0:
-            try:
-                self.__connection: MySQLConnection = connect(**config)
-                self.__cursor: CursorBase = self.__connection.cursor()
-                break
-            except Exception as e:
-                remaining_tries -= 1
-                print('Database connection failed.')
-                print(e)
-                time.sleep(timeout)
-
-        if remaining_tries == 0:
-            raise Exception(
-                'Could not connect to database after 5 tries. Aborting.')
-
-        print('Successfully connected to database')
+    def __init__(self, connection: MySQLConnection):
+        self.__connection = connection
+        self.__cursor: CursorBase = connection.cursor()
 
     def execute(self, query: str, data: Tuple) -> SQLResult:
         self.__cursor.execute(query, data)

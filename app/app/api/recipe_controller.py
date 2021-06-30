@@ -2,19 +2,21 @@ from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
-from app.infra.db.models.recipe import RecipeModel, LikeRecipeModel, RatingModel, CommentModel
+from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.daos.user import UserDao
+from app.application.recipe.recipe_creation_dto import RecipeCreationDto
+from app import recipe_creation_usecase, recipe_finding_usecase
 
 routes = Blueprint('recipes', __name__)
-recipeDao = RecipeDao()
-likeRecipeDao = LikeRecipeDao()
-commentDao = RecipeCommentDao()
-RecipeRatingDao = RecipeRatingDao()
-recipeIngredientDao = RecipeIngredientDao()
-ingredientDao = IngredientDao()
-quantityUnitDao = QuantityUnitDao()
-userDao = UserDao()
+recipe_dao = RecipeDao()
+like_recipe_dao = LikeRecipeDao()
+comment_dao = RecipeCommentDao()
+recipe_rating_dao = RecipeRatingDao()
+recipe_ingredient_dao = RecipeIngredientDao()
+ingredient_dao = IngredientDao()
+quantity_unit_dao = QuantityUnitDao()
+user_dao = UserDao()
 
 
 @routes.route('/', methods=['GET'])
@@ -23,12 +25,12 @@ userDao = UserDao()
 def index():
     searched_name = request.args.get('name')
     if searched_name:
-        return response.success(recipeDao.getRecipesByName(searched_name))
+        return response.success(recipe_dao.getRecipesByName(searched_name))
     else:
-        return response.success(recipeDao.getAll())
+        return response.success(recipe_dao.getAll())
 
 
-# @routes.route('/', methods=['POST'])
+@routes.route('/', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
 def addRecipe():
@@ -41,8 +43,9 @@ def addRecipe():
 
     response.ensureIdentity(data['id_User'], current_identity)
 
-    recipeModel = RecipeModel(**data)
-    result = recipeDao.save(recipeModel, body['ingredients'])
+    recipe_creation_dto = RecipeCreationDto(recipe=data, ingredients=body['ingredients'])
+    result = recipe_creation_usecase.create_recipe(recipe_creation_dto)
+
     return response.success(result)
 
 
@@ -50,8 +53,8 @@ def addRecipe():
 @jwt_required()
 @response.handleExceptions
 def getRecipeById(recipe_id):
-    recipe = recipeDao.getById(recipe_id)
-    user = userDao.getById(recipe.id_User)
+    recipe = recipe_finding_usecase.findById(recipe_id)
+    user = user_dao.getById(recipe.id_User)
     data = {
         **recipe.serialize(),
         'user': {
@@ -65,10 +68,10 @@ def getRecipeById(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def deleteRecipe(recipe_id):
-    recipe = recipeDao.getById(recipe_id)
+    recipe = recipe_dao.getById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
-    recipeDao.delete(recipe_id)
+    recipe_dao.delete(recipe_id)
     return response.empty()
 
 
@@ -76,11 +79,11 @@ def deleteRecipe(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def modifyRecipeName(recipe_id):
-    recipe = recipeDao.getById(recipe_id)
+    recipe = recipe_dao.getById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
-    result = recipeDao.modifyRecipeName(body['name'], recipe_id)
+    result = recipe_dao.modifyRecipeName(body['name'], recipe_id)
     return response.success(result)
 
 
@@ -88,11 +91,11 @@ def modifyRecipeName(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def modifyRecipeDirective(recipe_id):
-    recipe = recipeDao.getById(recipe_id)
+    recipe = recipe_dao.getById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
-    result = recipeDao.modifyRecipeDirective(body['directives'], recipe_id)
+    result = recipe_dao.modifyRecipeDirective(body['directives'], recipe_id)
     return response.success(result)
 
 
@@ -100,11 +103,11 @@ def modifyRecipeDirective(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def modifyIngredientQuantity(recipe_id):
-    recipe = recipeDao.getById(recipe_id)
+    recipe = recipe_dao.getById(recipe_id)
     response.ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
-    result = recipeIngredientDao.modifyQuantity(
+    result = recipe_ingredient_dao.modifyQuantity(
         recipe_id, body['id_Ingredient'], body['totalQuantity'])
     return response.success(result)
 
@@ -114,10 +117,10 @@ def modifyIngredientQuantity(recipe_id):
 @response.handleExceptions
 def getIngredientsByRecipe(recipe_id):
     data = []
-    recipeIngredients = recipeIngredientDao.getIngredientsByRecipe(recipe_id)
+    recipeIngredients = recipe_ingredient_dao.getIngredientsByRecipe(recipe_id)
     for recipeIngredient in recipeIngredients:
-        ingredient = ingredientDao.getById(recipeIngredient.id_Ingredient)
-        quantityUnit = quantityUnitDao.getById(
+        ingredient = ingredient_dao.getById(recipeIngredient.id_Ingredient)
+        quantityUnit = quantity_unit_dao.getById(
             recipeIngredient.id_QuantityUnit)
         data.append({
             'id': ingredient.id,
@@ -133,10 +136,10 @@ def getIngredientsByRecipe(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def getRecipeComments(recipe_id):
-    comments = commentDao.getRecipeComments(recipe_id)
+    comments = comment_dao.getRecipeComments(recipe_id)
     data = []
     for comment in comments:
-        user = userDao.getById(comment.id_User)
+        user = user_dao.getById(comment.id_User)
         data.append({
             **comment.serialize(),
             'user': user.serialize()
@@ -159,10 +162,10 @@ def likeRecipe(recipe_id):
     likeRecipeModel = LikeRecipeModel(**data)
 
     if request.method == 'POST':
-        result = likeRecipeDao.save(likeRecipeModel)
+        result = like_recipe_dao.save(likeRecipeModel)
         return response.success(result)
     else:
-        likeRecipeDao.delete(likeRecipeModel)
+        like_recipe_dao.delete(likeRecipeModel)
         return response.empty()
 
 
@@ -181,9 +184,9 @@ def addRateRecipe(recipe_id):
 
     ratingModel = RatingModel(**data)
     if request.method == 'POST':
-        result = RecipeRatingDao.save(ratingModel)
+        result = recipe_rating_dao.save(ratingModel)
     else:
-        result = RecipeRatingDao.replace(ratingModel)
+        result = recipe_rating_dao.replace(ratingModel)
     return response.success(result)
 
 
@@ -201,7 +204,7 @@ def addCommentRecipe(recipe_id):
     response.ensureIdentity(data['id_User'], current_identity)
 
     commentModel = CommentModel(**data)
-    result = commentDao.save(commentModel)
+    result = comment_dao.save(commentModel)
     return response.success(result)
 
 

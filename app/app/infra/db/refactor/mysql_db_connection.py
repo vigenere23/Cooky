@@ -1,21 +1,12 @@
-import time
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
 from typing import Callable, TypeVar
-from mysql.connector import MySQLConnection, connect
+from mysql.connector import MySQLConnection
 from mysql.connector.cursor import CursorBase
 
 
 class MysqlDBConnection:
-    def __init__(self, config, remaining_tries: int = 10, timeout: int = 5):
-        while remaining_tries > 0:
-            try:
-                self.__connection: MySQLConnection = connect(**config)
-                break
-            except Exception as e:
-                remaining_tries -= 1
-                print('Database connection failed.')
-                print(e)
-                time.sleep(timeout)
+    def __init__(self, connection: MySQLConnection):
+        self.__connection = connection
 
     # FUTURE : see if possible to do
     #   execute(action, *args): action(executor, *args)
@@ -29,7 +20,8 @@ class MysqlDBConnection:
             result = action(executor, *args)
             self.__connection.commit()
             return result
-        except Exception:
+        except Exception as e:
             self.__connection.rollback()
+            raise e
         finally:
             cursor.close()
