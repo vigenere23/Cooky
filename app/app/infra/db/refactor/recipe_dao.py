@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from app.infra.db.sql_mapper import SQLMapper
 from app.infra.db.models.recipe.recipe_model import RecipeModel
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
@@ -27,6 +28,7 @@ class RecipeDao:
         return self.__mapper.from_tuples(results)
 
     def save(self, executor: MySQLExecutor, recipe_model: RecipeModel) -> int:
-        query = 'INSERT INTO Recipe (id, id_User, name, description, directives, rating) VALUES (%s, %s, %s, %s, %s, %s)'
-        data = self.__mapper.to_tuple(recipe_model)
+        query = f'INSERT INTO {recipe_model.table_name()} {recipe_model.insert_columns_template()} VALUES {recipe_model.insert_values_template()}'
+        data = asdict(recipe_model)
+
         return executor.create(query, data)

@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from app.api import response
@@ -29,7 +30,7 @@ def index():
         name=request.args.get('name')
     )
 
-    return response.success(recipes)
+    return response.success(list(map(asdict, recipes)))
 
 
 @routes.route('/', methods=['POST'])
@@ -44,9 +45,9 @@ def addRecipe(request_data: RecipeCreationRequest):
         'description': request_data.description,
         'directives': request_data.directives
     }, ingredients=request_data.ingredients)
-    result = recipe_creation_usecase.create_recipe(recipe_creation_dto)
+    recipe = recipe_creation_usecase.create_recipe(recipe_creation_dto)
 
-    return response.success(result)
+    return response.success(asdict(recipe))
 
 
 @routes.route('/<int:recipe_id>', methods=['GET'])
@@ -56,7 +57,7 @@ def getRecipeById(recipe_id):
     recipe = recipe_finding_usecase.findById(recipe_id)
     user = user_dao.getById(recipe.id_User)
     data = {
-        **recipe.serialize(),
+        **asdict(recipe),
         'user': {
             **user.serialize()
         }

@@ -1,6 +1,9 @@
+from dataclasses import asdict
+from typing import List
 from flask import Blueprint, request
 from flask_jwt import jwt_required, current_identity
 from app.api import response
+from app.infra.db.models.recipe.recipe_model import RecipeModel
 from app.infra.db.daos.recipe import RecipeDao, RecipeRatingDao, LikeRecipeDao
 from app.infra.db.daos.cart import CartDao, CommandDao
 from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
@@ -144,8 +147,8 @@ def getOne(id):
 @jwt_required()
 @response.handleExceptions
 def getAllRecipesByUser(id):
-    data = recipeDao.getAllRecipesByUser(id)
-    return response.success(data)
+    recipes: List[RecipeModel] = recipeDao.getAllRecipesByUser(id)
+    return response.success(list(map(asdict, recipes)))
 
 
 @routes.route('/<int:id>/likes', methods=['GET'])
@@ -155,7 +158,7 @@ def getLikeRecipes(id):
     recipes = []
     likes = likeRecipeDao.getLikeRecipeByUser(id)
     for like in likes:
-        recipe = recipeDao.getById(like.id_Recipe)
+        recipe: RecipeModel = recipeDao.getById(like.id_Recipe)
         recipes.append({
             'id': recipe.id,
             'name': recipe.name,
