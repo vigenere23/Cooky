@@ -22,12 +22,16 @@
 
 - ### `GET /recipes/:recipeId`
 
-  Get single recipe
+  Get single recipe.
+
+  > Note: no need to show user infos. These will be available with the /user/:id endpoint,
+  > and it will be the UIs job to correctly map the ids for favorites, ratings, etc.
 
   **Response**
 
   ```ts
   {
+    id: string,
     title: string,
     description: string,
     author: {
@@ -38,23 +42,39 @@
       {
         id: string,
         name: string,
-        quantity: string
+        measurement: string,
+        quantity: number
       }
     ],
-    steps: string[],
+    directives: string,
     comments: [
       {
         author: {
           username: string,
           id: string
-        }
+        },
+        message: string
       }
     ],
-    globalRating: number,
-    personalInfos: {
-      favorited: boolean,
-      rating?: number
-    }
+    globalRating: number
+  }
+  ```
+
+- ### `POST /recipes`
+
+  Create a recipe.
+
+  **Response**
+
+  ```ts
+  {
+    title: string,
+    description: string,
+    directives: string,
+    ingredients: [
+      id: string,
+      quantity: number
+    ]
   }
   ```
 
@@ -72,14 +92,16 @@
     username: string,
     favoritedRecipes: [
       {
+        id: string,
         title: string,
-        ...
+        description: string
       }
     ],
     createdRecipes: [
       {
+        id: string,
         title: string,
-        ...
+        description: string
       }
     ]
   }
