@@ -8,16 +8,14 @@ class MysqlDBConnection:
     def __init__(self, connection: MySQLConnection):
         self.__connection = connection
 
-    # FUTURE : see if possible to do
-    #   execute(action, *args): action(executor, *args)
-    # with type annotations
+    # FUTURE : try to fix typing for `action` to accept `*args` and `**kwargs`
     T = TypeVar('T')
-    def execute(self, action: Callable[[MySQLExecutor], T], *args) -> T:
+    def transaction(self, action: Callable[[MySQLExecutor], T], *args, **kwargs) -> T:
         cursor: CursorBase = self.__connection.cursor()
         executor = MySQLExecutor(cursor)
 
         try:
-            result = action(executor, *args)
+            result = action(executor, *args, **kwargs)
             self.__connection.commit()
             return result
         except Exception as e:

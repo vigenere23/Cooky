@@ -7,7 +7,7 @@ class RecipeRepository(ABC):
 
     # FUTURE: return domain Recipe instead
     @abstractmethod
-    def find(self, recipe_id: int) -> RecipeModel:
+    def findById(self, recipe_id: int) -> RecipeModel:
         raise NotImplementedError()
 
     # FUTURE: return domain Recipes instead

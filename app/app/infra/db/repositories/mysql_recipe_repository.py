@@ -1,3 +1,4 @@
+from typing import List
 from app.domain.exceptions import NotFoundException
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.refactor.recipe_ingredient_dao import RecipeIngredientDao
@@ -20,19 +21,19 @@ class MySQLRecipeRepository(RecipeRepository):
         self.__recipe_dao = recipe_dao
         self.__recipe_ingredient_dao = recipe_ingredient_dao
 
-    def find(self, recipe_id: int) -> RecipeModel:
-        recipe = self.__db_connection.execute(lambda executor: self.__recipe_dao.find(executor, recipe_id))
+    def findById(self, recipe_id: int) -> RecipeModel:
+        recipe = self.__db_connection.transaction(self.__recipe_dao.find, recipe_id)
 
         if recipe is None:
             raise NotFoundException(f"No Recipe found with id '{recipe_id}'")
 
         return recipe
 
-    def findAll(self, name: str = None):
-        return self.__db_connection.execute(lambda executor: self.__recipe_dao.findAll(executor, name=name))
+    def findAll(self, name: str = None) -> List[RecipeModel]:
+        return self.__db_connection.transaction(self.__recipe_dao.findAll, name=name)
 
     def save(self, recipe: RecipeCreationDto) -> int:
-        return self.__db_connection.execute(lambda executor: self.__save_transaction(executor, recipe))
+        return self.__db_connection.transaction(self.__save_transaction, recipe)
 
     def __save_transaction(self, executor: MySQLExecutor, recipe: RecipeCreationDto) -> int:
         recipe_id = self.__recipe_dao.save(executor, RecipeModel(**recipe.recipe))
