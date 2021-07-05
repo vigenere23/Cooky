@@ -8,7 +8,7 @@ class RecipeFindingUseCase:
         self.__repository = recipe_repository
 
     def findById(self, recipe_id: int) -> RecipeModel:
-        return self.__repository.findById(recipe_id)
+        return self.__repository.find_by_id(recipe_id)
 
     def findAll(self, name: str = None) -> List[RecipeModel]:
-        return self.__repository.findAll(name=name)
+        return self.__repository.find_all(name=name)

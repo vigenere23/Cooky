@@ -9,4 +9,4 @@ class RecipeCreationUseCase:
 
     def create_recipe(self, recipe_creation_dto: RecipeCreationDto) -> RecipeModel:
         recipe_id = self.__repository.save(recipe_creation_dto)
-        return self.__repository.findById(recipe_id)
+        return self.__repository.find_by_id(recipe_id)

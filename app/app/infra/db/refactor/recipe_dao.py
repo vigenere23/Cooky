@@ -13,7 +13,7 @@ class RecipeDao:
 
         return RecipeModel(**result)
 
-    def findAll(self, executor: MySQLExecutor, name: str = None) -> List[RecipeModel]:
+    def find_all(self, executor: MySQLExecutor, name: str = None) -> List[RecipeModel]:
         query = "SELECT * FROM Recipe"
         data = {}
 
@@ -22,7 +22,6 @@ class RecipeDao:
             data['name'] = f'%{name}%'
 
         results = executor.findAll(query, data)
-        print(results)
 
         return [RecipeModel(**result) for result in results]
 

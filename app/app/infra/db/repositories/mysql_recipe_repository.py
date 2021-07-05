@@ -21,7 +21,7 @@ class MySQLRecipeRepository(RecipeRepository):
         self.__recipe_dao = recipe_dao
         self.__recipe_ingredient_dao = recipe_ingredient_dao
 
-    def findById(self, recipe_id: int) -> RecipeModel:
+    def find_by_id(self, recipe_id: int) -> RecipeModel:
         recipe = self.__db_connection.transaction(self.__recipe_dao.find, recipe_id)
 
         if recipe is None:
@@ -29,8 +29,8 @@ class MySQLRecipeRepository(RecipeRepository):
 
         return recipe
 
-    def findAll(self, name: str = None) -> List[RecipeModel]:
-        return self.__db_connection.transaction(self.__recipe_dao.findAll, name=name)
+    def find_all(self, name: str = None) -> List[RecipeModel]:
+        return self.__db_connection.transaction(self.__recipe_dao.find_all, name=name)
 
     def save(self, recipe: RecipeCreationDto) -> int:
         return self.__db_connection.transaction(self.__save_transaction, recipe)
