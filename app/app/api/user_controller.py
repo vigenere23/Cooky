@@ -1,6 +1,7 @@
 from dataclasses import asdict
 from typing import List
 from flask import Blueprint, request
+from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.infra.db.models.recipe.recipe_model import RecipeModel
@@ -216,5 +217,5 @@ def getAddress(id):
     return response.success(addressDao.getAddress(address))
 
 
-from app.app import flask_app
-flask_app.register_blueprint(routes, url_prefix='/users')
+def register_routes(flask_app: Flask):
+    flask_app.register_blueprint(routes, url_prefix='/users')

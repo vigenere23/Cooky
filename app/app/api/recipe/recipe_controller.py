@@ -1,5 +1,6 @@
 from dataclasses import asdict
 from flask import Blueprint, request
+from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.api.recipe.recipe_creation_request import RecipeCreationRequest
@@ -209,5 +210,5 @@ def addCommentRecipe(recipe_id):
     return response.success(result)
 
 
-from app.app import flask_app
-flask_app.register_blueprint(routes, url_prefix='/recipes')
+def register_routes(flask_app: Flask):
+    flask_app.register_blueprint(routes, url_prefix='/recipes')

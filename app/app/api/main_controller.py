@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.application import signup
@@ -54,5 +55,5 @@ def getUserInfos():
     return response.success(current_identity.serialize())
 
 
-from app.app import flask_app
-flask_app.register_blueprint(routes, url_prefix='/')
+def register_routes(flask_app: Flask):
+    flask_app.register_blueprint(routes, url_prefix='/')
