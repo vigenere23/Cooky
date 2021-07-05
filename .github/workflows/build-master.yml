@@ -22,6 +22,11 @@ jobs:
         with:
           python-version: 3.8
 
+      - name: Install Taskfile
+        uses: Arduino/actions/setup-taskfile@master
+        with:
+          version: '3.x'
+
       - name: Caching dependencies
         uses: actions/cache@v2
         with:
@@ -37,7 +42,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Linting
-        run: pylint app
+        run: task lint
+
+      - name: Testing
+        run: task test
 
 
   build-ui:
