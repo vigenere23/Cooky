@@ -19,5 +19,8 @@ tasks:
     dir: '..'
     cmds:
       - docker compose logs -f ui
-    deps:
-      - start
+
+  start+logs:
+    cmds:
+      - task: start
+      - task: logs

@@ -27,5 +27,8 @@ tasks:
   logs:
     cmds:
       - docker compose logs -f
-    deps:
-      - start
+
+  start+logs:
+    cmds:
+      - task: start
+      - task: logs
