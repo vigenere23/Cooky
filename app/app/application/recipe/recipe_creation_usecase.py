@@ -1,6 +1,6 @@
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.models.recipe.recipe_model import RecipeModel
-from app.domain.recipe_repository import RecipeRepository
+from app.domain.recipe.recipe_repository import RecipeRepository
 
 
 class RecipeCreationUseCase:

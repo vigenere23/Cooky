@@ -1,4 +1,6 @@
+from dataclasses import asdict
 from typing import List
+from app.domain.recipe.recipe import Recipe
 from app.domain.exceptions import NotFoundException
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.refactor.recipe_ingredient_dao import RecipeIngredientDao
@@ -7,7 +9,7 @@ from app.infra.db.models.recipe import RecipeModel
 from app.infra.db.refactor.recipe_dao import RecipeDao
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
 from app.infra.db.refactor.mysql_db_connection import MysqlDBConnection
-from app.domain.recipe_repository import RecipeRepository
+from app.domain.recipe.recipe_repository import RecipeRepository
 
 
 class MySQLRecipeRepository(RecipeRepository):
@@ -21,16 +23,17 @@ class MySQLRecipeRepository(RecipeRepository):
         self.__recipe_dao = recipe_dao
         self.__recipe_ingredient_dao = recipe_ingredient_dao
 
-    def find_by_id(self, recipe_id: int) -> RecipeModel:
-        recipe = self.__db_connection.transaction(self.__recipe_dao.find, recipe_id)
+    def find_by_id(self, recipe_id: int) -> Recipe:
+        recipe_model = self.__db_connection.transaction(self.__recipe_dao.find, recipe_id)
 
-        if recipe is None:
+        if recipe_model is None:
             raise NotFoundException(f"No Recipe found with id '{recipe_id}'")
 
-        return recipe
+        return Recipe(**asdict(recipe_model))
 
-    def find_all(self, name: str = None) -> List[RecipeModel]:
-        return self.__db_connection.transaction(self.__recipe_dao.find_all, name=name)
+    def find_all(self, name: str = None) -> List[Recipe]:
+        recipe_models = self.__db_connection.transaction(self.__recipe_dao.find_all, name=name)
+        return list(map(lambda recipe_model: Recipe(**asdict(recipe_model)), recipe_models))
 
     def save(self, recipe: RecipeCreationDto) -> int:
         return self.__db_connection.transaction(self.__save_transaction, recipe)
