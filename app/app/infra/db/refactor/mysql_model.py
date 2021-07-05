@@ -17,7 +17,3 @@ class MysqlModel:
     def insert_values_template(self) -> str:
         columns = map(lambda key: f'%({key})s', self.columns())
         return f"({', '.join(columns)})"
-
-    def select_columns_template(self) -> str:
-        complete_column_names = map(lambda column: f'{self.table_name()}.{column}')
-        return f"({', '.join(complete_column_names)})"

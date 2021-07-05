@@ -9,19 +9,19 @@ class RecipeDao:
         self.__table_name = 'Recipe'
 
     def find(self, executor: MySQLExecutor, recipe_id: int) -> RecipeModel:
-        result = executor.findById(self.__table_name, recipe_id)
+        result = executor.find_by_id(self.__table_name, recipe_id)
 
         return RecipeModel(**result)
 
     def find_all(self, executor: MySQLExecutor, name: str = None) -> List[RecipeModel]:
-        query = "SELECT * FROM Recipe"
+        query = "SELECT Recipe.* FROM Recipe"
         data = {}
 
         if name is not None:
             query += " WHERE LOWER(name) LIKE LOWER(%(name)s)"
             data['name'] = f'%{name}%'
 
-        results = executor.findAll(query, data)
+        results = executor.find_all(query, data)
 
         return [RecipeModel(**result) for result in results]
 

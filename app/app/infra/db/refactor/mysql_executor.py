@@ -14,8 +14,8 @@ class MySQLExecutor:
 
         return result_map
 
-    def findById(self, table_name: str, id: Union[str, int]):
-        query = f"SELECT * FROM {table_name} WHERE id = %(id)s"
+    def find_by_id(self, table_name: str, id: Union[str, int]):
+        query = f"SELECT {table_name}.* FROM {table_name} WHERE id = %(id)s"
         data = { 'id': id }
         self.__cursor.execute(query, data)
 
@@ -26,7 +26,7 @@ class MySQLExecutor:
 
         return result_map
 
-    def findAll(self, query: str, data: Any = None, limit: int = None) -> List[Tuple]:
+    def find_all(self, query: str, data: Any = None, limit: int = None) -> List[Tuple]:
         self.__cursor.execute(query, data)
 
         if limit is None:
