@@ -1,4 +1,4 @@
-from app import transaction
+from app.app import transaction
 from app.infra.db.daos.user import UserDao, AddressDao, AccountDao
 from app.infra.db.models.user import UserModel, AddressModel, AccountModel
 

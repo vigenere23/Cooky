@@ -9,7 +9,7 @@ from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentMode
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.daos.user import UserDao
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
-from app import recipe_creation_usecase, recipe_finding_usecase
+from app.app import recipe_creation_usecase, recipe_finding_usecase
 
 routes = Blueprint('recipes', __name__)
 recipe_dao = RecipeDao()
@@ -209,5 +209,5 @@ def addCommentRecipe(recipe_id):
     return response.success(result)
 
 
-from app import flask_app
+from app.app import flask_app
 flask_app.register_blueprint(routes, url_prefix='/recipes')

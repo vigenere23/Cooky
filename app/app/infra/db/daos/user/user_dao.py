@@ -1,4 +1,4 @@
-from app import db
+from app.app import db
 from app.infra.db.models.user import UserModel
 from app.infra.db.daos.base_dao import BaseDao
 from app.domain.exceptions import NotFoundException

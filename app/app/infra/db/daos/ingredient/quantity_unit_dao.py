@@ -1,4 +1,4 @@
-from app import db
+from app.app import db
 from app.infra.db.models.ingredient import QuantityUnitModel
 from app.infra.db.daos.base_dao import BaseDao
 

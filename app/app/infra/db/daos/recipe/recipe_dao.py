@@ -1,4 +1,4 @@
-from app import db, transaction
+from app.app import db, transaction
 from app.infra.db.models.recipe import RecipeModel, RecipeIngredientModel
 from app.infra.db.daos.recipe import RecipeIngredientDao
 from app.infra.db.daos import BaseDao

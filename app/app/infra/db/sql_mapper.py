@@ -1,5 +1,5 @@
 from typing import Any, List, Tuple
-from app import db
+from app.app import db
 
 
 class SQLMapper:

@@ -1,4 +1,4 @@
-from app import db
+from app.app import db
 from app.infra.db.models.cart import CartModel
 from app.infra.db.daos import BaseDao
 

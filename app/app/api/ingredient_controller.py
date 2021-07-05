@@ -42,5 +42,5 @@ def getMesures(id):
     return response.success(quantityUnits)
 
 
-from app import flask_app
+from app.app import flask_app
 flask_app.register_blueprint(routes, url_prefix='/ingredients')

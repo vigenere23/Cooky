@@ -1,5 +1,5 @@
 import bcrypt
-from app import db
+from app.app import db
 from app.infra.db.models.user import AccountModel
 from app.infra.db.daos.base_dao import BaseDao
 

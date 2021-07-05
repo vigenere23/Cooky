@@ -1,4 +1,4 @@
-from app import db
+from app.app import db
 from app.infra.db.sql_mapper import SQLMapper
 from app.domain.exceptions import NotFoundException
 
