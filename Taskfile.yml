@@ -1,63 +1,31 @@
 version: '3'
 
+includes:
+  app:
+    taskfile: ./app
+    dir: ./app
+
+  ui:
+    taskfile: ./ui
+    dir: ./ui
+
+  db:
+    taskfile: ./db
+    dir: ./db
+
 tasks:
-  build:
+  destroy:
+    cmds:
+      - docker compose down
+
+  start:
+    cmds:
+      - docker compose up
     deps:
-      - build:app
-      - build:ui
-      - build:db
+      - down
 
-  build:app:
+  logs:
     cmds:
-      - docker compose build app
-    sources:
-      - 'app/**/*.*'
-
-  build:ui:
-    cmds:
-      - docker compose build ui
-    sources:
-      - 'ui/**/*.*'
-
-  build:db:
-    cmds:
-      - docker compose rm -s -v -f db
-      - docker compose build db
-    sources:
-      - 'db/**/*.*'
-
-  start:ui:
-    cmds:
-      - docker compose up -d ui
+      - docker compose logs -f
     deps:
-      - build:ui
-
-  start:app:
-    cmds:
-      - docker compose up -d app
-    deps:
-      - build:app
-
-  start:db:
-    cmds:
-      - docker compose up -d db
-    deps:
-      - build:db
-
-  logs:app:
-    cmds:
-      - docker compose logs -f app
-    deps:
-      - start:app
-
-  logs:ui:
-    cmds:
-      - docker compose logs -f ui
-    deps:
-      - start:ui
-
-  logs:db:
-    cmds:
-      - docker compose logs -f db
-    deps:
-      - start:db
+      - start

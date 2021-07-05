@@ -8,3 +8,24 @@ tasks:
   lint:
     cmds:
       - pylint app && pylint test
+
+  build:
+    dir: '..'
+    cmds:
+      - docker compose build app
+    sources:
+      - '**/*.*'
+
+  start:
+    dir: '..'
+    cmds:
+      - docker compose up -d app
+    deps:
+      - build
+
+  logs:
+    dir: '..'
+    cmds:
+      - docker compose logs -f app
+    deps:
+      - start
