@@ -21,24 +21,43 @@ tasks:
 
   build:db:
     cmds:
+      - docker compose rm -s -v -f db
       - docker compose build db
     sources:
       - 'db/**/*.*'
 
-  up:
+  start:ui:
     cmds:
-      - docker compose up --remove-orphans
+      - docker compose up -d ui
     deps:
-      - down
-      - build
+      - build:ui
 
-  up:db:
+  start:app:
     cmds:
-      - docker compose up --remove-orphans db
+      - docker compose up -d app
     deps:
-      - down
+      - build:app
+
+  start:db:
+    cmds:
+      - docker compose up -d db
+    deps:
       - build:db
 
-  down:
+  logs:app:
     cmds:
-      - docker compose down -t 15
+      - docker compose logs -f app
+    deps:
+      - start:app
+
+  logs:ui:
+    cmds:
+      - docker compose logs -f ui
+    deps:
+      - start:ui
+
+  logs:db:
+    cmds:
+      - docker compose logs -f db
+    deps:
+      - start:db
