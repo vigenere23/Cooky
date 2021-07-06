@@ -1,11 +1,11 @@
 import unittest
-from app.infra.db.refactor.condition import Condition
+from app.infra.db.refactor.mysql_condition import MysqlCondition
 from unittest import TestCase
 
-class ConditionTest(TestCase):
+class MysqlConditionTest(TestCase):
 
     def test_query(self):
-        condition = Condition().where(
+        condition = MysqlCondition().where(
             ['Comment.id = %(id_Comment)s', 'Recipe.name LIKE %(name)s'], data={'id_Comment': 123, 'name': 'lolo'}
         ).where(
             ['Recipe.type = ITALIAN'], data={'rating': 0}

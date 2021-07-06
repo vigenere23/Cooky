@@ -2,12 +2,12 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 
-class Condition:
+class MysqlCondition:
     def __init__(self):
         self.__query = ''
         self.__data = {}
 
-    def where(self, conditions: List[str], data: Dict[str, Any] = None) -> Condition:
+    def where(self, conditions: List[str], data: Dict[str, Any] = None) -> MysqlCondition:
         if len(conditions) == 0 or conditions is None:
             return self
 

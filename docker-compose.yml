@@ -6,8 +6,6 @@ services:
       NODE_ENV: ${UI_NODE_ENV:-development}
     ports:
       - ${UI_PORT:-8080}:8080
-    links:
-      - app
 
   app:
     build: ./app

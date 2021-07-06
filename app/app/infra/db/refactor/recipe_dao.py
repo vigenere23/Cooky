@@ -1,7 +1,7 @@
-from dataclasses import asdict
 from typing import List
-from app.infra.db.models.recipe.recipe_model import RecipeModel
+from app.infra.db.refactor.mysql_condition import MysqlCondition
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
+from app.infra.db.models.recipe.recipe_model import RecipeModel
 
 
 class RecipeDao:
@@ -14,19 +14,20 @@ class RecipeDao:
         return RecipeModel(**result)
 
     def find_all(self, executor: MySQLExecutor, name: str = None) -> List[RecipeModel]:
-        query = "SELECT Recipe.* FROM Recipe"
+        conditions = []
         data = {}
 
         if name is not None:
-            query += " WHERE LOWER(name) LIKE LOWER(%(name)s)"
+            conditions.append('LOWER(name) LIKE LOWER(%(name)s)')
             data['name'] = f'%{name}%'
 
-        results = executor.find_all(query, data)
+        condition = MysqlCondition().where(conditions, data=data)
+        results = executor.find_all(self.__table_name, condition)
 
         return [RecipeModel(**result) for result in results]
 
     def save(self, executor: MySQLExecutor, recipe_model: RecipeModel) -> int:
-        query = f'INSERT INTO {recipe_model.table_name()} {recipe_model.insert_columns_template()} VALUES {recipe_model.insert_values_template()}'
-        data = asdict(recipe_model)
+        return executor.create(recipe_model)
 
-        return executor.create(query, data)
+    def update(self, executor: MySQLExecutor, recipe_model: RecipeModel) -> None:
+        executor.update(recipe_model)
