@@ -4,7 +4,7 @@ from functools import wraps
 
 
 T = TypeVar('T')
-def receive(constructor: Type[T]):
+def parse_body(constructor: Type[T]):
     def decorator(f):
         @wraps(f)
 

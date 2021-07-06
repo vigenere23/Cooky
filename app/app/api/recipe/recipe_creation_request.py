@@ -12,7 +12,6 @@ class RecipeCreationIngredientRequest:
 @dataclass_json
 @dataclass
 class RecipeCreationRequest:
-    id_User: int
     name: str
     description: str
     directives: str

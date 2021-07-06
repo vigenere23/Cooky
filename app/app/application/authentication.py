@@ -3,6 +3,11 @@ from app.domain.exceptions import ForbiddenException
 from app.infra.db.daos.user import UserDao, AccountDao
 
 
+def ensure_same_user(resource_owner_id, current_user_id):
+    if current_user_id != resource_owner_id:
+        raise ForbiddenException()
+
+
 def ensureIdentity(user_id, identity):
     if user_id != identity.id:
         raise ForbiddenException()

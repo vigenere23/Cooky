@@ -10,3 +10,13 @@ class RecipeNameEditionRequest:
 @dataclass
 class RecipeDirectivesEditionRequest:
     directives: str
+
+@dataclass_json
+@dataclass
+class CommentCreationRequest:
+    text: str
+
+@dataclass_json
+@dataclass
+class RatingCreationRequest:
+    value: int
