@@ -2,6 +2,7 @@ version: '3'
 
 tasks:
   build:
+    desc: Rebuild db (if changed) from docker compose
     dir: '..'
     cmds:
       - docker compose rm -s -v -f db
@@ -10,6 +11,7 @@ tasks:
       - '**/*.*'
 
   start:
+    desc: Restart db (and rebuild if changed) from docker compose
     dir: '..'
     cmds:
       - docker compose up -d db
@@ -17,16 +19,19 @@ tasks:
       - build
 
   logs:
+    desc: Attach to docker compose logs for db
     dir: '..'
     cmds:
       - docker compose logs -f db
 
   start+logs:
+    desc: Alias for 'start' followed by 'logs'
     cmds:
       - task: start
       - task: logs
 
   exec:
+    desc: Execute mysql inside the db container
     dir: '..'
     cmds:
       - docker compose exec db mysql -u root -p

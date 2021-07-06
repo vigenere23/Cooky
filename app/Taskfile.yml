@@ -2,14 +2,17 @@ version: '3'
 
 tasks:
   test:
+    desc: Run app tests
     cmds:
       - python -m unittest discover -s test -p '*_test.py'
 
   lint:
+    desc: Run app linting
     cmds:
       - pylint app && pylint test
 
   build:
+    desc: Rebuild app (if changed) from docker compose
     dir: '..'
     cmds:
       - docker compose build app
@@ -17,6 +20,7 @@ tasks:
       - '**/*.*'
 
   start:
+    desc: Restart app (and rebuild if changed) from docker compose
     dir: '..'
     cmds:
       - docker compose up -d app
@@ -24,11 +28,13 @@ tasks:
       - build
 
   logs:
+    desc: Attach to docker compose logs for app
     dir: '..'
     cmds:
       - docker compose logs -f app
 
   start+logs:
+    desc: Alias for 'start' followed by 'logs'
     cmds:
       - task: start
       - task: logs

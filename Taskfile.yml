@@ -15,20 +15,25 @@ includes:
 
 tasks:
   destroy:
+    desc: Delete images, volumes and containers from docker compose
     cmds:
       - docker compose down
 
   start:
+    desc: Force-rebuild and restart all containers from docker compose
     cmds:
-      - docker compose up
-    deps:
-      - down
+      - task: db:build
+      - task: app:build
+      - task: ui:build
+      - docker compose up -d
 
   logs:
+    desc: Attach to docker compose logs
     cmds:
       - docker compose logs -f
 
   start+logs:
+    desc: Alias for 'start' followed by 'logs'
     cmds:
       - task: start
       - task: logs
