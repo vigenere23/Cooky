@@ -4,17 +4,18 @@ from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.api.recipe.recipe_creation_request import RecipeCreationRequest
+from app.api.recipe.recipe_edition_requests import RecipeDirectivesEditionRequest, RecipeNameEditionRequest
 from app.api.requests import receive
+from app.application.recipe.recipe_edition_dto import RecipeEditionDto
 from app.application.authentication import ensureIdentity
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
-from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
+from app.infra.db.daos.recipe import RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.daos.user import UserDao
 from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase
 
 routes = Blueprint('recipes', __name__)
-recipe_dao = RecipeDao()
 like_recipe_dao = LikeRecipeDao()
 comment_dao = RecipeCommentDao()
 recipe_rating_dao = RecipeRatingDao()
@@ -78,25 +79,23 @@ def deleteRecipe(recipe_id):
 @routes.route('/<int:recipe_id>/name/', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyRecipeName(recipe_id):
-    recipe = recipe_finding_usecase.findById(recipe_id)
-    ensureIdentity(recipe.id_User, current_identity)
+@receive(RecipeNameEditionRequest)
+def modifyRecipeName(request_data: RecipeNameEditionRequest, recipe_id):
+    edition_dto = RecipeEditionDto(id=recipe_id, name=request_data.name)
+    modified_recipe = recipe_editing_usecase.edit_recipe(current_identity, edition_dto)
 
-    body = request.get_json(force=True)
-    result = recipe_dao.modifyRecipeName(body['name'], recipe_id)
-    return response.success(result)
+    return response.success(asdict(modified_recipe))
 
 
 @routes.route('/<int:recipe_id>/directives/', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyRecipeDirective(recipe_id):
-    recipe = recipe_finding_usecase.findById(recipe_id)
-    ensureIdentity(recipe.id_User, current_identity)
+@receive(RecipeDirectivesEditionRequest)
+def modifyRecipeDirective(request_data: RecipeDirectivesEditionRequest, recipe_id):
+    edition_dto = RecipeEditionDto(id=recipe_id, name=request_data.directives)
+    modified_recipe = recipe_editing_usecase.edit_recipe(current_identity, edition_dto)
 
-    body = request.get_json(force=True)
-    result = recipe_dao.modifyRecipeDirective(body['directives'], recipe_id)
-    return response.success(result)
+    return response.success(asdict(modified_recipe))
 
 
 @routes.route('/<int:recipe_id>/ingredientQuantity/', methods=['PUT'])

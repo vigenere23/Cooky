@@ -41,6 +41,10 @@ class MySQLRecipeRepository(RecipeRepository):
     def save(self, recipe: RecipeCreationDto) -> int:
         return self.__db_connection.transaction(self.__save_transaction, recipe)
 
+    def replace(self, recipe: Recipe) -> Recipe:
+        self.__db_connection.transaction(self.__recipe_dao.update, RecipeModel(**asdict(recipe)))
+        return self.find_by_id(recipe.id)
+
     def __save_transaction(self, executor: MySQLExecutor, recipe: RecipeCreationDto) -> int:
         recipe_id = self.__recipe_dao.save(executor, RecipeModel(**recipe.recipe))
 

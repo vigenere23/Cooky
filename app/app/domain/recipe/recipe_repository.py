@@ -19,5 +19,9 @@ class RecipeRepository(ABC):
         raise NotImplementedError()
 
     @abstractmethod
+    def replace(self, recipe: Recipe) -> Recipe:
+        raise NotImplementedError()
+
+    @abstractmethod
     def delete(self, recipe: Recipe) -> None:
         raise NotImplementedError()
