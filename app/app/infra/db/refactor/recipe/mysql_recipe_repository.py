@@ -3,10 +3,10 @@ from typing import List
 from app.domain.recipe.recipe import Recipe
 from app.domain.exceptions import NotFoundException
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
-from app.infra.db.refactor.recipe_ingredient_dao import RecipeIngredientDao
+from app.infra.db.refactor.recipe.recipe_ingredient_dao import RecipeIngredientDao
 from app.infra.db.models.recipe.recipe_ingredient_model import RecipeIngredientModel
 from app.infra.db.models.recipe import RecipeModel
-from app.infra.db.refactor.recipe_dao import RecipeDao
+from app.infra.db.refactor.recipe.recipe_dao import RecipeDao
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
 from app.infra.db.refactor.mysql_db_connection import MysqlDBConnection
 from app.domain.recipe.recipe_repository import RecipeRepository

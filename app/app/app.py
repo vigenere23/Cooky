@@ -8,10 +8,10 @@ from app.mysql_connection import connect_to_mysql
 from app.infra.db.mysql_database_connection import MySQLDBConnection
 from app.infra.db.db_connector import DBConnector
 from app.infra.db.sql_transaction import SQLTransaction
-from app.infra.db.repositories.mysql_recipe_repository import MySQLRecipeRepository
 from app.infra.db.refactor.mysql_db_connection import MysqlDBConnection
-from app.infra.db.refactor.recipe_dao import RecipeDao
-from app.infra.db.refactor.recipe_ingredient_dao import RecipeIngredientDao
+from app.infra.db.refactor.recipe.mysql_recipe_repository import MySQLRecipeRepository
+from app.infra.db.refactor.recipe.recipe_dao import RecipeDao
+from app.infra.db.refactor.recipe.recipe_ingredient_dao import RecipeIngredientDao
 
 
 flask_app = Flask(__name__)

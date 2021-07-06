@@ -15,21 +15,28 @@ class MySQLExecutor:
         query = f"SELECT {table_name}.* FROM {table_name} WHERE id = %(id)s"
         data = { 'id': id }
 
-        return self.__find(query, data)
+        return self._find(query, data)
+
+
+    def find(self, table_name: str, condition: MysqlCondition) -> Dict[str, Any]:
+        query = f'SELECT {table_name}.* FROM {table_name} {condition.query()}'
+        data = condition.data()
+
+        return self._find(query, data=data)
 
 
     def find_all(self, table_name: str, condition: MysqlCondition, limit: int = None) -> List[Dict[str, Any]]:
         query = f'SELECT {table_name}.* FROM {table_name} {condition.query()}'
         data = condition.data()
 
-        return self.__find_all(query, data=data, limit=limit)
+        return self._find_all(query, data=data, limit=limit)
 
 
     def create(self, model: MysqlModel) -> int:
         query = f'INSERT INTO {model.table_name()} {model.insert_columns_template()} VALUES {model.insert_values_template()}'
         data = asdict(model)
 
-        return self.__create(query, data)
+        return self._create(query, data)
 
 
     def update(self, model: MysqlModel) -> None:
@@ -46,7 +53,7 @@ class MySQLExecutor:
         self.__cursor.execute(query, data)
 
 
-    def __find(self, query: str, data: Any = None) -> Dict[str, Any]:
+    def _find(self, query: str, data: Any = None) -> Dict[str, Any]:
         self.__cursor.execute(query, data)
 
         result = self.__cursor.fetchone()
@@ -55,7 +62,7 @@ class MySQLExecutor:
         return self.__map_columns_single(result)
 
 
-    def __find_all(self, query: str, data: Any = None, limit: int = None) -> List[Dict[str, Any]]:
+    def _find_all(self, query: str, data: Any = None, limit: int = None) -> List[Dict[str, Any]]:
         self.__cursor.execute(query, data)
         results = []
 
@@ -68,7 +75,7 @@ class MySQLExecutor:
         return self.__map_columns_many(results)
 
 
-    def __create(self, query: str, data: Any = None) -> int:
+    def _create(self, query: str, data: Any = None) -> int:
         self.__cursor.execute(query, data)
         return self.__cursor.lastrowid
 
