@@ -2,7 +2,8 @@ from flask import Blueprint, request
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from datetime import datetime
-from . import response
+from app.api import response
+from app.application.authentication import ensureIdentity
 from app.infra.db.models.cart import CartItemModel, CommandModel
 from app.infra.db.daos.cart import CartDao, CartItemDao, CommandDao
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
@@ -20,7 +21,7 @@ quantityUnitDao = QuantityUnitDao()
 @response.handleExceptions
 def getCart(id):
     cart = cartDao.getById(id)
-    response.ensureIdentity(cart.id_User, current_identity)
+    ensureIdentity(cart.id_User, current_identity)
 
     return response.success(cart)
 
@@ -30,7 +31,7 @@ def getCart(id):
 @response.handleExceptions
 def getCartItems(id):
     cart = cartDao.getById(id)
-    response.ensureIdentity(cart.id_User, current_identity)
+    ensureIdentity(cart.id_User, current_identity)
 
     cartItems = cartItemDao.getItemsByCart(id)
     data = []
@@ -53,7 +54,7 @@ def getCartItems(id):
 @response.handleExceptions
 def addItemToCart(id):
     cart = cartDao.getById(id)
-    response.ensureIdentity(cart.id_User, current_identity)
+    ensureIdentity(cart.id_User, current_identity)
 
     body = request.get_json(force=True)
     data = {
@@ -70,7 +71,7 @@ def addItemToCart(id):
 @response.handleExceptions
 def deleteItemFromCart(id_Cart, id_Ingredient):
     cart = cartDao.getById(id_Cart)
-    response.ensureIdentity(cart.id_User, current_identity)
+    ensureIdentity(cart.id_User, current_identity)
 
     cartItemDao.deleteIngredient(id_Cart, id_Ingredient)
     return response.success("", status=204)
@@ -81,7 +82,7 @@ def deleteItemFromCart(id_Cart, id_Ingredient):
 @response.handleExceptions
 def modifyRecipeName(id_Cart, id_Ingredient):
     cart = cartDao.getById(id_Cart)
-    response.ensureIdentity(cart.id_User, current_identity)
+    ensureIdentity(cart.id_User, current_identity)
 
     body = request.get_json(force=True)
     result = cartItemDao.modifyQuantity(
@@ -94,7 +95,7 @@ def modifyRecipeName(id_Cart, id_Ingredient):
 @response.handleExceptions
 def createCommand(id):
     cart = cartDao.getById(id)
-    response.ensureIdentity(cart.id_User, current_identity)
+    ensureIdentity(cart.id_User, current_identity)
 
     data = {
         'id_Cart': id,

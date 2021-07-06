@@ -1,5 +1,12 @@
 import bcrypt
+from app.domain.exceptions import ForbiddenException
 from app.infra.db.daos.user import UserDao, AccountDao
+
+
+def ensureIdentity(user_id, identity):
+    if user_id != identity.id:
+        raise ForbiddenException()
+
 
 def authenticate(username, password):
     userDao = UserDao()

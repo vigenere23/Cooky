@@ -14,6 +14,3 @@ class RecipeModel(MysqlModel):
 
     def table_name(self) -> str:
         return 'Recipe'
-
-    def get_id(self) -> str:
-        return self.id

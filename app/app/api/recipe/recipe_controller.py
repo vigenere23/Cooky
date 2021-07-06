@@ -5,12 +5,13 @@ from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.api.recipe.recipe_creation_request import RecipeCreationRequest
 from app.api.requests import receive
+from app.application.authentication import ensureIdentity
+from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.daos.recipe import RecipeDao, RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.daos.user import UserDao
-from app.application.recipe.recipe_creation_dto import RecipeCreationDto
-from app.app import recipe_creation_usecase, recipe_finding_usecase
+from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase
 
 routes = Blueprint('recipes', __name__)
 recipe_dao = RecipeDao()
@@ -70,10 +71,7 @@ def getRecipeById(recipe_id):
 @jwt_required()
 @response.handleExceptions
 def deleteRecipe(recipe_id):
-    recipe = recipe_finding_usecase.findById(recipe_id)
-    response.ensureIdentity(recipe.id_User, current_identity)
-
-    recipe_dao.delete(recipe_id)
+    recipe_editing_usecase.delete_recipe(current_identity, recipe_id)
     return response.empty()
 
 
@@ -82,7 +80,7 @@ def deleteRecipe(recipe_id):
 @response.handleExceptions
 def modifyRecipeName(recipe_id):
     recipe = recipe_finding_usecase.findById(recipe_id)
-    response.ensureIdentity(recipe.id_User, current_identity)
+    ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
     result = recipe_dao.modifyRecipeName(body['name'], recipe_id)
@@ -94,7 +92,7 @@ def modifyRecipeName(recipe_id):
 @response.handleExceptions
 def modifyRecipeDirective(recipe_id):
     recipe = recipe_finding_usecase.findById(recipe_id)
-    response.ensureIdentity(recipe.id_User, current_identity)
+    ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
     result = recipe_dao.modifyRecipeDirective(body['directives'], recipe_id)
@@ -106,7 +104,7 @@ def modifyRecipeDirective(recipe_id):
 @response.handleExceptions
 def modifyIngredientQuantity(recipe_id):
     recipe = recipe_finding_usecase.findById(recipe_id)
-    response.ensureIdentity(recipe.id_User, current_identity)
+    ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)
     result = recipe_ingredient_dao.modifyQuantity(
@@ -159,7 +157,7 @@ def likeRecipe(recipe_id):
         'id_User': body['id_User']
     }
 
-    response.ensureIdentity(data['id_User'], current_identity)
+    ensureIdentity(data['id_User'], current_identity)
 
     likeRecipeModel = LikeRecipeModel(**data)
 
@@ -182,7 +180,7 @@ def addRateRecipe(recipe_id):
         'value': body['value']
     }
 
-    response.ensureIdentity(data['id_User'], current_identity)
+    ensureIdentity(data['id_User'], current_identity)
 
     ratingModel = RatingModel(**data)
     if request.method == 'POST':
@@ -203,7 +201,7 @@ def addCommentRecipe(recipe_id):
         'text': body['text']
     }
 
-    response.ensureIdentity(data['id_User'], current_identity)
+    ensureIdentity(data['id_User'], current_identity)
 
     commentModel = CommentModel(**data)
     result = comment_dao.save(commentModel)

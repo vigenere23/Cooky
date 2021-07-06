@@ -4,6 +4,7 @@ from flask import Blueprint, request
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
+from app.application.authentication import ensureIdentity
 from app.infra.db.models.recipe.recipe_model import RecipeModel
 from app.infra.db.daos.recipe import RecipeDao, RecipeRatingDao, LikeRecipeDao
 from app.infra.db.daos.cart import CartDao, CommandDao
@@ -31,7 +32,7 @@ def index():
 @jwt_required()
 @response.handleExceptions
 def getAccount(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     account = accountDao.getAccountByUserId(id)
     del account.password
@@ -46,7 +47,7 @@ def getAccount(id):
 @jwt_required()
 @response.handleExceptions
 def modifyEmail(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     body = request.get_json(force=True)
     try:
@@ -60,7 +61,7 @@ def modifyEmail(id):
 @jwt_required()
 @response.handleExceptions
 def modifyPassword(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     body = request.get_json(force=True)
     try:
@@ -74,7 +75,7 @@ def modifyPassword(id):
 @jwt_required()
 @response.handleExceptions
 def modifyCountry(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     userData = accountDao.getAccountByUserId(id)
     addressId = userData.id_Address
@@ -87,8 +88,7 @@ def modifyCountry(id):
 @jwt_required()
 @response.handleExceptions
 def modifyCity(id):
-    if not response.ensureIdentity(id, current_identity):
-        return response.error('Access forbidden', status=401)
+    ensureIdentity(id, current_identity)
 
     userData = accountDao.getAccountByUserId(id)
     addressId = userData.id_Address
@@ -101,7 +101,7 @@ def modifyCity(id):
 @jwt_required()
 @response.handleExceptions
 def modifyStreet(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     userData = accountDao.getAccountByUserId(id)
     addressId = userData.id_Address
@@ -114,7 +114,7 @@ def modifyStreet(id):
 @jwt_required()
 @response.handleExceptions
 def modifyApartment(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     userData = accountDao.getAccountByUserId(id)
     addressId = userData.id_Address
@@ -127,7 +127,7 @@ def modifyApartment(id):
 @jwt_required()
 @response.handleExceptions
 def modifyDoorNumber(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     userData = accountDao.getAccountByUserId(id)
     addressId = userData.id_Address
@@ -173,7 +173,7 @@ def getLikeRecipes(id):
 @jwt_required()
 @response.handleExceptions
 def getRatings(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     data = recipeRatingDao.getRatingsByUser(id)
     return response.success(data)
@@ -183,7 +183,7 @@ def getRatings(id):
 @jwt_required()
 @response.handleExceptions
 def getUserCart(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     data = cartDao.getCurrentUserCart(id)
     return response.success(data)
@@ -193,7 +193,7 @@ def getUserCart(id):
 @jwt_required()
 @response.handleExceptions
 def getUserCommands(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     commands = commandDao.getUserCommands(id)
     data = []
@@ -210,7 +210,7 @@ def getUserCommands(id):
 @jwt_required()
 @response.handleExceptions
 def getAddress(id):
-    response.ensureIdentity(id, current_identity)
+    ensureIdentity(id, current_identity)
 
     userData = accountDao.getAccountByUserId(id)
     address = userData.id_Address

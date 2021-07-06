@@ -1,15 +1,17 @@
 import unittest
-from app.infra.db.refactor.mysql_condition import MysqlCondition
+from app.infra.db.refactor.mysql_condition_builder import MysqlConditionBuilder
 from unittest import TestCase
 
-class MysqlConditionTest(TestCase):
+class MysqlConditionBuilderTest(TestCase):
 
     def test_query(self):
-        condition = MysqlCondition().where(
+        condition = MysqlConditionBuilder().where(
             ['Comment.id = %(id_Comment)s', 'Recipe.name LIKE %(name)s'], data={'id_Comment': 123, 'name': 'lolo'}
         ).where(
             ['Recipe.type = ITALIAN'], data={'rating': 0}
-        ).where([])
+        ).where(
+            []
+        ).build()
 
         query = condition.query()
         data = condition.data()

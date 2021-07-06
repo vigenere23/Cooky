@@ -8,10 +8,6 @@ class MysqlModel:
     def table_name(self) -> str:
         raise NotImplementedError()
 
-    @abstractmethod
-    def get_id(self) -> str:
-        raise NotImplementedError()
-
     def columns(self) -> List[str]:
         return list(self.__dict__.keys())
 

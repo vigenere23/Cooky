@@ -39,6 +39,13 @@ class MySQLExecutor:
         self.__cursor.execute(query, data)
 
 
+    def delete(self, table_name: str, id: int) -> None:
+        query = f'DELETE FROM {table_name} WHERE id = %(id)s'
+        data = {'id': id}
+
+        self.__cursor.execute(query, data)
+
+
     def __find(self, query: str, data: Any = None) -> Dict[str, Any]:
         self.__cursor.execute(query, data)
 

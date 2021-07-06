@@ -25,3 +25,8 @@ tasks:
     cmds:
       - task: start
       - task: logs
+
+  exec:
+    dir: '..'
+    cmds:
+      - docker compose exec db mysql -u root -p

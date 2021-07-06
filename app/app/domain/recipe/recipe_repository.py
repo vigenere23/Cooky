@@ -15,5 +15,9 @@ class RecipeRepository(ABC):
 
     # FUTURE: save domain Recipe instead
     @abstractmethod
-    def save(self, recipe: RecipeCreationDto):
+    def save(self, recipe: RecipeCreationDto) -> int:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def delete(self, recipe: Recipe) -> None:
         raise NotImplementedError()

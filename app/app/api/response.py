@@ -59,8 +59,3 @@ def handleExceptions(f):
             traceback.print_exc()
             return error(e)
     return wrapper
-
-
-def ensureIdentity(id, identity):
-    if id != identity.id:
-        raise ForbiddenException()

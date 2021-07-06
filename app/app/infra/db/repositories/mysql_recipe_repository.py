@@ -35,6 +35,9 @@ class MySQLRecipeRepository(RecipeRepository):
         recipe_models = self.__db_connection.transaction(self.__recipe_dao.find_all, name=name)
         return list(map(lambda recipe_model: Recipe(**asdict(recipe_model)), recipe_models))
 
+    def delete(self, recipe: Recipe) -> None:
+        self.__db_connection.transaction(self.__recipe_dao.delete, RecipeModel(**asdict(recipe)))
+
     def save(self, recipe: RecipeCreationDto) -> int:
         return self.__db_connection.transaction(self.__save_transaction, recipe)
 

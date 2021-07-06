@@ -12,9 +12,6 @@ class SomeModel(MysqlModel):
     def table_name(self) -> str:
         return 'SomeTable'
 
-    def get_id(self) -> str:
-        return self.id
-
 class MySQLModelTest(TestCase):
 
     def test_columns(self):

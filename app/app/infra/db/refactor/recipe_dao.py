@@ -1,5 +1,5 @@
 from typing import List
-from app.infra.db.refactor.mysql_condition import MysqlCondition
+from app.infra.db.refactor.mysql_condition_builder import MysqlConditionBuilder
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
 from app.infra.db.models.recipe.recipe_model import RecipeModel
 
@@ -21,7 +21,7 @@ class RecipeDao:
             conditions.append('LOWER(name) LIKE LOWER(%(name)s)')
             data['name'] = f'%{name}%'
 
-        condition = MysqlCondition().where(conditions, data=data)
+        condition = MysqlConditionBuilder().where(conditions, data=data).build()
         results = executor.find_all(self.__table_name, condition)
 
         return [RecipeModel(**result) for result in results]
@@ -31,3 +31,6 @@ class RecipeDao:
 
     def update(self, executor: MySQLExecutor, recipe_model: RecipeModel) -> None:
         executor.update(recipe_model)
+
+    def delete(self, executor: MySQLExecutor, recipe_model: RecipeModel) -> None:
+        executor.delete(recipe_model.table_name(), recipe_model.id)
