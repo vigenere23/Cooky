@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 from app.infra.db.models import BaseModel
 
 
+@dataclass
 class CartItemModel(BaseModel):
-    def __init__(self, id=None, id_Ingredient=None, id_Cart=None, multiplier=1, subCost=0.0):
-        self.id = id
-        self.id_Ingredient = id_Ingredient
-        self.id_Cart = id_Cart
-        self.multiplier = multiplier
-        self.subCost = subCost
+    id_Ingredient: int
+    id_Cart: int
+    multiplier: int = 1
+    subCost: float = 0.0
+    id: int = None

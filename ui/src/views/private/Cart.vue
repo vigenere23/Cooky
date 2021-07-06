@@ -70,18 +70,18 @@ export default {
       return quantities
     },
     async command () {
-      await API.createCommand(this.cart.id)
+      await API.createCommand()
       await this.loadCart()
       this.$router.push('/commands')
     },
     async updateItemQuantity (item, ingredientId, newValue) {
       if (item.multiplier !== newValue) {
-        await API.modifyCartItemQuantity(this.cart.id, ingredientId, newValue)
+        await API.modifyCartItemQuantity(ingredientId, newValue)
         await this.loadCart()
       }
     },
     async removeItem (ingredientId) {
-      await API.removeCartItem(this.cart.id, ingredientId)
+      await API.removeCartItem(ingredientId)
       await this.loadCart()
     },
     ...mapActions('user', ['loadCart'])

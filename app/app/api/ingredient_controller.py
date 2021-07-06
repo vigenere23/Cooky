@@ -4,7 +4,7 @@ from flask_jwt import jwt_required
 from . import response
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
-routes = Blueprint('ingredients', __name__)
+routes = Blueprint('ingredients', __name__, url_prefix='/ingredients')
 ingredientDao = IngredientDao()
 quantityUnitDao = QuantityUnitDao()
 
@@ -44,4 +44,4 @@ def getMesures(id):
 
 
 def register_routes(flask_app: Flask):
-    flask_app.register_blueprint(routes, url_prefix='/ingredients')
+    flask_app.register_blueprint(routes)

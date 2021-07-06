@@ -76,7 +76,7 @@ export const userModule = {
       }
     },
     async loadCart (context) {
-      const cart = await API.getUserCart(context.state.userId)
+      const cart = await API.getUserCart()
       if (!cart.error) {
         context.commit('setCart', cart)
       }
@@ -97,27 +97,26 @@ export const userModule = {
     },
     async addCartItem (context, ingredientId) {
       if (context.state.cart) {
-        await API.addCartItem(context.state.cart.id, ingredientId)
+        await API.addCartItem(ingredientId)
         context.dispatch('loadCart')
       }
     },
     async removeCartItem (context, ingredientId) {
       if (context.state.cart) {
-        await API.removeCartItem(context.state.cart.id, ingredientId)
+        await API.removeCartItem(ingredientId)
         context.dispatch('loadCart')
       }
     },
     async addLike (context, recipeId) {
-      await API.userLikeRecipe(context.state.userId, recipeId)
+      await API.userLikeRecipe(recipeId)
       context.dispatch('loadLikes')
     },
     async removeLike (context, recipeId) {
-      await API.userUnlikeRecipe(context.state.userId, recipeId)
+      await API.userUnlikeRecipe(recipeId)
       context.dispatch('loadLikes')
     },
     async addRating (context, { recipeId, rating }) {
       await API.userRateRecipe(
-        context.state.userId,
         recipeId,
         rating,
         context.getters.getUserRecipeRating(recipeId) !== 0)

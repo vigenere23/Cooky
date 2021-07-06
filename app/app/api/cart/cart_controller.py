@@ -3,12 +3,14 @@ from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from datetime import datetime
 from app.api import response
-from app.application.authentication import ensureIdentity
+from app.api.requests import parse_body
+from app.api.cart.cart_edition_requests import CartItemCreationRequest
+from app.application.authentication import ensureIdentity, ensure_same_user
 from app.infra.db.models.cart import CartItemModel, CommandModel
 from app.infra.db.daos.cart import CartDao, CartItemDao, CommandDao
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
-routes = Blueprint('carts', __name__)
+routes = Blueprint('carts', __name__, url_prefix='/carts')
 cartDao = CartDao()
 cartItemDao = CartItemDao()
 commandsDao = CommandDao()
@@ -52,17 +54,18 @@ def getCartItems(id):
 @routes.route('/<int:id>/items/', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
-def addItemToCart(id):
+@parse_body(CartItemCreationRequest)
+def addItemToCart(request_body: CartItemCreationRequest, id):
     cart = cartDao.getById(id)
-    ensureIdentity(cart.id_User, current_identity)
 
-    body = request.get_json(force=True)
-    data = {
-        'id_Ingredient': body['id_Ingredient'],
-        'id_Cart': id
-    }
-    cartItemModel = CartItemModel(**data)
+    ensure_same_user(cart.id_User, current_identity.id)
+
+    cartItemModel = CartItemModel(
+        id_Cart=id,
+        id_Ingredient=request_body.id_Ingredient
+    )
     result = cartItemDao.save(cartItemModel)
+
     return response.success(result)
 
 
@@ -71,7 +74,8 @@ def addItemToCart(id):
 @response.handleExceptions
 def deleteItemFromCart(id_Cart, id_Ingredient):
     cart = cartDao.getById(id_Cart)
-    ensureIdentity(cart.id_User, current_identity)
+
+    ensure_same_user(cart.id_User, current_identity.id)
 
     cartItemDao.deleteIngredient(id_Cart, id_Ingredient)
     return response.success("", status=204)
@@ -82,7 +86,8 @@ def deleteItemFromCart(id_Cart, id_Ingredient):
 @response.handleExceptions
 def modifyRecipeName(id_Cart, id_Ingredient):
     cart = cartDao.getById(id_Cart)
-    ensureIdentity(cart.id_User, current_identity)
+
+    ensure_same_user(cart.id_User, current_identity.id)
 
     body = request.get_json(force=True)
     result = cartItemDao.modifyQuantity(
@@ -90,12 +95,14 @@ def modifyRecipeName(id_Cart, id_Ingredient):
     return response.success(result)
 
 
+# FUTURE get cart for current user only (not for any user)
 @routes.route('/<int:id>/command/', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
 def createCommand(id):
     cart = cartDao.getById(id)
-    ensureIdentity(cart.id_User, current_identity)
+
+    ensure_same_user(cart.id_User, current_identity.id)
 
     data = {
         'id_Cart': id,
@@ -107,4 +114,4 @@ def createCommand(id):
 
 
 def register_routes(flask_app: Flask):
-    flask_app.register_blueprint(routes, url_prefix='/carts')
+    flask_app.register_blueprint(routes)

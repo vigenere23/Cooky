@@ -1,8 +1,9 @@
+from dataclasses import dataclass
 from app.infra.db.models import BaseModel
 
 
+@dataclass
 class CartModel(BaseModel):
-    def __init__(self, id=None, id_User=None, totalCost=0):
-        self.id = id
-        self.id_User = id_User
-        self.totalCost = totalCost
+    id_User: int
+    totalCost: float = 0.0
+    id: int = None

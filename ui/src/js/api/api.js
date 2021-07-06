@@ -42,8 +42,8 @@ export class API {
     return AxiosHelper.axiosGet(url)
   }
 
-  static async getUserCart (userId) {
-    const url = `${BASE_URL}/users/${userId}/cart`
+  static async getUserCart () {
+    const url = `${BASE_URL}/cart/`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -57,25 +57,18 @@ export class API {
     return AxiosHelper.axiosGet(url)
   }
 
-  static async userLikeRecipe (userId, recipeId) {
-    const body = {
-      'id_User': userId
-    }
+  static async userLikeRecipe (recipeId) {
     const url = `${BASE_URL}/recipes/${recipeId}/likes/`
-    return AxiosHelper.axiosPost(url, body)
+    return AxiosHelper.axiosPost(url)
   }
 
-  static async userUnlikeRecipe (userId, recipeId) {
-    const body = {
-      'id_User': userId
-    }
+  static async userUnlikeRecipe (recipeId) {
     const url = `${BASE_URL}/recipes/${recipeId}/likes/`
-    return AxiosHelper.axiosDelete(url, body)
+    return AxiosHelper.axiosDelete(url)
   }
 
-  static async userRateRecipe (userId, recipeId, rating, alreadyRated) {
+  static async userRateRecipe (recipeId, rating, alreadyRated) {
     const body = {
-      'id_User': userId,
       'value': rating
     }
     const url = `${BASE_URL}/recipes/${recipeId}/ratings/`
@@ -126,27 +119,26 @@ export class API {
     return AxiosHelper.axiosGet(url)
   }
 
-  static async getCartItems (id) {
-    const url = `${BASE_URL}/carts/${id}/items`
+  static async getCartItems () {
+    const url = `${BASE_URL}/cart/items/`
     return AxiosHelper.axiosGet(url)
   }
 
-  static async addCartItem (id, ingredientId) {
+  static async addCartItem (ingredientId) {
     const body = {
       'id_Ingredient': ingredientId
     }
-    const url = `${BASE_URL}/carts/${id}/items/`
+    const url = `${BASE_URL}/cart/items/`
     return AxiosHelper.axiosPost(url, body)
   }
 
-  static async removeCartItem (id, ingredientId) {
-    const url = `${BASE_URL}/carts/${id}/items/${ingredientId}/`
+  static async removeCartItem (ingredientId) {
+    const url = `${BASE_URL}/cart/items/${ingredientId}/`
     return AxiosHelper.axiosDelete(url)
   }
 
-  static async addRecipe (userId, name, description, directives, ingredients) {
+  static async addRecipe (name, description, directives, ingredients) {
     const body = {
-      'id_User': userId,
       name,
       description,
       directives,
@@ -156,9 +148,8 @@ export class API {
     return AxiosHelper.axiosPost(url, body)
   }
 
-  static async modifyRecipe (recipeId, userId, name, directives, ingredients) {
+  static async modifyRecipe (recipeId, name, directives, ingredients) {
     const body = {
-      'id_User': userId,
       name,
       directives,
       ingredients
@@ -167,17 +158,16 @@ export class API {
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async addRecipeComment (recipeId, userId, comment) {
+  static async addRecipeComment (recipeId, comment) {
     const body = {
-      'id_User': userId,
       'text': comment
     }
     const url = `${BASE_URL}/recipes/${recipeId}/comments/`
     return AxiosHelper.axiosPost(url, body)
   }
 
-  static async createCommand (cartId) {
-    const url = `${BASE_URL}/carts/${cartId}/command/`
+  static async createCommand () {
+    const url = `${BASE_URL}/cart/command/`
     return AxiosHelper.axiosPost(url)
   }
 
@@ -287,11 +277,11 @@ export class API {
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyCartItemQuantity (cartId, ingredientId, multiplier) {
+  static async modifyCartItemQuantity (ingredientId, multiplier) {
     const body = {
       'multiplier': multiplier
     }
-    const url = `${BASE_URL}/carts/${cartId}/items/${ingredientId}/`
+    const url = `${BASE_URL}/cart/items/${ingredientId}/`
     return AxiosHelper.axiosPut(url, body)
   }
 

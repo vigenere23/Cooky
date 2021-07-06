@@ -9,7 +9,7 @@ from app.infra.db.daos.cart import CartDao, CommandDao
 from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
 from app.app import recipe_finding_usecase
 
-routes = Blueprint('users', __name__)
+routes = Blueprint('users', __name__, url_prefix='/users')
 userDao = UserDao()
 likeRecipeDao = LikeRecipeDao()
 cartDao = CartDao()
@@ -175,7 +175,7 @@ def getRatings(id):
 def getUserCart(id):
     ensureIdentity(id, current_identity)
 
-    data = cartDao.getCurrentUserCart(id)
+    data = cartDao.get_cart_of(id)
     return response.success(data)
 
 
@@ -208,4 +208,4 @@ def getAddress(id):
 
 
 def register_routes(flask_app: Flask):
-    flask_app.register_blueprint(routes, url_prefix='/users')
+    flask_app.register_blueprint(routes)

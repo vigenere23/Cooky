@@ -15,7 +15,7 @@ from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.daos.user import UserDao
 from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase
 
-routes = Blueprint('recipes', __name__)
+routes = Blueprint('recipes', __name__, url_prefix='/recipes')
 like_recipe_dao = LikeRecipeDao()
 comment_dao = RecipeCommentDao()
 recipe_rating_dao = RecipeRatingDao()
@@ -197,4 +197,4 @@ def addCommentRecipe(request_body: CommentCreationRequest, recipe_id):
 
 
 def register_routes(flask_app: Flask):
-    flask_app.register_blueprint(routes, url_prefix='/recipes')
+    flask_app.register_blueprint(routes)

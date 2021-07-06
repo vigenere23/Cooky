@@ -159,7 +159,7 @@ export default {
       await this.addRating({ recipeId: this.id, rating })
     },
     async addComment (comment) {
-      await API.addRecipeComment(this.id, this.userId, comment)
+      await API.addRecipeComment(this.id, comment)
       await this.fetchComments()
     },
     async deleteRecipe () {

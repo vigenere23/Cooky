@@ -2,8 +2,6 @@ FROM node:lts-alpine
 
 WORKDIR /
 
-# RUN yarn global add @vue/cli
-
 COPY package.json ./
 COPY yarn.lock ./
 

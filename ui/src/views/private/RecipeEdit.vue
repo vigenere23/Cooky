@@ -81,7 +81,7 @@ export default {
 
   methods: {
     async submit () {
-      const response = await API.modifyRecipe(this.id, this.userId, this.name, this.directives, this.ingredients)
+      const response = await API.modifyRecipe(this.id, this.name, this.directives, this.ingredients)
       if (response) {
         this.$router.push(`/recipes/${response.id}`)
       }

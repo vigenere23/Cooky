@@ -8,7 +8,7 @@ class CartDao(BaseDao):
     def __init__(self):
         super().__init__('Cart', CartModel)
 
-    def getCurrentUserCart(self, userId):
+    def get_cart_of(self, userId) -> CartModel:
         query = 'SELECT * FROM Cart WHERE Cart.id_User = %(userId)s AND Cart.id NOT IN (SELECT Command.id_Cart FROM Command)'
         result = db.find(query, {'userId': userId})
         return self._mapper.from_tuple(result)

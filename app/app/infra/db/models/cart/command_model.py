@@ -1,9 +1,11 @@
+from dataclasses import dataclass
+from datetime import datetime
 from app.infra.db.models import BaseModel
 
 
+@dataclass
 class CommandModel(BaseModel):
-    def __init__(self, id=None, id_Cart=None, creationDate=None, arrivalDate=None):
-        self.id = id
-        self.id_Cart = id_Cart
-        self.creationDate = creationDate
-        self.arrivalDate = arrivalDate
+    id_Cart: int
+    creationDate: datetime
+    arrivalDate: datetime = None
+    id: int = None

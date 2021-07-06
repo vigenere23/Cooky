@@ -37,13 +37,15 @@ recipe_editing_usecase = RecipeEditingUseCase(recipe_repository)
 
 
 # FUTURE : will not need to be imported here after DIP refactor
-from app.api import main_controller, ingredient_controller, cart_controller, user_controller, auth
+from app.api import main_controller, ingredient_controller, user_controller, auth
 from app.api.recipe import recipe_controller
+from app.api.cart import cart_controller, cart_controller2
 
 
 main_controller.register_routes(flask_app)
 ingredient_controller.register_routes(flask_app)
 cart_controller.register_routes(flask_app)
+cart_controller2.register_routes(flask_app)
 recipe_controller.register_routes(flask_app)
 user_controller.register_routes(flask_app)
 auth.register_routes(flask_app)

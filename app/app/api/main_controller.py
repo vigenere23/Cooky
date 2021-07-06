@@ -56,4 +56,4 @@ def getUserInfos():
 
 
 def register_routes(flask_app: Flask):
-    flask_app.register_blueprint(routes, url_prefix='/')
+    flask_app.register_blueprint(routes)
