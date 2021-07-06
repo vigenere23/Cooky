@@ -29,7 +29,7 @@ user_dao = UserDao()
 @jwt_required()
 @response.handleExceptions
 def index():
-    recipes = recipe_finding_usecase.findAll(
+    recipes = recipe_finding_usecase.find_all(
         name=request.args.get('name')
     )
 
@@ -57,7 +57,7 @@ def addRecipe(request_data: RecipeCreationRequest):
 @jwt_required()
 @response.handleExceptions
 def getRecipeById(recipe_id):
-    recipe = recipe_finding_usecase.findById(recipe_id)
+    recipe = recipe_finding_usecase.find_by_id(recipe_id)
     user = user_dao.getById(recipe.id_User)
     data = {
         **asdict(recipe),
@@ -102,7 +102,7 @@ def modifyRecipeDirective(request_data: RecipeDirectivesEditionRequest, recipe_i
 @jwt_required()
 @response.handleExceptions
 def modifyIngredientQuantity(recipe_id):
-    recipe = recipe_finding_usecase.findById(recipe_id)
+    recipe = recipe_finding_usecase.find_by_id(recipe_id)
     ensureIdentity(recipe.id_User, current_identity)
 
     body = request.get_json(force=True)

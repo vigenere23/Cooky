@@ -13,6 +13,7 @@ from app.domain.recipe.recipe_repository import RecipeRepository
 
 
 class MySQLRecipeRepository(RecipeRepository):
+
     def __init__(
         self,
         db_connection: MysqlDBConnection,
@@ -23,6 +24,7 @@ class MySQLRecipeRepository(RecipeRepository):
         self.__recipe_dao = recipe_dao
         self.__recipe_ingredient_dao = recipe_ingredient_dao
 
+
     def find_by_id(self, recipe_id: int) -> Recipe:
         recipe_model = self.__db_connection.transaction(self.__recipe_dao.find, recipe_id)
 
@@ -31,19 +33,28 @@ class MySQLRecipeRepository(RecipeRepository):
 
         return Recipe(**asdict(recipe_model))
 
-    def find_all(self, name: str = None) -> List[Recipe]:
-        recipe_models = self.__db_connection.transaction(self.__recipe_dao.find_all, name=name)
+
+    def find_all(self, name: str = None, user_id: int = None) -> List[Recipe]:
+        recipe_models = self.__db_connection.transaction(self.__recipe_dao.find_all, name=name, user_id=user_id)
         return list(map(lambda recipe_model: Recipe(**asdict(recipe_model)), recipe_models))
+
+
+    def find_all_liked_by(self, user_id: int) -> List[Recipe]:
+        return self.__db_connection.transaction(self.__recipe_dao.find_all_liked_by, user_id)
+
 
     def delete(self, recipe: Recipe) -> None:
         self.__db_connection.transaction(self.__recipe_dao.delete, RecipeModel(**asdict(recipe)))
 
+
     def save(self, recipe: RecipeCreationDto) -> int:
         return self.__db_connection.transaction(self.__save_transaction, recipe)
+
 
     def replace(self, recipe: Recipe) -> Recipe:
         self.__db_connection.transaction(self.__recipe_dao.update, RecipeModel(**asdict(recipe)))
         return self.find_by_id(recipe.id)
+
 
     def __save_transaction(self, executor: MySQLExecutor, recipe: RecipeCreationDto) -> int:
         recipe_id = self.__recipe_dao.save(executor, RecipeModel(**recipe.recipe))

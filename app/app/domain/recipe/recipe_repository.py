@@ -10,7 +10,11 @@ class RecipeRepository(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def find_all(self, name: str = None) -> List[Recipe]:
+    def find_all(self, name: str = None, user_id: int = None) -> List[Recipe]:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def find_all_liked_by(self, user_id: int) -> List[Recipe]:
         raise NotImplementedError()
 
     # FUTURE: save domain Recipe instead

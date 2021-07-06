@@ -1,18 +1,16 @@
 from dataclasses import asdict
-from typing import List
 from flask import Blueprint, request
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.application.authentication import ensureIdentity
-from app.infra.db.models.recipe.recipe_model import RecipeModel
-from app.infra.db.daos.recipe import RecipeDao, RecipeRatingDao, LikeRecipeDao
+from app.infra.db.daos.recipe import RecipeRatingDao, LikeRecipeDao
 from app.infra.db.daos.cart import CartDao, CommandDao
 from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
+from app.app import recipe_finding_usecase
 
 routes = Blueprint('users', __name__)
 userDao = UserDao()
-recipeDao = RecipeDao()
 likeRecipeDao = LikeRecipeDao()
 cartDao = CartDao()
 commandDao = CommandDao()
@@ -148,7 +146,7 @@ def getOne(id):
 @jwt_required()
 @response.handleExceptions
 def getAllRecipesByUser(id):
-    recipes: List[RecipeModel] = recipeDao.getAllRecipesByUser(id)
+    recipes = recipe_finding_usecase.find_all(user_id=id)
     return response.success(list(map(asdict, recipes)))
 
 
@@ -156,17 +154,9 @@ def getAllRecipesByUser(id):
 @jwt_required()
 @response.handleExceptions
 def getLikeRecipes(id):
-    recipes = []
-    likes = likeRecipeDao.getLikeRecipeByUser(id)
-    for like in likes:
-        recipe: RecipeModel = recipeDao.getById(like.id_Recipe)
-        recipes.append({
-            'id': recipe.id,
-            'name': recipe.name,
-            'description': recipe.description
-        })
+    recipes = recipe_finding_usecase.find_all_liked_by(id)
 
-    return response.success(recipes)
+    return response.success(list(map(asdict, recipes)))
 
 
 @routes.route('/<int:id>/ratings', methods=['GET'])

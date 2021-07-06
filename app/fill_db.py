@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
-from app.infra.db.daos.recipe import LikeRecipeDao, RecipeCommentDao, RecipeDao, RecipeRatingDao
-from app.infra.db.models.recipe import RecipeIngredientModel, RecipeModel, LikeRecipeModel, CommentModel, RatingModel
+from app.infra.db.daos.recipe import LikeRecipeDao, RecipeCommentDao, RecipeRatingDao
+from app.infra.db.models.recipe import LikeRecipeModel, CommentModel, RatingModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.models.ingredient import IngredientModel
 from app.infra.db.daos.user import UserDao, AddressDao, AccountDao
@@ -12,7 +12,6 @@ from app.infra.db.models.cart import CartModel, CartItemModel, CommandModel
 userDao = UserDao()
 ingredientDao = IngredientDao()
 cartItemDao = CartItemDao()
-recipeDao = RecipeDao()
 quantityUnitDao = QuantityUnitDao()
 ratingDao = RecipeRatingDao()
 commentDao = RecipeCommentDao()
@@ -59,33 +58,33 @@ def generateCartItems():
             )
             cartItemDao.save(cartItemModel)
 
-def generateRecipes():
-    for i in range(100):
-        ingredients = []
-        ingredient_ids = []
-        for _ in range(random.randint(5, 10)):
-            ingredient_id = random.randint(1, 100)
-            while ingredient_id in ingredient_ids:
-                ingredient_id = random.randint(1, 100)
-            ingredient_ids.append(ingredient_id)
+# def generateRecipes():
+#     for i in range(100):
+#         ingredients = []
+#         ingredient_ids = []
+#         for _ in range(random.randint(5, 10)):
+#             ingredient_id = random.randint(1, 100)
+#             while ingredient_id in ingredient_ids:
+#                 ingredient_id = random.randint(1, 100)
+#             ingredient_ids.append(ingredient_id)
 
-            quantities = quantityUnitDao.getAllQuantityUnitsByIngredientId(ingredient_id)
-            quantity_ids = [q.id for q in quantities]
+#             quantities = quantityUnitDao.getAllQuantityUnitsByIngredientId(ingredient_id)
+#             quantity_ids = [q.id for q in quantities]
 
-            recipeIngredientModel = RecipeIngredientModel(
-                id_Ingredient=ingredient_id,
-                id_QuantityUnit=random.choice(quantity_ids),
-                totalQuantity=random.randint(1, 10)
-            )
-            ingredients.append(recipeIngredientModel)
+#             recipeIngredientModel = RecipeIngredientModel(
+#                 id_Ingredient=ingredient_id,
+#                 id_QuantityUnit=random.choice(quantity_ids),
+#                 totalQuantity=random.randint(1, 10)
+#             )
+#             ingredients.append(recipeIngredientModel)
 
-        recipeModel = RecipeModel(
-            id_User=random.randint(1, 100),
-            name=words[i],
-            directives=lorem,
-            description=lorem
-        )
-        recipeDao.save(recipeModel, ingredients)
+#         recipeModel = RecipeModel(
+#             id_User=random.randint(1, 100),
+#             name=words[i],
+#             directives=lorem,
+#             description=lorem
+#         )
+#         recipeDao.save(recipeModel, ingredients)
 
 def generateRatings():
     for i in range(1, 101):
@@ -174,8 +173,8 @@ if __name__ == "__main__":
     generateIngredients()
     print(' - 3/10 generating cart items...')
     generateCartItems()
-    print(' - 4/10 generating recipes...')
-    generateRecipes()
+    # print(' - 4/10 generating recipes...')
+    # generateRecipes()
     print(' - 5/10 generating ratings...')
     generateRatings()
     print(' - 6/10 generating likes...')
