@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask import Flask
 from flask_jwt import jwt_required
-from . import response
+from app.api import response
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
 routes = Blueprint('ingredients', __name__, url_prefix='/ingredients')

@@ -1,8 +1,11 @@
-from app.infra.db.models import BaseModel
+from dataclasses import dataclass
+from app.infra.db.refactor.mysql_model import MysqlModel
 
 
-class UserModel(BaseModel):
+@dataclass
+class UserModel(MysqlModel):
+    username: str
+    id: int = None
 
-    def __init__(self, id=None, username=None):
-        self.id = id
-        self.username = username
+    def table_name(self) -> str:
+        return 'User'

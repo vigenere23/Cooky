@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from app.infra.db.refactor.mysql_condition_builder import MysqlConditionBuilder
 from app.infra.db.refactor.mysql_executor import MySQLExecutor
 from app.infra.db.models.recipe.recipe_model import RecipeModel
@@ -10,10 +10,10 @@ class RecipeDao:
         self.__table_name = 'Recipe'
 
 
-    def find(self, executor: MySQLExecutor, recipe_id: int) -> RecipeModel:
+    def find(self, executor: MySQLExecutor, recipe_id: int) -> Optional[RecipeModel]:
         result = executor.find_by_id(self.__table_name, recipe_id)
 
-        return RecipeModel(**result)
+        return RecipeModel(**result) if result else None
 
 
     def find_all(self, executor: MySQLExecutor, name: str = None, user_id: int = None) -> List[RecipeModel]:

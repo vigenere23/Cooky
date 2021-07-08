@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from app.infra.db.models import BaseModel
 
 
 @dataclass
-class CartItemModel(BaseModel):
+class CartItemModel:
     id_Ingredient: int
     id_Cart: int
     multiplier: int = 1

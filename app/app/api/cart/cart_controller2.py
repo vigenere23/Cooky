@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
@@ -40,7 +41,7 @@ def get_current_user_cart_items():
         quantity = f'{int(ingredient.baseQuantity)} {quantity_unit.abbreviation}'
 
         data.append({
-            **cartItem.serialize(),
+            **asdict(cartItem),
             'name': ingredient.name,
             'baseCost': ingredient.baseCost,
             'quantity': quantity

@@ -1,11 +1,11 @@
-from app.infra.db.models import BaseModel
+from dataclasses import dataclass
 
 
-class IngredientModel(BaseModel):
-    def __init__(self, id=None, id_IngredientType=None, id_QuantityUnit=None, name=None, baseCost=None, baseQuantity=1):
-        self.id = id
-        self.id_IngredientType = id_IngredientType
-        self.id_QuantityUnit = id_QuantityUnit
-        self.name = name
-        self.baseCost = baseCost
-        self.baseQuantity = baseQuantity
+@dataclass
+class IngredientModel:
+    id_IngredientType: int
+    id_QuantityUnit: int
+    name: str
+    baseCost: float
+    baseQuantity: int = 1
+    id: int = None

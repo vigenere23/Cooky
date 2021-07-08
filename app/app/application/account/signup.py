@@ -1,4 +1,6 @@
+from dataclasses import asdict
 from app.app import transaction
+from app.application.account.signup_dto import SignupDto
 from app.infra.db.daos.user import UserDao, AddressDao, AccountDao
 from app.infra.db.models.user import UserModel, AddressModel, AccountModel
 
@@ -8,10 +10,10 @@ addressDao = AddressDao()
 accountDao = AccountDao()
 
 
-def register(user, address, account) -> UserModel:
-    userModel = UserModel(**user)
-    addressModel = AddressModel(**address)
-    accountModel = AccountModel(**account)
+def register(dto: SignupDto) -> UserModel:
+    userModel = UserModel(**asdict(dto.user))
+    accountModel = AccountModel(**asdict(dto.account))
+    addressModel = AddressModel(**asdict(dto.address))
 
     userModel = transaction.execute(lambda: register_transaction(userModel, addressModel, accountModel))
 

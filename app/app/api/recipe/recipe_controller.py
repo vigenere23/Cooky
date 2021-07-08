@@ -61,7 +61,7 @@ def getRecipeById(recipe_id):
     data = {
         **asdict(recipe),
         'user': {
-            **user.serialize()
+            **asdict(user)
         }
     }
     return response.success(data)
@@ -123,7 +123,7 @@ def getIngredientsByRecipe(recipe_id):
         data.append({
             'id': ingredient.id,
             'name': ingredient.name,
-            'quantityUnit': quantityUnit.serialize(),
+            'quantityUnit': asdict(quantityUnit),
             'totalQuantity': recipeIngredient.totalQuantity
         })
 
@@ -139,8 +139,8 @@ def getRecipeComments(recipe_id):
     for comment in comments:
         user = user_dao.getById(comment.id_User)
         data.append({
-            **comment.serialize(),
-            'user': user.serialize()
+            **asdict(comment),
+            'user': asdict(user)
         })
     return response.success(data)
 

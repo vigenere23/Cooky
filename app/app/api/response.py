@@ -1,3 +1,4 @@
+from dataclasses import asdict, is_dataclass
 import flask
 import traceback
 from functools import wraps
@@ -15,16 +16,10 @@ def __create(data, status):
 
 
 def __json(data):
-    if isinstance(data, list):
-        try:
-            data = [x.serialize() for x in data]
-        except Exception:
-            pass
-    else:
-        try:
-            data = data.serialize()
-        except Exception:
-            pass
+    if is_dataclass(data):
+        data = asdict(data)
+    elif isinstance(data, list) and len(data) > 0 and is_dataclass(data[0]):
+        data = [asdict(item) for item in data]
 
     return flask.json.dumps(data)
 

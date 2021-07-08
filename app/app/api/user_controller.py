@@ -36,8 +36,8 @@ def getAccount(id):
     del account.password
     address = addressDao.getById(account.id_Address)
     return response.success({
-        **account.serialize(),
-        'address': address.serialize()
+        **asdict(account),
+        'address': asdict(address)
     })
 
 
@@ -137,7 +137,7 @@ def modifyDoorNumber(id):
 @routes.route('/<int:id>', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
-def getOne(id):
+def getUser(id):
     data = userDao.getById(id)
     return response.success(data)
 
@@ -190,7 +190,7 @@ def getUserCommands(id):
     for command in commands:
         cart = cartDao.getById(command.id_Cart)
         data.append({
-            **command.serialize(),
+            **asdict(command),
             'totalCost': cart.totalCost
         })
     return response.success(data)
