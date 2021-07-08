@@ -14,6 +14,12 @@ class UserRepository(ABC):
         raise NotImplementedError()
 
     # FUTURE change to domain entity
+    # FUTURE make Account children of User (aggregate)
+    @abstractmethod
+    def find_account_of(self, user_id: int) -> AccountModel:
+        raise NotImplementedError()
+
+    # FUTURE change to domain entity
     @abstractmethod
     def save(self, account: AccountModel, user: UserModel, address: AddressModel) -> UserModel:
         raise NotImplementedError()

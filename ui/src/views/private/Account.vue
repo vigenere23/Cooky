@@ -72,14 +72,14 @@ export default {
     let data = await API.getUserById(this.userId)
     this.username = data.username
 
-    let dataAccount = await API.getAccount(this.userId)
+    let dataAccount = await API.getAccount()
     if (dataAccount && !dataAccount.error) {
       this.email = dataAccount.email
       this.firstname = dataAccount.firstName
       this.lastname = dataAccount.lastName
     }
 
-    let dataAddress = await API.getAddress(this.userId)
+    let dataAddress = await API.getAddress()
     if (dataAddress && !dataAddress.error) {
       this.apartment = dataAddress.apartment
       this.city = dataAddress.city

@@ -38,7 +38,6 @@ import LabelInput from '@/components/inputs/LabelInput'
 import IngredientEditor from '@/components/ingredients/IngredientEditor'
 import Button from '@/components/buttons/Button'
 import { API } from '@/js/api/api'
-import { mapState } from 'vuex'
 
 export default {
 
@@ -51,7 +50,6 @@ export default {
   },
 
   computed: {
-    ...mapState('user', ['userId']),
     enableButton () {
       return this.name && this.directives && this.ingredients.length
     }

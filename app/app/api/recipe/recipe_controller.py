@@ -7,13 +7,12 @@ from app.api.recipe.recipe_creation_request import RecipeCreationRequest
 from app.api.recipe.recipe_edition_requests import CommentCreationRequest, RatingCreationRequest, RecipeDirectivesEditionRequest, RecipeNameEditionRequest
 from app.api.requests import parse_body
 from app.application.recipe.recipe_edition_dto import RecipeEditionDto
-from app.application.authentication import ensureIdentity
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.daos.recipe import RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.daos.user import UserDao
-from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase
+from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase, authentication_use_case
 
 routes = Blueprint('recipes', __name__, url_prefix='/recipes')
 like_recipe_dao = LikeRecipeDao()
@@ -102,7 +101,8 @@ def modifyRecipeDirective(request_data: RecipeDirectivesEditionRequest, recipe_i
 @response.handleExceptions
 def modifyIngredientQuantity(recipe_id):
     recipe = recipe_finding_usecase.find_by_id(recipe_id)
-    ensureIdentity(recipe.id_User, current_identity)
+
+    authentication_use_case.ensure_same_user(recipe.id_User, current_identity.id)
 
     body = request.get_json(force=True)
     result = recipe_ingredient_dao.modifyQuantity(

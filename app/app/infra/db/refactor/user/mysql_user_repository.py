@@ -38,6 +38,10 @@ class MysqlUserRepository(UserRepository):
 
             return user
 
+    def find_account_of(self, user_id: int) -> AccountModel:
+        with self.__db_connection.transaction() as executor:
+            return self.__account_dao.find_by_user_id(executor, user_id)
+
     def save(self, account: AccountModel, user: UserModel, address: AddressModel) -> UserModel:
         with self.__db_connection.transaction() as executor:
             user_id = self.__user_dao.save(executor, user)

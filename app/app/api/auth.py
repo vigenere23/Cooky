@@ -1,10 +1,10 @@
 from flask.app import Flask
 from flask_jwt import JWT
-from app.application.authentication import authenticate, get_identity
+from app.app import authentication_use_case
 from app.api import response
 
 def register_routes(flask_app: Flask):
-    jwt = JWT(flask_app, authenticate, get_identity)
+    jwt = JWT(flask_app, authentication_use_case.authenticate, authentication_use_case.get_identity)
 
     @jwt.auth_response_handler
     @response.handleExceptions

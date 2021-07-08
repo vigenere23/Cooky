@@ -85,7 +85,6 @@ import { API } from '@/js/api/api'
 import { EventBus } from '@/js/eventbus'
 import Button from '@/components/buttons/Button'
 import LabelInput from '@/components/inputs/LabelInput'
-import { mapState } from 'vuex'
 
 export default {
   name: 'AccountEdit',
@@ -94,8 +93,6 @@ export default {
     Button,
     LabelInput
   },
-
-  computed: mapState('user', ['userId']),
 
   data () {
     return {
@@ -113,7 +110,7 @@ export default {
   methods: {
     async changePassword () {
       if (this.password === this.confirmPassword && this.password.length !== 0) {
-        API.modifyPassword(this.userId, this.password)
+        API.modifyPassword(this.password)
         EventBus.$emit('toast', { type: 'success', message: 'Password modified' })
         this.password = ''
         this.confirmPassword = ''
@@ -125,7 +122,7 @@ export default {
 
     async changeCountry () {
       if (this.country.length !== 0) {
-        API.modifyCountry(this.userId, this.country)
+        API.modifyCountry(this.country)
         EventBus.$emit('toast', { type: 'success', message: 'Country modified' })
         this.country = ''
       } else {
@@ -135,7 +132,7 @@ export default {
 
     async changeCity () {
       if (this.city.length !== 0) {
-        API.modifyCity(this.userId, this.city)
+        API.modifyCity(this.city)
         EventBus.$emit('toast', { type: 'success', message: 'City modified' })
         this.city = ''
       } else {
@@ -144,7 +141,7 @@ export default {
 
     async changeStreet () {
       if (this.street.length !== 0) {
-        API.modifyStreet(this.userId, this.street)
+        API.modifyStreet(this.street)
         EventBus.$emit('toast', { type: 'success', message: 'Street modified' })
         this.street = ''
       } else {
@@ -153,14 +150,14 @@ export default {
     },
 
     async changeApartment () {
-      API.modifyApartment(this.userId, this.apartment)
+      API.modifyApartment(this.apartment)
       EventBus.$emit('toast', { type: 'success', message: 'Apartment modified' })
       this.apartment = ''
     },
 
     async changeDoorNumber () {
       if (this.doorNumber.length !== 0 && !parseInt(this.doorNumber).isNaN) {
-        API.modifyDoorNumber(this.userId, this.doorNumber)
+        API.modifyDoorNumber(this.doorNumber)
         EventBus.$emit('toast', { type: 'success', message: 'Door number modified' })
         this.doorNumber = ''
       } else {
@@ -170,7 +167,7 @@ export default {
 
     async changeEmail () {
       if (this.email.length !== 0) {
-        API.modifyEmail(this.userId, this.email)
+        API.modifyEmail(this.email)
         EventBus.$emit('toast', { type: 'success', message: 'Email modified' })
         this.email = ''
       } else {

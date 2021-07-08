@@ -27,18 +27,13 @@ export class API {
     return AxiosHelper.axiosGet(url)
   }
 
-  static async getAccount (id) {
-    const url = `${BASE_URL}/users/${id}/account`
+  static async getAccount () {
+    const url = `${BASE_URL}/account`
     return AxiosHelper.axiosGet(url)
   }
 
-  static async getProfile (id) {
-    const url = `${BASE_URL}/users/${id}/profile`
-    return AxiosHelper.axiosGet(url)
-  }
-
-  static async getAddress (id) {
-    const url = `${BASE_URL}/users/${id}/address`
+  static async getAddress () {
+    const url = `${BASE_URL}/account/address`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -47,8 +42,8 @@ export class API {
     return AxiosHelper.axiosGet(url)
   }
 
-  static async getUserCommands (userId) {
-    const url = `${BASE_URL}/users/${userId}/commands`
+  static async getUserCommands () {
+    const url = `${BASE_URL}/commands`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -109,7 +104,7 @@ export class API {
   }
 
   static async getIngredientsByName (name) {
-    const url = `${BASE_URL}/ingredients/`
+    const url = `${BASE_URL}/ingredients`
     const params = { name }
     return AxiosHelper.axiosGet(url, { params })
   }
@@ -201,63 +196,63 @@ export class API {
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyFirstName (userId, firstName) {
+  static async modifyFirstName (firstName) {
     const body = {
       'firstName': firstName
     }
-    const url = `${BASE_URL}/users/${userId}/firstName`
+    const url = `${BASE_URL}/account/firstName`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyLastName (userId, lastName) {
+  static async modifyLastName (lastName) {
     const body = {
       'lastName': lastName
     }
-    const url = `${BASE_URL}/users/${userId}/lastName`
+    const url = `${BASE_URL}/account/lastName`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyEmail (userId, email) {
+  static async modifyEmail (email) {
     const body = {
       'email': email
     }
-    const url = `${BASE_URL}/users/${userId}/email`
+    const url = `${BASE_URL}/account/email`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyPassword (userId, password) {
+  static async modifyPassword (password) {
     const body = {
       'password': password
     }
-    const url = `${BASE_URL}/users/${userId}/password`
+    const url = `${BASE_URL}/account/password`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyCountry (userId, country) {
+  static async modifyCountry (country) {
     const body = {
       'country': country
     }
-    const url = `${BASE_URL}/users/${userId}/country`
+    const url = `${BASE_URL}/account/country`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyCity (userId, city) {
+  static async modifyCity (city) {
     const body = {
       'city': city
     }
-    const url = `${BASE_URL}/users/${userId}/city`
+    const url = `${BASE_URL}/account/city`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyStreet (userId, street) {
+  static async modifyStreet (street) {
     const body = {
       'street': street
     }
-    const url = `${BASE_URL}/users/${userId}/street`
+    const url = `${BASE_URL}/account/street`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyApartment (userId, apartment) {
+  static async modifyApartment (apartment) {
     let apart = apartment
     if (apart.length < 1) {
       apart = null
@@ -265,15 +260,15 @@ export class API {
     const body = {
       'apartment': apart
     }
-    const url = `${BASE_URL}/users/${userId}/apartment`
+    const url = `${BASE_URL}/account/apartment`
     return AxiosHelper.axiosPut(url, body)
   }
 
-  static async modifyDoorNumber (userId, number) {
+  static async modifyDoorNumber (number) {
     const body = {
       'number': number
     }
-    const url = `${BASE_URL}/users/${userId}/doorNumber`
+    const url = `${BASE_URL}/account/doorNumber`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -291,7 +286,7 @@ export class API {
   }
 
   static async signup (data) {
-    const url = `${BASE_URL}/signup`
+    const url = `${BASE_URL}/account`
     return AxiosHelper.axiosPost(url, data)
   }
 }

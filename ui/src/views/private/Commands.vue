@@ -12,7 +12,6 @@
 <script>
 import DataTable from '@/components/lists/DataTable'
 import { API } from '@/js/api/api'
-import { mapState } from 'vuex'
 
 export default {
 
@@ -21,8 +20,6 @@ export default {
   components: {
     DataTable
   },
-
-  computed: mapState('user', ['userId']),
 
   data () {
     return {
@@ -46,7 +43,7 @@ export default {
   methods: {
     async fetchData () {
       this.commands = null
-      this.commands = await API.getUserCommands(this.userId)
+      this.commands = await API.getUserCommands()
     },
     parseDate: (date) => {
       return date ? date.split(' ').slice(0, 4).join(' ') : '---'

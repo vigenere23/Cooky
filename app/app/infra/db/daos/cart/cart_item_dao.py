@@ -20,9 +20,6 @@ class CartItemDao(BaseDao):
 
     def deleteIngredient(self, id_Cart, id_Ingredient):
         query = 'DELETE FROM CartItem WHERE id_Cart = %(id_Cart)s AND id_Ingredient = %(id_Ingredient)s'
-        print(query)
-        print(id_Cart)
-        print(id_Ingredient)
         db.delete(query, {"id_Cart": id_Cart, "id_Ingredient": id_Ingredient})
 
     def modifyQuantity(self, multiplier, id_Cart, id_Ingredient):
