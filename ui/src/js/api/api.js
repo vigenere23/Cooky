@@ -3,7 +3,7 @@ const BASE_URL = process.env.VUE_APP_API_URL || 'http://127.0.0.1:5000'
 
 export class API {
   static async getCurrentUserInfos () {
-    const url = `${BASE_URL}/userInfos/`
+    const url = `${BASE_URL}/userInfos`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -43,7 +43,7 @@ export class API {
   }
 
   static async getUserCart () {
-    const url = `${BASE_URL}/cart/`
+    const url = `${BASE_URL}/cart`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -58,12 +58,12 @@ export class API {
   }
 
   static async userLikeRecipe (recipeId) {
-    const url = `${BASE_URL}/recipes/${recipeId}/likes/`
+    const url = `${BASE_URL}/recipes/${recipeId}/likes`
     return AxiosHelper.axiosPost(url)
   }
 
   static async userUnlikeRecipe (recipeId) {
-    const url = `${BASE_URL}/recipes/${recipeId}/likes/`
+    const url = `${BASE_URL}/recipes/${recipeId}/likes`
     return AxiosHelper.axiosDelete(url)
   }
 
@@ -71,14 +71,14 @@ export class API {
     const body = {
       'value': rating
     }
-    const url = `${BASE_URL}/recipes/${recipeId}/ratings/`
+    const url = `${BASE_URL}/recipes/${recipeId}/ratings`
     return alreadyRated
       ? AxiosHelper.axiosPut(url, body)
       : AxiosHelper.axiosPost(url, body)
   }
 
   static async getRecipes () {
-    const url = `${BASE_URL}/recipes/`
+    const url = `${BASE_URL}/recipes`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -88,7 +88,7 @@ export class API {
   }
 
   static async getRecipesByName (name) {
-    const url = `${BASE_URL}/recipes/`
+    const url = `${BASE_URL}/recipes`
     const params = { name }
     return AxiosHelper.axiosGet(url, { params })
   }
@@ -104,7 +104,7 @@ export class API {
   }
 
   static async getIngredients () {
-    const url = `${BASE_URL}/ingredients/`
+    const url = `${BASE_URL}/ingredients`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -120,7 +120,7 @@ export class API {
   }
 
   static async getCartItems () {
-    const url = `${BASE_URL}/cart/items/`
+    const url = `${BASE_URL}/cart/items`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -128,12 +128,12 @@ export class API {
     const body = {
       'id_Ingredient': ingredientId
     }
-    const url = `${BASE_URL}/cart/items/`
+    const url = `${BASE_URL}/cart/items`
     return AxiosHelper.axiosPost(url, body)
   }
 
   static async removeCartItem (ingredientId) {
-    const url = `${BASE_URL}/cart/items/${ingredientId}/`
+    const url = `${BASE_URL}/cart/items/${ingredientId}`
     return AxiosHelper.axiosDelete(url)
   }
 
@@ -144,7 +144,7 @@ export class API {
       directives,
       ingredients
     }
-    const url = `${BASE_URL}/recipes/`
+    const url = `${BASE_URL}/recipes`
     return AxiosHelper.axiosPost(url, body)
   }
 
@@ -154,7 +154,7 @@ export class API {
       directives,
       ingredients
     }
-    const url = `${BASE_URL}/recipes/${recipeId}/`
+    const url = `${BASE_URL}/recipes/${recipeId}`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -162,17 +162,17 @@ export class API {
     const body = {
       'text': comment
     }
-    const url = `${BASE_URL}/recipes/${recipeId}/comments/`
+    const url = `${BASE_URL}/recipes/${recipeId}/comments`
     return AxiosHelper.axiosPost(url, body)
   }
 
   static async createCommand () {
-    const url = `${BASE_URL}/cart/command/`
+    const url = `${BASE_URL}/cart/command`
     return AxiosHelper.axiosPost(url)
   }
 
   static async deleteRecipe (recipeId) {
-    const url = `${BASE_URL}/recipes/${recipeId}/`
+    const url = `${BASE_URL}/recipes/${recipeId}`
     return AxiosHelper.axiosDelete(url)
   }
 
@@ -180,7 +180,7 @@ export class API {
     const body = {
       'name': recipeName
     }
-    const url = `${BASE_URL}/recipes/${recipeId}/name/`
+    const url = `${BASE_URL}/recipes/${recipeId}/name`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -188,7 +188,7 @@ export class API {
     const body = {
       'directives': directives
     }
-    const url = `${BASE_URL}/recipes/${recipeId}/directives/`
+    const url = `${BASE_URL}/recipes/${recipeId}/directives`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -197,7 +197,7 @@ export class API {
       'id_Ingredient': ingredientId,
       'totalQuantity': totalQuantity
     }
-    const url = `${BASE_URL}/recipes/${recipeId}/ingredientQuantity/`
+    const url = `${BASE_URL}/recipes/${recipeId}/ingredientQuantity`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -205,7 +205,7 @@ export class API {
     const body = {
       'firstName': firstName
     }
-    const url = `${BASE_URL}/users/${userId}/firstName/`
+    const url = `${BASE_URL}/users/${userId}/firstName`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -213,7 +213,7 @@ export class API {
     const body = {
       'lastName': lastName
     }
-    const url = `${BASE_URL}/users/${userId}/lastName/`
+    const url = `${BASE_URL}/users/${userId}/lastName`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -221,7 +221,7 @@ export class API {
     const body = {
       'email': email
     }
-    const url = `${BASE_URL}/users/${userId}/email/`
+    const url = `${BASE_URL}/users/${userId}/email`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -229,7 +229,7 @@ export class API {
     const body = {
       'password': password
     }
-    const url = `${BASE_URL}/users/${userId}/password/`
+    const url = `${BASE_URL}/users/${userId}/password`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -281,17 +281,17 @@ export class API {
     const body = {
       'multiplier': multiplier
     }
-    const url = `${BASE_URL}/cart/items/${ingredientId}/`
+    const url = `${BASE_URL}/cart/items/${ingredientId}`
     return AxiosHelper.axiosPut(url, body)
   }
 
   static async login (data) {
-    const url = `${BASE_URL}/login/`
+    const url = `${BASE_URL}/login`
     return AxiosHelper.axiosPost(url, data)
   }
 
   static async signup (data) {
-    const url = `${BASE_URL}/signup/`
+    const url = `${BASE_URL}/signup`
     return AxiosHelper.axiosPost(url, data)
   }
 }

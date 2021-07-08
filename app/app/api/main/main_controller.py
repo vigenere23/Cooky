@@ -1,25 +1,24 @@
-from app.infra.db.models.user.user_model import UserModel
 from dataclasses import asdict
-from typing import cast
 from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
+from app.app import signup_usecase
 from app.api import response
 from app.api.requests import parse_body
 from app.api.main.account_creation_request import AccountCreationRequest
 from app.application.account.signup_dto import AccountInfo, AddressInfo, SignupDto, UserInfo
-from app.application.account import signup
+from app.infra.db.models.user.user_model import UserModel
 
 
-routes = Blueprint('main', __name__)
+routes = Blueprint('main', __name__, url_prefix='/')
 
 
-@routes.route('/')
+@routes.route('')
 def index():
     return response.success("App is running correctly")
 
 
-@routes.route('/signup/', methods=['POST'])
+@routes.route('/signup', methods=['POST'])
 @response.handleExceptions
 @parse_body(AccountCreationRequest)
 def signup_route(request_data: AccountCreationRequest):
@@ -38,7 +37,7 @@ def signup_route(request_data: AccountCreationRequest):
             account=AccountInfo(**asdict(request_data.account)),
             address=AddressInfo(**asdict(request_data.address))
         )
-        result = signup.register(dto)
+        result = signup_usecase.register_new_user(dto)
         return response.success(result)
     except ValueError as e:
         print(e)
@@ -47,7 +46,7 @@ def signup_route(request_data: AccountCreationRequest):
         raise e
 
 
-@routes.route('/userInfos/')
+@routes.route('/userInfos')
 @jwt_required()
 @response.handleExceptions
 def getUserInfos():

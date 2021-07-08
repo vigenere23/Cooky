@@ -5,5 +5,15 @@ class UserRepository(ABC):
 
     # FUTURE change to domain entity
     @abstractmethod
-    def save(self, account: AccountModel, user: UserModel, address: AddressModel):
+    def find_by_username(self, username: str) -> UserModel:
+        raise NotImplementedError()
+
+    # FUTURE change to domain entity
+    @abstractmethod
+    def find_by_id(self, user_id: int) -> UserModel:
+        raise NotImplementedError()
+
+    # FUTURE change to domain entity
+    @abstractmethod
+    def save(self, account: AccountModel, user: UserModel, address: AddressModel) -> UserModel:
         raise NotImplementedError()

@@ -9,7 +9,7 @@ ingredientDao = IngredientDao()
 quantityUnitDao = QuantityUnitDao()
 
 
-@routes.route('/')
+@routes.route('')
 @jwt_required()
 @response.handleExceptions
 def index():

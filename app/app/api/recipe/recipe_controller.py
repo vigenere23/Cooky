@@ -25,7 +25,7 @@ quantity_unit_dao = QuantityUnitDao()
 user_dao = UserDao()
 
 
-@routes.route('/', methods=['GET'])
+@routes.route('', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def index():
@@ -36,7 +36,7 @@ def index():
     return response.success(list(map(asdict, recipes)))
 
 
-@routes.route('/', methods=['POST'])
+@routes.route('', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(RecipeCreationRequest)
@@ -67,7 +67,7 @@ def getRecipeById(recipe_id):
     return response.success(data)
 
 
-@routes.route('/<int:recipe_id>/', methods=['DELETE'])
+@routes.route('/<int:recipe_id>', methods=['DELETE'])
 @jwt_required()
 @response.handleExceptions
 def deleteRecipe(recipe_id):
@@ -75,7 +75,7 @@ def deleteRecipe(recipe_id):
     return response.empty()
 
 
-@routes.route('/<int:recipe_id>/name/', methods=['PUT'])
+@routes.route('/<int:recipe_id>/name', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(RecipeNameEditionRequest)
@@ -86,7 +86,7 @@ def modifyRecipeName(request_data: RecipeNameEditionRequest, recipe_id):
     return response.success(asdict(modified_recipe))
 
 
-@routes.route('/<int:recipe_id>/directives/', methods=['PUT'])
+@routes.route('/<int:recipe_id>/directives', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(RecipeDirectivesEditionRequest)
@@ -97,7 +97,7 @@ def modifyRecipeDirective(request_data: RecipeDirectivesEditionRequest, recipe_i
     return response.success(asdict(modified_recipe))
 
 
-@routes.route('/<int:recipe_id>/ingredientQuantity/', methods=['PUT'])
+@routes.route('/<int:recipe_id>/ingredientQuantity', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
 def modifyIngredientQuantity(recipe_id):
@@ -145,7 +145,7 @@ def getRecipeComments(recipe_id):
     return response.success(data)
 
 
-@routes.route('/<int:recipe_id>/likes/', methods=['POST', 'DELETE'])
+@routes.route('/<int:recipe_id>/likes', methods=['POST', 'DELETE'])
 @jwt_required()
 @response.handleExceptions
 def likeRecipe(recipe_id):
@@ -162,7 +162,7 @@ def likeRecipe(recipe_id):
         return response.empty()
 
 
-@routes.route('/<int:recipe_id>/ratings/', methods=['POST', 'PUT'])
+@routes.route('/<int:recipe_id>/ratings', methods=['POST', 'PUT'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(RatingCreationRequest)
@@ -181,7 +181,7 @@ def addRateRecipe(request_data: RatingCreationRequest, recipe_id):
     return response.success(result)
 
 
-@routes.route('/<int:recipe_id>/comments/', methods=['POST'])
+@routes.route('/<int:recipe_id>/comments', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(CommentCreationRequest)

@@ -3,11 +3,15 @@ from flask import Blueprint, request
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
+from app.api.user.user_responses import AccountResponse, AddressResponse
 from app.application.authentication import ensureIdentity
+from app.infra.db.models.user.address_model import AddressModel
+from app.infra.db.models.user.account_model import AccountModel
 from app.infra.db.daos.recipe import RecipeRatingDao, LikeRecipeDao
 from app.infra.db.daos.cart import CartDao, CommandDao
 from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
 from app.app import recipe_finding_usecase
+
 
 routes = Blueprint('users', __name__, url_prefix='/users')
 userDao = UserDao()
@@ -19,7 +23,7 @@ addressDao = AddressDao()
 recipeRatingDao = RecipeRatingDao()
 
 
-@routes.route('/', methods=['GET'])
+@routes.route('', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def index():
@@ -32,16 +36,21 @@ def index():
 def getAccount(id):
     ensureIdentity(id, current_identity)
 
-    account = accountDao.getAccountByUserId(id)
-    del account.password
-    address = addressDao.getById(account.id_Address)
-    return response.success({
-        **asdict(account),
-        'address': asdict(address)
-    })
+    account: AccountModel = accountDao.getAccountByUserId(id)
+    address: AddressModel = addressDao.getById(account.id_Address)
+    response_data = AccountResponse(
+        id=account.id,
+        id_User=account.id_User,
+        id_Address=account.id_Address,
+        firstName=account.firstName,
+        lastName=account.lastName,
+        email=account.email,
+        address=AddressResponse(**asdict(address))
+    )
+    return response.success(response_data)
 
 
-@routes.route('/<int:id>/email/', methods=['PUT'])
+@routes.route('/<int:id>/email', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
 def modifyEmail(id):
@@ -55,7 +64,7 @@ def modifyEmail(id):
         return response.error(e)
 
 
-@routes.route('/<int:id>/password/', methods=['PUT'])
+@routes.route('/<int:id>/password', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
 def modifyPassword(id):

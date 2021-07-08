@@ -1,3 +1,9 @@
+from app.application.account.signup import SignupUseCase
+from app.infra.db.refactor.user.address_dao import AddressDao
+from app.infra.db.refactor.user.user_dao import UserDao
+from app.infra.db.refactor.user.account_dao import AccountDao
+from app.infra.db.refactor.user.mysql_user_repository import MysqlUserRepository
+from app.domain.user import user_repository
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -24,7 +30,7 @@ transaction = SQLTransaction(db_connection)
 
 db_connection_2 = MysqlDBConnection(mysql_connection)
 recipe_repository = MySQLRecipeRepository(db_connection_2, RecipeDao(), RecipeIngredientDao())
-
+user_repository = MysqlUserRepository(db_connection_2, AccountDao(), UserDao(), AddressDao())
 
 from app.application.recipe.recipe_editing_usecase import RecipeEditingUseCase
 from app.application.recipe.recipe_finding_usecase import RecipeFindingUseCase
@@ -34,19 +40,20 @@ from app.application.recipe.recipe_creation_usecase import RecipeCreationUseCase
 recipe_creation_usecase = RecipeCreationUseCase(recipe_repository)
 recipe_finding_usecase = RecipeFindingUseCase(recipe_repository)
 recipe_editing_usecase = RecipeEditingUseCase(recipe_repository)
+signup_usecase = SignupUseCase(user_repository)
 
 
 # FUTURE : will not need to be imported here after DIP refactor
-from app.api import ingredient_controller, user_controller, auth
+from app.api import ingredient_controller, auth
 from app.api.recipe import recipe_controller
-from app.api.cart import cart_controller, cart_controller2
+from app.api.cart import cart_controller
 from app.api.main import main_controller
+from app.api.user import user_controller
 
 
 main_controller.register_routes(flask_app)
 ingredient_controller.register_routes(flask_app)
 cart_controller.register_routes(flask_app)
-cart_controller2.register_routes(flask_app)
 recipe_controller.register_routes(flask_app)
 user_controller.register_routes(flask_app)
 auth.register_routes(flask_app)
