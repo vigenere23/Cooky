@@ -1,6 +1,25 @@
 version: '3'
 
 tasks:
+
+  setup:mac:
+    dir: '.'
+    desc: 'Creates virtual env and installs dependencies'
+    cmds:
+      - python -m venv .venv
+      - task: load
+      - pip install -r requirements.txt
+    status:
+      - test -d .venv
+
+  load:mac:
+    dir: '.'
+    desc: 'Loads the virtual environment. *Run using "source $(task load:mac)"*'
+    cmds:
+      - echo "$PWD/.venv/bin/activate"
+    deps:
+      - setup:mac
+
   test:
     desc: Run app tests
     cmds:
