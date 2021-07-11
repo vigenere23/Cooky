@@ -4,15 +4,14 @@ from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.api.recipe.recipe_creation_request import RecipeCreationRequest
-from app.api.recipe.recipe_edition_requests import CommentCreationRequest, RatingCreationRequest, RecipeDirectivesEditionRequest, RecipeNameEditionRequest
+from app.api.recipe.recipe_edition_requests import CommentCreationRequest, RatingCreationRequest, RecipeEditionRequest
 from app.api.requests import parse_body
 from app.application.recipe.recipe_edition_dto import RecipeEditionDto
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
 from app.infra.db.daos.recipe import RecipeIngredientDao, LikeRecipeDao, RecipeRatingDao, RecipeCommentDao
 from app.infra.db.models.recipe import LikeRecipeModel, RatingModel, CommentModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
-from app.infra.db.daos.user import UserDao
-from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase, authentication_use_case
+from app.app import recipe_creation_usecase, recipe_finding_usecase, recipe_editing_usecase, authentication_use_case, user_finding_usecase
 
 routes = Blueprint('recipes', __name__, url_prefix='/recipes')
 like_recipe_dao = LikeRecipeDao()
@@ -21,7 +20,6 @@ recipe_rating_dao = RecipeRatingDao()
 recipe_ingredient_dao = RecipeIngredientDao()
 ingredient_dao = IngredientDao()
 quantity_unit_dao = QuantityUnitDao()
-user_dao = UserDao()
 
 
 @routes.route('', methods=['GET'])
@@ -56,7 +54,7 @@ def addRecipe(request_data: RecipeCreationRequest):
 @response.handleExceptions
 def getRecipeById(recipe_id):
     recipe = recipe_finding_usecase.find_by_id(recipe_id)
-    user = user_dao.getById(recipe.id_User)
+    user = user_finding_usecase.find_by_id(recipe.id_User)
     data = {
         **asdict(recipe),
         'user': {
@@ -77,8 +75,8 @@ def deleteRecipe(recipe_id):
 @routes.route('/<int:recipe_id>/name', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-@parse_body(RecipeNameEditionRequest)
-def modifyRecipeName(request_data: RecipeNameEditionRequest, recipe_id):
+@parse_body(RecipeEditionRequest)
+def modifyRecipeName(request_data: RecipeEditionRequest, recipe_id):
     edition_dto = RecipeEditionDto(id=recipe_id, name=request_data.name)
     modified_recipe = recipe_editing_usecase.edit_recipe(current_identity.id, edition_dto)
 
@@ -88,8 +86,8 @@ def modifyRecipeName(request_data: RecipeNameEditionRequest, recipe_id):
 @routes.route('/<int:recipe_id>/directives', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-@parse_body(RecipeDirectivesEditionRequest)
-def modifyRecipeDirective(request_data: RecipeDirectivesEditionRequest, recipe_id):
+@parse_body(RecipeEditionRequest)
+def modifyRecipeDirective(request_data: RecipeEditionRequest, recipe_id):
     edition_dto = RecipeEditionDto(id=recipe_id, name=request_data.directives)
     modified_recipe = recipe_editing_usecase.edit_recipe(current_identity.id, edition_dto)
 
@@ -137,7 +135,7 @@ def getRecipeComments(recipe_id):
     comments = comment_dao.getRecipeComments(recipe_id)
     data = []
     for comment in comments:
-        user = user_dao.getById(comment.id_User)
+        user = user_finding_usecase.find_by_id(comment.id_User)
         data.append({
             **asdict(comment),
             'user': asdict(user)

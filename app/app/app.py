@@ -22,6 +22,7 @@ from app.application.account.user_finding_usecase import UserFindingUseCase
 from app.application.recipe.recipe_finding_usecase import RecipeFindingUseCase
 from app.application.recipe.recipe_creation_usecase import RecipeCreationUseCase
 from app.application.account.signup_usecase import SignupUseCase
+from app.application.account.user_editing_usecase import UserEditingUseCase
 
 
 flask_app = Flask(__name__)
@@ -42,12 +43,13 @@ recipe_finding_usecase = RecipeFindingUseCase(recipe_repository)
 recipe_editing_usecase = RecipeEditingUseCase(authentication_use_case, recipe_repository)
 signup_usecase = SignupUseCase(user_repository)
 user_finding_usecase = UserFindingUseCase(user_repository)
+user_editing_usecase = UserEditingUseCase(user_repository)
 
 
+from app.api.main import main_controller
 from app.api import ingredient_controller, auth
 from app.api.recipe import recipe_controller
 from app.api.cart import cart_controller, command_controller
-from app.api.main import main_controller
 from app.api.user import user_controller, account_controller
 
 

@@ -1,6 +1,5 @@
 from dataclasses import asdict, is_dataclass
 import flask
-import traceback
 from functools import wraps
 from app.domain.exceptions import NotFoundException, ForbiddenException
 
@@ -51,6 +50,6 @@ def handleExceptions(f):
         except ForbiddenException as e:
             return error(e, 403)
         except Exception as e:
-            traceback.print_exc()
+            print(e)
             return error(e)
     return wrapper

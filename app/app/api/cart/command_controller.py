@@ -3,19 +3,12 @@ from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
-from app.infra.db.daos.recipe import RecipeRatingDao, LikeRecipeDao
 from app.infra.db.daos.cart import CartDao, CommandDao
-from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
 
 
 routes = Blueprint('commands', __name__, url_prefix='/commands')
-userDao = UserDao()
-likeRecipeDao = LikeRecipeDao()
 cartDao = CartDao()
 commandDao = CommandDao()
-accountDao = AccountDao()
-addressDao = AddressDao()
-recipeRatingDao = RecipeRatingDao()
 
 
 @routes.route('', methods=['GET'])

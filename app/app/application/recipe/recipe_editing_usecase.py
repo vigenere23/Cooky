@@ -6,8 +6,8 @@ from app.domain.recipe.recipe_repository import RecipeRepository
 
 class RecipeEditingUseCase:
     def __init__(self, authentication_usecase: AuthenticationUseCase, recipe_repository: RecipeRepository):
-        self.__repository = recipe_repository
         self.__authentication_usecase = authentication_usecase
+        self.__repository = recipe_repository
 
     def delete_recipe(self, current_user_id: int, recipe_id: int) -> None:
         recipe = self.__repository.find_by_id(recipe_id)

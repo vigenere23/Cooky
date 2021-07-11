@@ -3,19 +3,13 @@ from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
-from app.infra.db.daos.recipe import RecipeRatingDao, LikeRecipeDao
-from app.infra.db.daos.cart import CartDao, CommandDao
-from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
+from app.infra.db.daos.recipe import RecipeRatingDao
+from app.infra.db.daos.user import UserDao
 from app.app import recipe_finding_usecase, authentication_use_case
 
 
 routes = Blueprint('users', __name__, url_prefix='/users')
 userDao = UserDao()
-likeRecipeDao = LikeRecipeDao()
-cartDao = CartDao()
-commandDao = CommandDao()
-accountDao = AccountDao()
-addressDao = AddressDao()
 recipeRatingDao = RecipeRatingDao()
 
 

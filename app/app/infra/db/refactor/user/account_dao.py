@@ -20,3 +20,6 @@ class AccountDao:
 
     def save(self, executor: MySQLExecutor, account_model: AccountModel) -> int:
         return executor.create(account_model)
+
+    def update(self, executor: MySQLExecutor, account_model: AccountModel):
+        return executor.update(account_model)

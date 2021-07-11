@@ -1,27 +1,18 @@
 from dataclasses import asdict
-from flask import Blueprint, request
+from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.api.requests import parse_body
 from app.api.user.user_responses import AccountResponse, AddressResponse
 from app.api.user.account_creation_request import AccountCreationRequest
+from app.api.user.user_edition_request import AccountEditionRequest, AddressEditionRequest
+from app.application.account.user_edition_dto import AccountInfoEditionDto, AddressInfoEditionDto
 from app.application.account.signup_dto import AccountInfo, AddressInfo, SignupDto, UserInfo
-from app.infra.db.models.user.address_model import AddressModel
-from app.infra.db.daos.recipe import RecipeRatingDao, LikeRecipeDao
-from app.infra.db.daos.cart import CartDao, CommandDao
-from app.infra.db.daos.user import AddressDao, AccountDao, UserDao
-from app.app import signup_usecase, user_finding_usecase
+from app.app import signup_usecase, user_finding_usecase, user_editing_usecase
 
 
 routes = Blueprint('account', __name__, url_prefix='/account')
-userDao = UserDao()
-likeRecipeDao = LikeRecipeDao()
-cartDao = CartDao()
-commandDao = CommandDao()
-accountDao = AccountDao()
-addressDao = AddressDao()
-recipeRatingDao = RecipeRatingDao()
 
 
 @routes.route('', methods=['POST'])
@@ -57,7 +48,7 @@ def signup_route(request_data: AccountCreationRequest):
 @response.handleExceptions
 def getAccount():
     account = user_finding_usecase.find_account_of(current_identity.id)
-    address: AddressModel = addressDao.getById(account.id_Address)
+    address = user_finding_usecase.find_adress_for_account(account.id)
     response_data = AccountResponse(
         id=account.id,
         id_User=account.id_User,
@@ -73,11 +64,22 @@ def getAccount():
 @routes.route('/email', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyEmail():
-    body = request.get_json(force=True)
+@parse_body(AccountEditionRequest)
+def modifyEmail(request_body: AccountEditionRequest):
     try:
-        result = accountDao.modifyEmail(body['email'], current_identity.id)
-        return response.success(result)
+        account_edition_dto = AccountInfoEditionDto(email=request_body.email)
+        account = user_editing_usecase.update_account(current_identity.id, account_edition_dto)
+        address = user_finding_usecase.find_adress_for_account(account.id)
+        response_data = AccountResponse(
+            id=account.id,
+            id_User=account.id_User,
+            id_Address=account.id_Address,
+            firstName=account.firstName,
+            lastName=account.lastName,
+            email=account.email,
+            address=AddressResponse(**asdict(address))
+        )
+        return response.success(response_data)
     except Exception as e:
         return response.error(e)
 
@@ -85,11 +87,22 @@ def modifyEmail():
 @routes.route('/password', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyPassword():
-    body = request.get_json(force=True)
+@parse_body(AccountEditionRequest)
+def modifyPassword(request_body: AccountEditionRequest):
     try:
-        accountDao.modifyPassword(body['password'], current_identity.id)
-        return response.success('')
+        account_edition_dto = AccountInfoEditionDto(password=request_body.password)
+        account = user_editing_usecase.update_account(current_identity.id, account_edition_dto)
+        address = user_finding_usecase.find_adress_for_account(account.id)
+        response_data = AccountResponse(
+            id=account.id,
+            id_User=account.id_User,
+            id_Address=account.id_Address,
+            firstName=account.firstName,
+            lastName=account.lastName,
+            email=account.email,
+            address=AddressResponse(**asdict(address))
+        )
+        return response.success(response_data)
     except Exception as e:
         return response.error(e)
 
@@ -97,56 +110,66 @@ def modifyPassword():
 @routes.route('/country', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyCountry():
-    account = user_finding_usecase.find_account_of(current_identity.id)
-    addressId = account.id_Address
-    body = request.get_json(force=True)
-    data = addressDao.modifyCountry(body['country'], addressId)
-    return response.success(data)
+@parse_body(AddressEditionRequest)
+def modifyCountry(request_body: AddressEditionRequest):
+    try:
+        address_edition_dto = AddressInfoEditionDto(country=request_body.country)
+        address = user_editing_usecase.update_address(current_identity.id, address_edition_dto)
+        return response.success(address)
+    except Exception as e:
+        return response.error(e)
 
 
 @routes.route('/city', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyCity():
-    account = user_finding_usecase.find_account_of(current_identity.id)
-    addressId = account.id_Address
-    body = request.get_json(force=True)
-    data = addressDao.modifyCity(body['city'], addressId)
-    return response.success(data)
+@parse_body(AddressEditionRequest)
+def modifyCity(request_body: AddressEditionRequest):
+    try:
+        address_edition_dto = AddressInfoEditionDto(city=request_body.city)
+        address = user_editing_usecase.update_address(current_identity.id, address_edition_dto)
+        return response.success(address)
+    except Exception as e:
+        return response.error(e)
 
 
 @routes.route('/street', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyStreet():
-    account = user_finding_usecase.find_account_of(current_identity.id)
-    addressId = account.id_Address
-    body = request.get_json(force=True)
-    data = addressDao.modifyStreet(body['street'], addressId)
-    return response.success(data)
+@parse_body(AddressEditionRequest)
+def modifyStreet(request_body: AddressEditionRequest):
+    try:
+        address_edition_dto = AddressInfoEditionDto(street=request_body.street)
+        address = user_editing_usecase.update_address(current_identity.id, address_edition_dto)
+        return response.success(address)
+    except Exception as e:
+        return response.error(e)
 
 
 @routes.route('/apartment', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyApartment():
-    account = user_finding_usecase.find_account_of(current_identity.id)
-    addressId = account.id_Address
-    body = request.get_json(force=True)
-    data = addressDao.modifyApartment(body['apartment'], addressId)
-    return response.success(data)
+@parse_body(AddressEditionRequest)
+def modifyApartment(request_body: AddressEditionRequest):
+    try:
+        address_edition_dto = AddressInfoEditionDto(apartment=request_body.apartment)
+        address = user_editing_usecase.update_address(current_identity.id, address_edition_dto)
+        return response.success(address)
+    except Exception as e:
+        return response.error(e)
 
 
 @routes.route('/doorNumber', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyDoorNumber():
-    account = user_finding_usecase.find_account_of(current_identity.id)
-    addressId = account.id_Address
-    body = request.get_json(force=True)
-    data = addressDao.modifyDoorNumber(body['number'], addressId)
-    return response.success(data)
+@parse_body(AddressEditionRequest)
+def modifyDoorNumber(request_body: AddressEditionRequest):
+    try:
+        address_edition_dto = AddressInfoEditionDto(number=request_body.number)
+        address = user_editing_usecase.update_address(current_identity.id, address_edition_dto)
+        return response.success(address)
+    except Exception as e:
+        return response.error(e)
 
 
 @routes.route('/address', methods=['GET'])
@@ -154,8 +177,8 @@ def modifyDoorNumber():
 @response.handleExceptions
 def getAddress():
     account = user_finding_usecase.find_account_of(current_identity.id)
-    address = account.id_Address
-    return response.success(addressDao.getAddress(address))
+    address = user_finding_usecase.find_adress_for_account(account.id)
+    return response.success(address)
 
 
 def register_routes(flask_app: Flask):

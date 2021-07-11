@@ -10,9 +10,11 @@ def parse_body(constructor: Type[T]):
 
         def wrapper(*args, **kwargs):
             json_string: dict = request.data.decode()
-            parsed_request: T = constructor.from_json(json_string)
-
-            return f(parsed_request, *args, **kwargs)
+            try:
+                parsed_request: T = constructor.from_json(json_string)
+                return f(parsed_request, *args, **kwargs)
+            except KeyError as e:
+                raise Exception(f"Error parsing request: '{e.args[0]}' cannot be empty")
 
         return wrapper
 

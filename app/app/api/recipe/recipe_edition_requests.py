@@ -1,15 +1,12 @@
 from dataclasses import dataclass
+from typing import Optional
 from dataclasses_json import dataclass_json
 
 @dataclass_json
 @dataclass
-class RecipeNameEditionRequest:
-    name: str
-
-@dataclass_json
-@dataclass
-class RecipeDirectivesEditionRequest:
-    directives: str
+class RecipeEditionRequest:
+    name: Optional[str]
+    directives: Optional[str]
 
 @dataclass_json
 @dataclass
