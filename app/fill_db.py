@@ -4,20 +4,15 @@ from app.infra.db.daos.recipe import LikeRecipeDao, RecipeCommentDao, RecipeRati
 from app.infra.db.models.recipe import LikeRecipeModel, CommentModel, RatingModel
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 from app.infra.db.models.ingredient import IngredientModel
-from app.infra.db.daos.user import UserDao, AddressDao, AccountDao
-from app.infra.db.models.user import UserModel, AddressModel, AccountModel
 from app.infra.db.daos.cart import CartDao, CartItemDao, CommandDao
 from app.infra.db.models.cart import CartModel, CartItemModel, CommandModel
 
-userDao = UserDao()
 ingredientDao = IngredientDao()
 cartItemDao = CartItemDao()
 quantityUnitDao = QuantityUnitDao()
 ratingDao = RecipeRatingDao()
 commentDao = RecipeCommentDao()
 likeRecipeDao = LikeRecipeDao()
-adressDao = AddressDao()
-accountDao = AccountDao()
 commandDao = CommandDao()
 cartDao = CartDao()
 
@@ -25,12 +20,12 @@ lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pulvinar
 words = ["Hogym", "Celloggimbur", "Laglesgim", "Sylcyllis", "Morbir", "Limgem", "Silgimculnir", "Narmar", "Solgamberthi", "Cyllig", "Thalomorn", "Rluggum", "Ornbar", "Merhosyl", "Callisthunir", "Thaligber", "Limbarmar", "Lishalllumcal", "Berthe", "Hathulemhe", "Colmorhi", "Salthalegorn", "Birmircyl", "Bermor", "Morlag", "Barbirorn", "Burmir", "Humarhamur", "Leglam", "Hugimirn", "Berburthamur", "Lasloglum", "Gomlamthi", "Narmarborern", "Lomlos", "Urnlasho", "Hical", "Hisol", "Leshe", "Gumsalculsil", "Morcalsul", "Barlugha", "Salhu", "Celmorgember", "Byrhebyr", "Birhogim", "Helisloshi", "Syllas", "Gymcalhober", "Gimcullegirn", "Borlessil", "Thitha", "Cylcelnor", "Borbyrhulys", "Loglistha", "Silbartha", "Orncilbirgom", "Lasnormer", "Lumsolthalig", "Burlyscul", "Murgomhellhi", "Thatheluslag", "Lyshallluslam", "Mirborcil", "Nircalbur", "Barlugarn", "Gimcul", "Thulam", "Hecolha", "Ornmur", "Lamber", "Sulleshe", "Lomlember", "Loscal", "Calornthilog", "Limlesgam", "Thigomcul", "Laglyslomlis", "Erngomlig", "Gamlusmorcol", "Syllag", "Hothoirnlug", "Hesolmar", "Lugcul", "Thicolthu", "Narlescul", "Nirmersolurn", "Logcel", "Lasloglag", "Lessellamyrn", "Gymlys", "Thasal", "Silurnsellag", "Hallloslysbur", "Ligbir", "Burcylcel", "Narlisho" ,"Hosal","Liscal", "Sulbarmornar", "Tyfoxe", "Xusini", "Kidoxa", "Piphafy", "Chirra", "Rrobysu", "Jasu", "Quacy", "Laqui", "Nophe", "Mmyjyhe", "Quelli", "Jazo", "Mmichera", "Rroky", "Mmelli", "Girre", "Kibi", "Zafu", "Nowomi", "Dunummo", "Phasone", "Gipho", "Kyjado", "Senoze", "Gocahy", "Mmoha", "Mata", "Vupo", "Lochu", "Zeto", "Cycaci", "Llollace", "Cuphiwa", "Thexe", "Billu", "Matuko", "Rruxigu", "Bogu", "Vesi", "Wetu", "Jegi", "Gake", "Chullene", "Rruno", "Hyza", "Poru", "Nyxichi", "Fadylu", "Lajyse", "Phuxu", "Thehyko", "Quovavu", "Lleji", "Kynugy", "Mmyte", "Pakufa", "Sychecha", "Thine", "Sidemi", "Mmeka", "Jyfybo", "Mmuquoby", "Vuci", "Raci", "Zyhi", "Sujytho", "Cukemo", "Mixevo", "Thyxuwu", "Muphaba", "Pehide", "Thaserra", "Byjuwi", "Geka", "Zurruca", "Hymmy", "Thuju", "Rydu", "Jeduty", "Lluzali", "Rroce", "Sala", "Sipehu", "Pazasi", "Hagyga", "Nophy", "Rrammyca", "Kevygu", "Hellu", "Jimiru", "Llommiga", "Fasopy", "Navede", "Wireju", "Kotherru", "Cuphu", "Lloto", "Lledagy", "Syqua", "Zajerry", "Wipugo", "Sixare", "Gyka", "Bibowo", "Poje", "Mechiwi", "Juzuke", "Nyjige", "Zycu", "Govopy", "Nibo", "Tysy", "Viri", "Mmoxuby", "Boxemmi", "Xathe", "Mmocho", "Rycho", "Pijoly", "Mexo", "Thytha", "Gequo", "Rycypy", "Boquirri", "Zapu", "Gichu", "Rethu", "Gully", "Quoquafa", "Vozella", "Fibonu", "Dodyra", "Theky", "Sozawy", "Cehypy", "Rrotyhu", "Mowe", "Chusuny", "Pyru", "Dypu", "Juhuta", "Polo", "Phikotho", "Polymmo", "Hyse", "Suquajo", "Lletyjo", "Phata", "Fille", "Medy", "Cephellu", "Wogaha", "Quarrythy", "Mmanure", "Tumu", "Rothe", "Hapha", "Loxocho", "Coquawi", "Bonephe", "Suchu", "Mmiweso", "Mallyzy", "Wimma", "Rriwufi", "Nopho", "Pima", "Gyki"]
 addr = ["St", "Ave", "Blvd", "Rd"]
 
-def generateUsers():
-    for i in range(100):
-        userModel = UserModel(
-            username=words[i],
-        )
-        userDao.save(userModel)
+# def generateUsers():
+#     for i in range(100):
+#         userModel = UserModel(
+#             username=words[i],
+#         )
+#         userDao.save(userModel)
 
 def generateIngredients():
     for i in range(100):
@@ -126,31 +121,31 @@ def generateLikes():
             )
             likeRecipeDao.save(likeRecipeModel)
 
-def generateAdresses():
-    for _ in range(100):
-        apartment = None if (random.randint(1,4) % 2 == 0) else (random.randint(0, 1000))
-        addressModel = AddressModel(
-            number=random.randint(1, 99),
-            apartment=apartment,
-            street=random.choice(words) + " " + random.choice(addr),
-            city=random.choice(words),
-            country=random.choice(words)
-        )
-        adressDao.save(addressModel)
+# def generateAdresses():
+#     for _ in range(100):
+#         apartment = None if (random.randint(1,4) % 2 == 0) else (random.randint(0, 1000))
+#         addressModel = AddressModel(
+#             number=random.randint(1, 99),
+#             apartment=apartment,
+#             street=random.choice(words) + " " + random.choice(addr),
+#             city=random.choice(words),
+#             country=random.choice(words)
+#         )
+#         adressDao.save(addressModel)
 
-def generateAccounts():
-    for i in range(1, 101):
-        lastName = random.choice(words)
-        firstName = random.choice(words)
-        accountModel = AccountModel(
-            id_User=i,
-            id_Address=i,
-            firstName=firstName,
-            lastName=lastName,
-            email=firstName + "." + lastName + "@gmail.com",
-            password=random.choice(words)+random.choice(words)+random.choice(words)
-        )
-        accountDao.save(accountModel)
+# def generateAccounts():
+#     for i in range(1, 101):
+#         lastName = random.choice(words)
+#         firstName = random.choice(words)
+#         accountModel = AccountModel(
+#             id_User=i,
+#             id_Address=i,
+#             firstName=firstName,
+#             lastName=lastName,
+#             email=firstName + "." + lastName + "@gmail.com",
+#             password=random.choice(words)+random.choice(words)+random.choice(words)
+#         )
+#         accountDao.save(accountModel)
 
 def generateCommands():
     for _ in range(100):
@@ -167,8 +162,8 @@ def generateCommands():
 
 
 if __name__ == "__main__":
-    print(' - 1/10 generating users...')
-    generateUsers()
+    # print(' - 1/10 generating users...')
+    # generateUsers()
     print(' - 2/10 generating ingredients...')
     generateIngredients()
     print(' - 3/10 generating cart items...')
@@ -181,9 +176,9 @@ if __name__ == "__main__":
     generateLikes()
     print(' - 7/10 generating comments...')
     generateComments()
-    print(' - 8/10 generating adresses...')
-    generateAdresses()
-    print(' - 9/10 generating accounts...')
-    generateAccounts()
+    # print(' - 8/10 generating adresses...')
+    # generateAdresses()
+    # print(' - 9/10 generating accounts...')
+    # generateAccounts()
     print(' - 10/10 generating commands...')
     generateCommands()

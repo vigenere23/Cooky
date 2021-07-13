@@ -4,27 +4,18 @@ from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.infra.db.daos.recipe import RecipeRatingDao
-from app.infra.db.daos.user import UserDao
-from app.app import recipe_finding_usecase, authentication_use_case
+from app.app import recipe_finding_usecase, authentication_use_case, user_finding_usecase
 
 
 routes = Blueprint('users', __name__, url_prefix='/users')
-userDao = UserDao()
 recipeRatingDao = RecipeRatingDao()
-
-
-@routes.route('', methods=['GET'])
-@jwt_required()
-@response.handleExceptions
-def index():
-    return response.success(userDao.getAll())
 
 
 @routes.route('/<int:id>', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def getUser(id):
-    data = userDao.getById(id)
+    data = user_finding_usecase.find_by_id(id)
     return response.success(data)
 
 
