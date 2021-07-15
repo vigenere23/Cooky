@@ -40,6 +40,11 @@ export const router = new Router({
       component: () => import('@/views/Recipe.vue')
     },
     {
+      path: '/recipes/:id/edit',
+      name: 'RecipeEdit',
+      component: () => import('@/views/private/RecipeEdit.vue')
+    },
+    {
       path: '/ingredients',
       name: 'Ingredients',
       component: () => import('@/views/Ingredients.vue')

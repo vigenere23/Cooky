@@ -71,7 +71,7 @@ export const userModule = {
     },
     async loadUserInfos (context) {
       if (Cookies.get('cooky_token')) {
-        const user = await API.getCurrentUserInfos()
+        const user = await API.getCurrentUser()
         context.commit('setUserInfos', user)
       }
     },

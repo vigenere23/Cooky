@@ -9,7 +9,7 @@ ingredientDao = IngredientDao()
 quantityUnitDao = QuantityUnitDao()
 
 
-@routes.route('')
+@routes.route('', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def index():
@@ -35,7 +35,7 @@ def index():
     return response.success(populated_ingredients)
 
 
-@routes.route('/<int:id>/mesures')
+@routes.route('/<int:id>/mesures', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def getMesures(id):

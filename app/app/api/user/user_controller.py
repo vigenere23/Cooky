@@ -1,49 +1,22 @@
-from dataclasses import asdict
 from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
-from app.infra.db.daos.recipe import RecipeRatingDao
-from app.app import recipe_finding_usecase, authentication_use_case, user_finding_usecase
+from app.infra.db.models.user.user_model import UserModel
 
 
-routes = Blueprint('users', __name__, url_prefix='/users')
-recipeRatingDao = RecipeRatingDao()
+routes = Blueprint('user', __name__, url_prefix='/user')
 
 
-@routes.route('/<int:id>', methods=['GET'])
+@routes.route('', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
-def getUser(id):
-    data = user_finding_usecase.find_by_id(id)
-    return response.success(data)
-
-
-@routes.route('/<int:id>/recipes', methods=['GET'])
-@jwt_required()
-@response.handleExceptions
-def getAllRecipesByUser(id):
-    recipes = recipe_finding_usecase.find_all(user_id=id)
-    return response.success(list(map(asdict, recipes)))
-
-
-@routes.route('/<int:id>/likes', methods=['GET'])
-@jwt_required()
-@response.handleExceptions
-def getLikeRecipes(id):
-    recipes = recipe_finding_usecase.find_all_liked_by(id)
-
-    return response.success(list(map(asdict, recipes)))
-
-
-@routes.route('/<int:id>/ratings', methods=['GET'])
-@jwt_required()
-@response.handleExceptions
-def getRatings(id):
-    authentication_use_case.ensure_same_user(id, current_identity.id)
-
-    data = recipeRatingDao.getRatingsByUser(id)
-    return response.success(data)
+def getCurrentUser():
+    user = UserModel(
+        username=current_identity.username,
+        id=current_identity.id
+    )
+    return response.success(user)
 
 
 def register_routes(flask_app: Flask):

@@ -47,19 +47,21 @@ user_editing_usecase = UserEditingUseCase(user_repository)
 
 
 from app.api.main import main_controller
-from app.api import ingredient_controller, auth
-from app.api.recipe import recipe_controller
+from app.api import ingredients_controller, auth
+from app.api.recipe import recipes_controller
 from app.api.cart import cart_controller, command_controller
-from app.api.user import user_controller, account_controller
+from app.api.user import user_controller, users_controller, account_controller, accounts_controller
 
 
 main_controller.register_routes(flask_app)
-ingredient_controller.register_routes(flask_app)
+ingredients_controller.register_routes(flask_app)
 cart_controller.register_routes(flask_app)
 command_controller.register_routes(flask_app)
-recipe_controller.register_routes(flask_app)
+recipes_controller.register_routes(flask_app)
 user_controller.register_routes(flask_app)
+users_controller.register_routes(flask_app)
 account_controller.register_routes(flask_app)
+accounts_controller.register_routes(flask_app)
 auth.register_routes(flask_app)
 
 CORS(flask_app)

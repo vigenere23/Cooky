@@ -8,15 +8,15 @@ from app.infra.db.models.user.user_model import UserModel
 routes = Blueprint('main', __name__, url_prefix='/')
 
 
-@routes.route('')
+@routes.route('', methods=['GET'])
 def index():
     return response.success("App is running correctly")
 
 
-@routes.route('/userInfos')
+@routes.route('/user', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
-def getUserInfos():
+def getCurrentUser():
     user = UserModel(
         username=current_identity.username,
         id=current_identity.id

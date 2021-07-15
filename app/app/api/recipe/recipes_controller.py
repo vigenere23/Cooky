@@ -4,7 +4,7 @@ from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
 from app.api import response
 from app.api.recipe.recipe_creation_request import RecipeCreationRequest
-from app.api.recipe.recipe_edition_requests import CommentCreationRequest, RatingCreationRequest, RecipeEditionRequest
+from app.api.recipe.recipe_edition_requests import CommentCreationRequest, RatingCreationRequest, RecipeEditionRequest, RecipeIngredientQuantityEditionRequest
 from app.api.requests import parse_body
 from app.application.recipe.recipe_edition_dto import RecipeEditionDto
 from app.application.recipe.recipe_creation_dto import RecipeCreationDto
@@ -37,13 +37,13 @@ def index():
 @jwt_required()
 @response.handleExceptions
 @parse_body(RecipeCreationRequest)
-def addRecipe(request_data: RecipeCreationRequest):
+def addRecipe(request_body: RecipeCreationRequest):
     recipe_creation_dto = RecipeCreationDto(recipe={
         'id_User': current_identity.id,
-        'name': request_data.name,
-        'description': request_data.description,
-        'directives': request_data.directives
-    }, ingredients=request_data.ingredients)
+        'name': request_body.name,
+        'description': request_body.description,
+        'directives': request_body.directives
+    }, ingredients=request_body.ingredients)
     recipe = recipe_creation_usecase.create_recipe(recipe_creation_dto)
 
     return response.success(asdict(recipe))
@@ -72,39 +72,32 @@ def deleteRecipe(recipe_id):
     return response.empty()
 
 
-@routes.route('/<int:recipe_id>/name', methods=['PUT'])
+@routes.route('/<int:recipe_id>', methods=['PATCH'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(RecipeEditionRequest)
-def modifyRecipeName(request_data: RecipeEditionRequest, recipe_id):
-    edition_dto = RecipeEditionDto(id=recipe_id, name=request_data.name)
+def modifyRecipeName(request_body: RecipeEditionRequest, recipe_id):
+    edition_dto = RecipeEditionDto(
+        id=recipe_id,
+        name=request_body.name,
+        directives=request_body.directives)
+
     modified_recipe = recipe_editing_usecase.edit_recipe(current_identity.id, edition_dto)
 
-    return response.success(asdict(modified_recipe))
-
-
-@routes.route('/<int:recipe_id>/directives', methods=['PUT'])
-@jwt_required()
-@response.handleExceptions
-@parse_body(RecipeEditionRequest)
-def modifyRecipeDirective(request_data: RecipeEditionRequest, recipe_id):
-    edition_dto = RecipeEditionDto(id=recipe_id, name=request_data.directives)
-    modified_recipe = recipe_editing_usecase.edit_recipe(current_identity.id, edition_dto)
-
-    return response.success(asdict(modified_recipe))
+    return response.success(modified_recipe)
 
 
 @routes.route('/<int:recipe_id>/ingredientQuantity', methods=['PUT'])
 @jwt_required()
 @response.handleExceptions
-def modifyIngredientQuantity(recipe_id):
+@parse_body(RecipeIngredientQuantityEditionRequest)
+def modifyIngredientQuantity(request_body: RecipeIngredientQuantityEditionRequest, recipe_id):
     recipe = recipe_finding_usecase.find_by_id(recipe_id)
 
     authentication_use_case.ensure_same_user(recipe.id_User, current_identity.id)
 
-    body = request.get_json(force=True)
     result = recipe_ingredient_dao.modifyQuantity(
-        recipe_id, body['id_Ingredient'], body['totalQuantity'])
+        recipe_id, request_body.id_Ingredient, request_body.totalQuantity)
     return response.success(result)
 
 
@@ -128,7 +121,7 @@ def getIngredientsByRecipe(recipe_id):
     return response.success(data)
 
 
-@routes.route('/<int:recipe_id>/comments')
+@routes.route('/<int:recipe_id>/comments', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def getRecipeComments(recipe_id):
@@ -160,21 +153,32 @@ def likeRecipe(recipe_id):
         return response.empty()
 
 
-@routes.route('/<int:recipe_id>/ratings', methods=['POST', 'PUT'])
+@routes.route('/<int:recipe_id>/ratings', methods=['POST'])
 @jwt_required()
 @response.handleExceptions
 @parse_body(RatingCreationRequest)
-def addRateRecipe(request_data: RatingCreationRequest, recipe_id):
+def add_recipe_rating(request_body: RatingCreationRequest, recipe_id):
     ratingModel = RatingModel(
         id_User=current_identity.id,
         id_Recipe=recipe_id,
-        value=request_data.value
+        value=request_body.value
     )
+    result = recipe_rating_dao.save(ratingModel)
 
-    if request.method == 'POST':
-        result = recipe_rating_dao.save(ratingModel)
-    else:
-        result = recipe_rating_dao.replace(ratingModel)
+    return response.success(result)
+
+
+@routes.route('/<int:recipe_id>/ratings', methods=['PUT'])
+@jwt_required()
+@response.handleExceptions
+@parse_body(RatingCreationRequest)
+def edit_recipe_rating(request_body: RatingCreationRequest, recipe_id):
+    ratingModel = RatingModel(
+        id_User=current_identity.id,
+        id_Recipe=recipe_id,
+        value=request_body.value
+    )
+    result = recipe_rating_dao.replace(ratingModel)
 
     return response.success(result)
 

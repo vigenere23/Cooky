@@ -2,8 +2,8 @@ import { AxiosHelper } from '@/js/helpers/axios'
 const BASE_URL = process.env.VUE_APP_API_URL || 'http://127.0.0.1:5000'
 
 export class API {
-  static async getCurrentUserInfos () {
-    const url = `${BASE_URL}/userInfos`
+  static async getCurrentUser () {
+    const url = `${BASE_URL}/user`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -28,22 +28,22 @@ export class API {
   }
 
   static async getAccount () {
-    const url = `${BASE_URL}/account`
+    const url = `${BASE_URL}/user/account`
     return AxiosHelper.axiosGet(url)
   }
 
   static async getAddress () {
-    const url = `${BASE_URL}/account/address`
+    const url = `${BASE_URL}/user/account/address`
     return AxiosHelper.axiosGet(url)
   }
 
   static async getUserCart () {
-    const url = `${BASE_URL}/cart`
+    const url = `${BASE_URL}/user/cart`
     return AxiosHelper.axiosGet(url)
   }
 
   static async getUserCommands () {
-    const url = `${BASE_URL}/commands`
+    const url = `${BASE_URL}/user/commands`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -115,7 +115,7 @@ export class API {
   }
 
   static async getCartItems () {
-    const url = `${BASE_URL}/cart/items`
+    const url = `${BASE_URL}/user/cart/items`
     return AxiosHelper.axiosGet(url)
   }
 
@@ -123,12 +123,12 @@ export class API {
     const body = {
       'id_Ingredient': ingredientId
     }
-    const url = `${BASE_URL}/cart/items`
+    const url = `${BASE_URL}/user/cart/items`
     return AxiosHelper.axiosPost(url, body)
   }
 
   static async removeCartItem (ingredientId) {
-    const url = `${BASE_URL}/cart/items/${ingredientId}`
+    const url = `${BASE_URL}/user/cart/items/${ingredientId}`
     return AxiosHelper.axiosDelete(url)
   }
 
@@ -162,7 +162,7 @@ export class API {
   }
 
   static async createCommand () {
-    const url = `${BASE_URL}/cart/command`
+    const url = `${BASE_URL}/user/commands`
     return AxiosHelper.axiosPost(url)
   }
 
@@ -200,56 +200,56 @@ export class API {
     const body = {
       'firstName': firstName
     }
-    const url = `${BASE_URL}/account/firstName`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyLastName (lastName) {
     const body = {
       'lastName': lastName
     }
-    const url = `${BASE_URL}/account/lastName`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyEmail (email) {
     const body = {
       'email': email
     }
-    const url = `${BASE_URL}/account/email`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyPassword (password) {
     const body = {
       'password': password
     }
-    const url = `${BASE_URL}/account/password`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyCountry (country) {
     const body = {
       'country': country
     }
-    const url = `${BASE_URL}/account/country`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account/address`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyCity (city) {
     const body = {
       'city': city
     }
-    const url = `${BASE_URL}/account/city`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account/address`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyStreet (street) {
     const body = {
       'street': street
     }
-    const url = `${BASE_URL}/account/street`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account/address`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyApartment (apartment) {
@@ -260,23 +260,23 @@ export class API {
     const body = {
       'apartment': apart
     }
-    const url = `${BASE_URL}/account/apartment`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account/address`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyDoorNumber (number) {
     const body = {
       'number': number
     }
-    const url = `${BASE_URL}/account/doorNumber`
-    return AxiosHelper.axiosPut(url, body)
+    const url = `${BASE_URL}/user/account/address`
+    return AxiosHelper.axiosPatch(url, body)
   }
 
   static async modifyCartItemQuantity (ingredientId, multiplier) {
     const body = {
       'multiplier': multiplier
     }
-    const url = `${BASE_URL}/cart/items/${ingredientId}`
+    const url = `${BASE_URL}/user/cart/items/${ingredientId}`
     return AxiosHelper.axiosPut(url, body)
   }
 
@@ -286,7 +286,7 @@ export class API {
   }
 
   static async signup (data) {
-    const url = `${BASE_URL}/account`
+    const url = `${BASE_URL}/accounts`
     return AxiosHelper.axiosPost(url, data)
   }
 }

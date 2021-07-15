@@ -17,3 +17,9 @@ class CommentCreationRequest:
 @dataclass
 class RatingCreationRequest:
     value: int
+
+@dataclass_json
+@dataclass
+class RecipeIngredientQuantityEditionRequest:
+    id_Ingredient: int
+    totalQuantity: int

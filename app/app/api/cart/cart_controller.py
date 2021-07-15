@@ -2,18 +2,16 @@ from dataclasses import asdict
 from flask import Blueprint
 from flask.app import Flask
 from flask_jwt import jwt_required, current_identity
-from datetime import datetime
 from app.api import response
 from app.api.requests import parse_body
 from app.api.cart.cart_edition_requests import CartItemCreationRequest, CartItemEditionRequest
-from app.infra.db.models.cart import CartItemModel, CommandModel
-from app.infra.db.daos.cart import CartDao, CartItemDao, CommandDao
+from app.infra.db.models.cart import CartItemModel
+from app.infra.db.daos.cart import CartDao, CartItemDao
 from app.infra.db.daos.ingredient import IngredientDao, QuantityUnitDao
 
-routes = Blueprint('cart', __name__, url_prefix='/cart')
+routes = Blueprint('cart', __name__, url_prefix='/user/cart')
 cartDao = CartDao()
 cartItemDao = CartItemDao()
-commandsDao = CommandDao()
 ingredientDao = IngredientDao()
 quantityUnitDao = QuantityUnitDao()
 
@@ -27,7 +25,7 @@ def get_current_user_cart():
     return response.success(cart)
 
 
-@routes.route('/items')
+@routes.route('/items', methods=['GET'])
 @jwt_required()
 @response.handleExceptions
 def get_current_user_cart_items():
@@ -85,22 +83,6 @@ def modifyRecipeName(request_body: CartItemEditionRequest, id_Ingredient):
 
     result = cartItemDao.modifyQuantity(
         request_body.multiplier, cart.id, id_Ingredient)
-
-    return response.success(result)
-
-
-# FUTURE get cart for current user only (not for any user)
-@routes.route('/command', methods=['POST'])
-@jwt_required()
-@response.handleExceptions
-def createCommand():
-    cart = cartDao.get_cart_of(current_identity.id)
-
-    commandModel = CommandModel(
-        id_Cart=cart.id,
-        creationDate=datetime.now()
-    )
-    result = commandsDao.save(commandModel)
 
     return response.success(result)
 

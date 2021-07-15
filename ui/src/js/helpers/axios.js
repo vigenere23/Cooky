@@ -63,6 +63,12 @@ export class AxiosHelper {
     return parseErrors(() => axios.put(url, body, options))
   }
 
+  static axiosPatch (url, body, options) {
+    const headers = getHeaders()
+    options = { ...options, headers }
+    return parseErrors(() => axios.patch(url, body, options))
+  }
+
   static axiosDelete (url, body, options) {
     const headers = getHeaders()
     options = { ...options, data: body, headers }
